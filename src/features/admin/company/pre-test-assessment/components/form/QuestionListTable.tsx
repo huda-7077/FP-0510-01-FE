@@ -27,11 +27,12 @@ export function QuestionListTable({
   onDelete,
   onEdit,
 }: QuestionListTableProps) {
+  if (questions.length <= 0)
+    return <p className="text-center">No Data Found</p>;
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[50px]">No</TableHead>
           <TableHead>Question</TableHead>
           <TableHead className="w-[100px]">Options</TableHead>
           <TableHead className="w-[120px] text-right">Actions</TableHead>
@@ -40,7 +41,6 @@ export function QuestionListTable({
       <TableBody>
         {questions.map((question) => (
           <TableRow key={question.id}>
-            <TableCell className="font-medium">{question.id}</TableCell>
             <TableCell className="max-w-[300px] truncate">
               {question.question}
             </TableCell>
@@ -48,6 +48,7 @@ export function QuestionListTable({
             <TableCell className="text-right">
               <div className="flex justify-end space-x-2">
                 <Button
+                  type="button"
                   variant="outline"
                   size="icon"
                   onClick={() => onEdit(question.id, question)}
@@ -55,6 +56,7 @@ export function QuestionListTable({
                   <Pencil className="h-4 w-4" />
                 </Button>
                 <Button
+                  type="button"
                   variant="destructive"
                   size="icon"
                   onClick={() => onDelete(question.id)}
