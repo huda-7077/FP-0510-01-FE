@@ -21,6 +21,7 @@ import { ValidationStatus } from "./ValidationStatues";
 import useDeleteQuestionOptionByQuestionId from "@/hooks/api/question-options/useDeleteQuestionOptionByQuestionId";
 import { CreateAssessmentSchema } from "../../schemas";
 import useUpdateQuestionOptionByQuestionId from "@/hooks/api/question-options/useUpdateQuestionOptionByQuestionId.ts";
+import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 
 interface ModifiedQuestion {
   id: number;
@@ -321,11 +322,7 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
   const isPublishable = questionsStates.length >= 25;
 
   if (isAssessmentLoading) {
-    return (
-      <div className="flex h-screen w-full items-center justify-center">
-        Loading...
-      </div>
-    );
+    return <LoadingScreen message="Loading Assessment Data" />;
   }
 
   return (
