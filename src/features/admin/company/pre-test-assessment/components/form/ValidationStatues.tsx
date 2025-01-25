@@ -11,24 +11,44 @@ export function ValidationStatus({ questionCount }: ValidationStatusProps) {
   const progress = Math.min((questionCount / 25) * 100, 100);
 
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="mb-2 flex items-center">
-          {isValid ? (
-            <CheckCircle2 className="mr-2 h-5 w-5 text-green-500" />
-          ) : (
-            <AlertCircle className="mr-2 h-5 w-5 text-yellow-500" />
-          )}
-          <h3 className="text-lg font-semibold">Validation Status</h3>
+    <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+      <CardContent className="space-y-4 p-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            {isValid ? (
+              <CheckCircle2 className="h-8 w-8 animate-pulse text-blue-600" />
+            ) : (
+              <AlertCircle className="h-8 w-8 animate-pulse text-yellow-500" />
+            )}
+            <h3 className="text-2xl font-semibold text-gray-700">
+              Validation Status
+            </h3>
+          </div>
+          <span className="text-sm font-medium text-gray-600">
+            <span className="text-xl font-semibold">{questionCount}</span> /25
+            questions
+          </span>
         </div>
-        <p className="mb-2">
+
+        <p className="text-sm text-gray-600">
           {isValid
-            ? "The test meets the minimum requirement of 25 questions."
-            : `The test requires at least 25 questions. Current count: ${questionCount}`}
+            ? "The test meets the minimum requirement of 25 questions. You are good to go!"
+            : `The test requires at least 25 questions before it can be published.`}
         </p>
-        <Progress value={progress} className="w-full" />
-        <p className="mt-1 text-right text-sm">{`${questionCount}/25 questions`}</p>
+
+        <div className="space-y-2">
+          <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
+            <Progress
+              value={progress}
+              className={`h-full transition-all ${
+                isValid ? "bg-gray-400" : "bg-gray-200"
+              }`}
+            />
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
 }
+
+export default ValidationStatus;

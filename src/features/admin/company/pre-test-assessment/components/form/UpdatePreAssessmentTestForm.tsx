@@ -334,13 +334,18 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <div className="sticky top-6 space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Test Details</CardTitle>
+              <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+                <CardHeader className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                  <CardTitle className="text-xl font-semibold text-gray-800">
+                    Test Details
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-5 p-6">
                   <div>
-                    <Label htmlFor="title" className="text-lg font-semibold">
+                    <Label
+                      htmlFor="title"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
                       Title
                     </Label>
                     <Input
@@ -350,12 +355,12 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Enter test title"
-                      className="mt-1"
-                      // disabled={createAssessmentPending}
+                      className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                       required
+                      disabled={isProcessing}
                     />
                     {!!formik.touched.title && !!formik.errors.title && (
-                      <p className="text-sm text-red-500">
+                      <p className="mt-1 text-sm text-red-500">
                         {formik.errors.title}
                       </p>
                     )}
@@ -363,7 +368,7 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                   <div>
                     <Label
                       htmlFor="description"
-                      className="text-lg font-semibold"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
                     >
                       Description
                     </Label>
@@ -374,19 +379,22 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Enter test description"
-                      className="mt-1"
+                      className="min-h-[100px] w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                       rows={4}
-                      // disabled={createAssessmentPending}
+                      disabled={isProcessing}
                     />
                     {!!formik.touched.description &&
                       !!formik.errors.description && (
-                        <p className="text-sm text-red-500">
+                        <p className="mt-1 text-sm text-red-500">
                           {formik.errors.description}
                         </p>
                       )}
                   </div>
                   <div>
-                    <Label htmlFor="score" className="text-lg font-semibold">
+                    <Label
+                      htmlFor="score"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
                       Passing Score
                     </Label>
                     <Input
@@ -397,41 +405,52 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                       value={formik.values.passingScore}
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
+                      disabled={isProcessing}
                       placeholder="Enter test passing score"
-                      className="mt-1"
-                      // disabled={createAssessmentPending}
+                      className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                     />
                     {!!formik.touched.passingScore &&
                       !!formik.errors.passingScore && (
-                        <p className="text-sm text-red-500">
+                        <p className="mt-1 text-sm text-red-500">
                           {formik.errors.passingScore}
                         </p>
                       )}
                   </div>
                 </CardContent>
               </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Add New Question</CardTitle>
+
+              <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+                <CardHeader className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                  <CardTitle className="text-xl font-semibold text-gray-800">
+                    Add New Question
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="p-6">
                   <QuestionForm
                     onAddQuestion={addQuestion}
                     editQuestion={onEdit ? editingQuestion : null}
                     onCancelEdit={handleCancelEdit}
+                    isProcessing={isProcessing}
                   />
                 </CardContent>
               </Card>
             </div>
           </div>
+
           <div className="space-y-6 lg:col-span-3">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl">Question List</CardTitle>
+            <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+              <CardHeader className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                <CardTitle className="text-xl font-semibold text-gray-800">
+                  Question List
+                </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6">
                 {isQuestionsLoading ? (
-                  <p>Loading...</p>
+                  <div className="flex h-32 items-center justify-center">
+                    <p className="text-sm text-gray-500">
+                      Loading questions...
+                    </p>
+                  </div>
                 ) : (
                   <QuestionListTable
                     questions={questionsStates}
@@ -441,19 +460,22 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                 )}
               </CardContent>
             </Card>
+
             <ValidationStatus questionCount={questionsStates.length} />
-            <Card className="pt-6">
-              <CardContent>
-                <p className="mb-2 text-xs text-red-400">
+
+            <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+              <CardContent className="p-6">
+                <p className="mb-4 text-xs text-red-500">
                   *The Question Will Be Updated Once You Save or Publish Your
                   Assessment
                 </p>
-                <div className="flex h-full items-center justify-end gap-2">
+                <div className="flex items-center justify-end gap-3">
                   <Button
                     type="submit"
                     variant="outline"
                     onClick={() => setSubmitType("draft")}
                     disabled={isProcessing}
+                    className="rounded-md border border-gray-200 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-400"
                   >
                     {isProcessing ? "Saving..." : "Save as Draft"}
                   </Button>
@@ -461,6 +483,7 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                     type="submit"
                     onClick={() => setSubmitType("published")}
                     disabled={!isPublishable || isProcessing}
+                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-400"
                   >
                     {isPublishable && isProcessing
                       ? "Publishing..."

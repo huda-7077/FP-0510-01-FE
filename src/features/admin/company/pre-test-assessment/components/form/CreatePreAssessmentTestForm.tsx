@@ -108,21 +108,24 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
     setIsProcessing(isPending);
   }, [createAssessmentQuestionPending, createQuestionOptionsPending]);
 
-  const isPublishable = questions.length >= 25;
-
   return (
     <div className="container mx-auto p-6">
       <form onSubmit={formik.handleSubmit}>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <div className="sticky top-6 space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Test Details</CardTitle>
+              <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+                <CardHeader className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                  <CardTitle className="text-xl font-semibold text-gray-800">
+                    Test Details
+                  </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-5 p-6">
                   <div>
-                    <Label htmlFor="title" className="text-lg font-semibold">
+                    <Label
+                      htmlFor="title"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
                       Title
                     </Label>
                     <Input
@@ -132,12 +135,12 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Enter test title"
-                      className="mt-1"
-                      disabled={createAssessmentPending}
+                      className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                      disabled={isProcessing}
                       required
                     />
                     {!!formik.touched.title && !!formik.errors.title && (
-                      <p className="text-sm text-red-500">
+                      <p className="mt-1 text-sm text-red-500">
                         {formik.errors.title}
                       </p>
                     )}
@@ -145,7 +148,7 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                   <div>
                     <Label
                       htmlFor="description"
-                      className="text-lg font-semibold"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
                     >
                       Description
                     </Label>
@@ -156,19 +159,22 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Enter test description"
-                      className="mt-1"
+                      className="min-h-[100px] w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
                       rows={4}
-                      disabled={createAssessmentPending}
+                      disabled={isProcessing}
                     />
                     {!!formik.touched.description &&
                       !!formik.errors.description && (
-                        <p className="text-sm text-red-500">
+                        <p className="mt-1 text-sm text-red-500">
                           {formik.errors.description}
                         </p>
                       )}
                   </div>
                   <div>
-                    <Label htmlFor="score" className="text-lg font-semibold">
+                    <Label
+                      htmlFor="score"
+                      className="mb-2 block text-sm font-semibold text-gray-700"
+                    >
                       Passing Score
                     </Label>
                     <Input
@@ -180,34 +186,43 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                       onChange={formik.handleChange}
                       onBlur={formik.handleBlur}
                       placeholder="Enter test passing score"
-                      className="mt-1"
-                      disabled={createAssessmentPending}
+                      className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                      disabled={isProcessing}
                     />
                     {!!formik.touched.passingScore &&
                       !!formik.errors.passingScore && (
-                        <p className="text-sm text-red-500">
+                        <p className="mt-1 text-sm text-red-500">
                           {formik.errors.passingScore}
                         </p>
                       )}
                   </div>
                 </CardContent>
               </Card>
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-2xl">Add New Question</CardTitle>
+
+              <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+                <CardHeader className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                  <CardTitle className="text-xl font-semibold text-gray-800">
+                    Add New Question
+                  </CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <QuestionForm onAddQuestion={addQuestion} />
+                <CardContent className="p-6">
+                  <QuestionForm
+                    onAddQuestion={addQuestion}
+                    isProcessing={isProcessing}
+                  />
                 </CardContent>
               </Card>
             </div>
           </div>
+
           <div className="space-y-6 lg:col-span-3">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-2xl">Question List</CardTitle>
+            <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+              <CardHeader className="border-b border-gray-200 bg-gray-50 px-6 py-4">
+                <CardTitle className="text-xl font-semibold text-gray-800">
+                  Question List
+                </CardTitle>
               </CardHeader>
-              <CardContent>
+              <CardContent className="p-6">
                 <QuestionListTable
                   questions={questions}
                   onDelete={deleteQuestion}
@@ -215,16 +230,22 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
                 />
               </CardContent>
             </Card>
+
             <ValidationStatus questionCount={questions.length} />
-            <Card>
-              <CardContent>
-                <div className="flex h-full items-center justify-end gap-2 pt-6">
+
+            <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+              <CardContent className="p-6">
+                <p className="mb-4 text-xs text-red-500">
+                  *The Question Will Be Saved Once You Save it as Draft.
+                </p>
+                <div className="flex h-full items-center justify-end gap-2">
                   <Button
                     type="submit"
                     onClick={() => setSubmitType("draft")}
                     disabled={isProcessing}
+                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-400"
                   >
-                    Save as Draft
+                    {isProcessing ? "Saving..." : "Save as Draft"}
                   </Button>
                 </div>
               </CardContent>
