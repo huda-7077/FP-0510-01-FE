@@ -14,10 +14,10 @@ export const JobStatusBadge = ({ status, className }: JobStatusBadgeProps) => {
 
   return (
     <span
-      className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-xs sm:px-2 sm:py-1 md:px-3 md:py-1.5 ${styles[status]} ${className}`}
+      className={`inline-flex items-center rounded-full px-1.5 py-0.5 text-xs sm:px-2 sm:py-1 ${styles[status]} ${className}`}
     >
       <span
-        className={`mr-1 h-1 w-1 rounded-full sm:mr-1.5 sm:h-1.5 sm:w-1.5 md:mr-2 md:h-2 md:w-2 ${status === "published" ? "bg-green-500" : "bg-red-500"}`}
+        className={`mr-1 h-1 w-1 rounded-full sm:mr-1.5 sm:h-1.5 sm:w-1.5 md:mr-1.5 md:h-1.5 md:w-1.5 ${status === "published" ? "bg-green-500" : "bg-red-500"}`}
       />
       <span className="select-none">
         {status.charAt(0).toUpperCase() + status.slice(1)}

@@ -49,7 +49,7 @@ export const JobCard = ({ job, onViewDetails }: JobCardProps) => {
         </div>
 
         <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-4 md:gap-5">
-          <ApplicantCount count={200} />
+          <ApplicantCount jobId={job.id} />
 
           <div className="ml-auto flex items-center gap-2 sm:ml-0 sm:gap-4 md:gap-5">
             <Button

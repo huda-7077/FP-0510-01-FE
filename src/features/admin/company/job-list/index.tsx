@@ -65,9 +65,9 @@ export const JobListComponent = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 px-4 py-4 sm:px-6 sm:py-6 md:py-8">
-      <div className="mx-auto w-full max-w-sm sm:max-w-2xl md:max-w-4xl lg:max-w-5xl">
-        <div className="rounded-lg bg-white p-4 shadow-sm sm:p-6 sm:shadow-md md:p-8">
+    <div className="px-4 py-4">
+      <div className="container mx-auto w-full">
+        <div>
           <JobListHeader
             totalJobs={jobs?.data.length || 0}
             jobCategories={validCategories}
