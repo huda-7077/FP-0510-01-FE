@@ -1,0 +1,73 @@
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Job } from "@/types/job";
+import { JobActionsMenu } from "./JobActionsMenu";
+import { formatDaysRemaining } from "@/utils/formatDaysRemaining";
+import { ApplicantCount } from "./ApplicantCount";
+import { JobStatusBadge } from "./JobStatusBadge";
+import { AssessmentStatusBadge } from "./AssessmentStatusBadge";
+import { cn } from "@/lib/utils";
+
+interface JobCardProps {
+  job: Job;
+  onViewDetails: (jobId: number) => void;
+}
+
+export const JobCard = ({ job, onViewDetails }: JobCardProps) => {
+  return (
+    <Card className="group border border-gray-100 p-3 transition-all duration-200 hover:border-blue-100 hover:shadow-md sm:p-4 md:p-5">
+      <div className="flex flex-col items-start justify-between gap-3 sm:gap-4 lg:flex-row lg:items-center">
+        <div className="w-full flex-1 space-y-2 sm:w-auto sm:space-y-3">
+          <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-4">
+            <div className="w-full sm:w-auto">
+              <h3 className="line-clamp-2 text-base font-semibold text-gray-900 group-hover:text-blue-600 sm:text-lg md:text-xl">
+                {job.title}
+              </h3>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2">
+              <JobStatusBadge
+                status={job.isPublished ? "published" : "draft"}
+              />
+              {job.requiresAssessment && <AssessmentStatusBadge />}
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 sm:gap-3 sm:text-sm md:text-base">
+            <span className="font-medium">{job.category}</span>
+            {job.company.name && (
+              <>
+                <span className="hidden h-1 w-1 rounded-full bg-gray-300 sm:block" />
+                <span>{job.company.name}</span>
+              </>
+            )}
+            <span className="hidden h-1 w-1 rounded-full bg-gray-300 sm:block" />
+            <span>
+              {formatDaysRemaining(job.applicationDeadline.toString())}
+            </span>
+          </div>
+        </div>
+
+        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-4 md:gap-5">
+          <ApplicantCount count={200} />
+
+          <div className="ml-auto flex items-center gap-2 sm:ml-0 sm:gap-4 md:gap-5">
+            <Button
+              variant="outline"
+              className="h-8 flex-1 bg-blue-600 text-xs text-white hover:bg-blue-800 hover:text-white sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
+              onClick={() => onViewDetails(job.id)}
+            >
+              View Details
+            </Button>
+
+            <JobActionsMenu
+              jobId={job.id}
+              isPublished={job.isPublished}
+              isRequireAssessment={job.requiresAssessment}
+            />
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+};
