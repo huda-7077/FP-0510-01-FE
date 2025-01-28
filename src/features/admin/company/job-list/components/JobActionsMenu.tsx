@@ -6,10 +6,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
-import { cn } from "@/lib/utils";
 import { MoreVertical } from "lucide-react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 interface JobActionsMenuProps {
   jobId: number;
@@ -36,7 +34,7 @@ export const JobActionsMenu = ({
 
   const getPublishStatusStyle = () => {
     if (
-      (!isPublished && assessment && assessment.data.length < 25) ||
+      (!isPublished && assessment && assessment.data.length < 1) ||
       isPublished
     ) {
       return "text-red-500";
@@ -45,7 +43,7 @@ export const JobActionsMenu = ({
   };
 
   const getPublishStatusText = () => {
-    if (!isPublished && assessment && assessment.data.length < 25) {
+    if (!isPublished && assessment && assessment.data.length < 1) {
       return "Save to Draft";
     }
     return isPublished ? "Save to Draft" : "Publish";

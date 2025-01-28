@@ -4,11 +4,10 @@ import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import PaginationSection from "@/components/PaginationSection";
 import useGetJobCategories from "@/hooks/api/job/useGetJobCategories";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
-import { useDebounce } from "use-debounce";
 import { parseAsInteger, useQueryState } from "nuqs";
+import { useDebounce } from "use-debounce";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
-import { cn } from "@/lib/utils";
 
 export const JobListComponent = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -54,10 +53,6 @@ export const JobListComponent = () => {
     setSortBy(sort);
   };
 
-  const handleViewJobDetails = (jobId: number) => {
-    console.log("View details for job:", jobId);
-  };
-
   const validCategories = jobCategories?.data ?? [];
 
   if (isJobsPending && isJobCategoriesPending) {
@@ -76,14 +71,8 @@ export const JobListComponent = () => {
             onSearch={handleSearch}
           />
 
-          <div className="mt-4 space-y-3 sm:mt-6 sm:space-y-4 md:mt-8">
-            {jobs?.data.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-                onViewDetails={handleViewJobDetails}
-              />
-            ))}
+          <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-4 md:mt-8">
+            {jobs?.data.map((job) => <JobCard job={job} />)}
           </div>
 
           {jobs && jobs.data.length > 0 && jobs.meta.total > jobs.meta.take && (

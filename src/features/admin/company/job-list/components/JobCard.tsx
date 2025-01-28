@@ -1,19 +1,18 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Job } from "@/types/job";
-import { JobActionsMenu } from "./JobActionsMenu";
 import { formatDaysRemaining } from "@/utils/formatDaysRemaining";
+import Link from "next/link";
 import { ApplicantCount } from "./ApplicantCount";
-import { JobStatusBadge } from "./JobStatusBadge";
 import { AssessmentStatusBadge } from "./AssessmentStatusBadge";
-import { cn } from "@/lib/utils";
+import { JobActionsMenu } from "./JobActionsMenu";
+import { JobStatusBadge } from "./JobStatusBadge";
 
 interface JobCardProps {
   job: Job;
-  onViewDetails: (jobId: number) => void;
 }
 
-export const JobCard = ({ job, onViewDetails }: JobCardProps) => {
+export const JobCard = ({ job }: JobCardProps) => {
   return (
     <Card className="group border border-gray-100 p-3 transition-all duration-200 hover:border-blue-100 hover:shadow-md sm:p-4 md:p-5">
       <div className="flex flex-col items-start justify-between gap-3 sm:gap-4 lg:flex-row lg:items-center">
@@ -52,13 +51,14 @@ export const JobCard = ({ job, onViewDetails }: JobCardProps) => {
           <ApplicantCount jobId={job.id} />
 
           <div className="ml-auto flex items-center gap-2 sm:ml-0 sm:gap-4 md:gap-5">
-            <Button
-              variant="outline"
-              className="h-8 flex-1 bg-blue-600 text-xs text-white hover:bg-blue-800 hover:text-white sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
-              onClick={() => onViewDetails(job.id)}
-            >
-              View Details
-            </Button>
+            <Link href={`/dashboard/admin/jobs/${job.id}`} key={job.id}>
+              <Button
+                variant="outline"
+                className="h-8 flex-1 bg-blue-600 text-xs text-white hover:bg-blue-800 hover:text-white sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
+              >
+                View Details
+              </Button>
+            </Link>
 
             <JobActionsMenu
               jobId={job.id}

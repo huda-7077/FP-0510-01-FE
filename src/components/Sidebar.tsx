@@ -14,6 +14,7 @@ import {
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { LucideIcon } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 interface SidebarProps {
   links: { name: string; url: string; icon: LucideIcon }[];
@@ -24,37 +25,39 @@ interface SidebarProps {
 interface SidebarLinkProps {
   icon: LucideIcon;
   label: string;
-  active?: boolean;
   url: string;
 }
 
-const SidebarLink = ({
-  icon: Icon,
-  url,
-  label,
-  active = false,
-}: SidebarLinkProps) => (
-  <Link href={url} className="block">
-    <div
-      className={cn(
-        "flex items-center space-x-3 rounded-lg px-3 py-2 transition-colors hover:bg-blue-50",
-        active && "bg-blue-50 text-blue-600",
-      )}
-    >
-      <Icon
-        className={cn("h-5 w-5", active ? "text-blue-600" : "text-gray-500")}
-      />
-      <span
+const SidebarLink = ({ icon: Icon, url, label }: SidebarLinkProps) => {
+  const pathname = usePathname();
+  const isActive = pathname.startsWith(url);
+
+  return (
+    <Link href={url} className="block">
+      <div
         className={cn(
-          "text-sm font-medium",
-          active ? "text-blue-600" : "text-gray-700",
+          "flex items-center space-x-3 rounded-lg px-3 py-2 transition-colors hover:bg-blue-50",
+          isActive && "bg-blue-50 text-blue-600",
         )}
       >
-        {label}
-      </span>
-    </div>
-  </Link>
-);
+        <Icon
+          className={cn(
+            "h-5 w-5",
+            isActive ? "text-blue-600" : "text-gray-500",
+          )}
+        />
+        <span
+          className={cn(
+            "text-sm font-medium",
+            isActive ? "text-blue-600" : "text-gray-700",
+          )}
+        >
+          {label}
+        </span>
+      </div>
+    </Link>
+  );
+};
 
 const Sidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
   return (
@@ -85,26 +88,20 @@ const Sidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
               </p>
             </div>
 
-            <div className="space-y-1">
+            <div className="space-y-2">
               {links.map((link, index) => (
                 <SidebarLink
                   key={index}
                   icon={link.icon}
                   label={link.name}
                   url={link.url}
-                  active={index === 2}
                 />
               ))}
             </div>
           </div>
 
           <div className="p-4">
-            <SidebarLink
-              icon={LogOut}
-              label="Log out"
-              url="/logout"
-              active={false}
-            />
+            <SidebarLink icon={LogOut} label="Log out" url="/logout" />
           </div>
         </div>
       </div>

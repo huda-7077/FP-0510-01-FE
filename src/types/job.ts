@@ -11,7 +11,7 @@ export interface Job {
   category: string;
   salary?: number;
   tags: string[];
-  applicationDeadline: string;
+  applicationDeadline: Date;
   isPublished: boolean;
   requiresAssessment: boolean;
   isDeleted: boolean;
