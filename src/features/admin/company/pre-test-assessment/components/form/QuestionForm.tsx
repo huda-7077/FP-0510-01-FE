@@ -87,7 +87,6 @@ export function QuestionForm({
     );
 
     resetForm();
-
     toast.success(
       editQuestion
         ? "Question updated successfully"
@@ -115,12 +114,12 @@ export function QuestionForm({
   const areAllOptionsFilled = options.every((option) => option.trim() !== "");
 
   return (
-    <div>
-      <div className="space-y-6">
-        <div className="space-y-2">
+    <div className="rounded-lg">
+      <div className="space-y-8">
+        <div className="space-y-3">
           <Label
             htmlFor="question"
-            className="block text-sm font-semibold text-gray-700"
+            className="text-base font-semibold text-gray-900"
           >
             Question
           </Label>
@@ -128,47 +127,47 @@ export function QuestionForm({
             id="question"
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Enter the question text"
-            className="min-h-[100px] w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-            rows={3}
+            placeholder="Type your question here..."
+            className="min-h-[120px] resize-y rounded-lg border-gray-200 text-base placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
             disabled={isProcessing}
           />
         </div>
 
+        {/* Options Section */}
         <div className="space-y-4">
-          <Label className="block text-sm font-semibold text-gray-700">
+          <Label className="text-base font-semibold text-gray-900">
             Answer Options
           </Label>
-          {options.map((option, index) => (
-            <div key={index} className="flex items-center space-x-3">
-              <Label
-                htmlFor={`option-${index}`}
-                className="flex h-8 w-8 items-center justify-center rounded-full bg-gray-50 text-sm font-semibold text-gray-700"
-              >
-                {String.fromCharCode(65 + index)}
-              </Label>
-              <Input
-                id={`option-${index}`}
-                value={option}
-                onChange={(e) => handleOptionChange(index, e.target.value)}
-                placeholder={`Option ${String.fromCharCode(65 + index)}`}
-                disabled={isProcessing}
-                className="flex-1 rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-              />
-            </div>
-          ))}
+          <div className="grid gap-4 md:grid-cols-2">
+            {options.map((option, index) => (
+              <div key={index} className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-50 font-semibold text-gray-700">
+                  {String.fromCharCode(65 + index)}
+                </div>
+                <Input
+                  id={`option-${index}`}
+                  value={option}
+                  onChange={(e) => handleOptionChange(index, e.target.value)}
+                  placeholder={`Option ${String.fromCharCode(65 + index)}`}
+                  disabled={isProcessing}
+                  className="rounded-lg border-gray-200 text-base placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                />
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div className="space-y-3">
+        {/* Correct Answer Section */}
+        <div className="space-y-4">
           {options.length > 1 && (
-            <Label className="block text-sm font-semibold text-gray-700">
+            <Label className="text-base font-semibold text-gray-900">
               Correct Answer
             </Label>
           )}
           <RadioGroup
             value={correctAnswer}
             onValueChange={setCorrectAnswer}
-            className="flex flex-wrap gap-4"
+            className="grid grid-cols-2 gap-3 sm:grid-cols-4"
             disabled={!areAllOptionsFilled || isProcessing}
           >
             {options.map(
@@ -176,7 +175,7 @@ export function QuestionForm({
                 option.trim() !== "" && (
                   <div
                     key={index}
-                    className="flex items-center space-x-2 rounded-lg border border-gray-200 bg-gray-50 px-4 py-2"
+                    className="flex items-center gap-2 rounded-lg border border-gray-200 bg-gray-50 p-3 transition-colors hover:bg-gray-100"
                   >
                     <RadioGroupItem
                       value={option}
@@ -185,9 +184,9 @@ export function QuestionForm({
                     />
                     <Label
                       htmlFor={`correct-${index}`}
-                      className="text-sm font-semibold text-gray-700"
+                      className="cursor-pointer font-medium text-gray-700"
                     >
-                      {String.fromCharCode(65 + index)}
+                      Option {String.fromCharCode(65 + index)}
                     </Label>
                   </div>
                 ),
@@ -195,11 +194,11 @@ export function QuestionForm({
           </RadioGroup>
         </div>
 
-        <div className="space-y-3 pt-2">
+        <div className="flex flex-col gap-3 pt-4 sm:flex-row-reverse">
           <Button
             type="button"
             onClick={handleSubmit}
-            className="w-full bg-blue-600 py-2 text-sm font-semibold text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-400"
+            className="rounded-lg bg-blue-600 px-8 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-400"
             disabled={!areAllOptionsFilled || isProcessing}
           >
             {editQuestion ? "Update Question" : "Add Question"}
@@ -210,7 +209,7 @@ export function QuestionForm({
               variant="outline"
               onClick={resetForm}
               disabled={isProcessing}
-              className="w-full border-gray-200 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500/20"
+              className="rounded-lg border-gray-200 px-8 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-blue-500/20"
             >
               Cancel Edit
             </Button>

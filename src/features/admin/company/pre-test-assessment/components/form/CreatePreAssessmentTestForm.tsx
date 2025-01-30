@@ -15,6 +15,7 @@ import { CreateAssessmentSchema } from "../../schemas";
 import { QuestionForm } from "./QuestionForm";
 import { QuestionListTable } from "./QuestionListTable";
 import { ValidationStatus } from "./ValidationStatues";
+import AssessmentFormBreadCrumb from "./AssessmentFormBreadCrumb";
 
 interface Question {
   id: number;
@@ -110,13 +111,14 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
 
   return (
     <div className="container mx-auto p-6">
+      <AssessmentFormBreadCrumb jobId={jobId} crumb={"Create Assessment"} />
       <form onSubmit={formik.handleSubmit}>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
           <div className="lg:col-span-2">
             <div className="sticky top-6 space-y-6">
               <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
-                <CardHeader className="border-b border-gray-200 bg-gray-50 px-6 py-4">
-                  <CardTitle className="text-xl font-semibold text-gray-800">
+                <CardHeader className="border-b border-gray-200 bg-blue-600 px-6 py-4">
+                  <CardTitle className="text-xl font-semibold text-white">
                     Test Details
                   </CardTitle>
                 </CardHeader>
@@ -200,8 +202,8 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
               </Card>
 
               <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
-                <CardHeader className="border-b border-gray-200 bg-gray-50 px-6 py-4">
-                  <CardTitle className="text-xl font-semibold text-gray-800">
+                <CardHeader className="border-b border-gray-200 bg-blue-600 px-6 py-4">
+                  <CardTitle className="text-xl font-semibold text-white">
                     Add New Question
                   </CardTitle>
                 </CardHeader>
@@ -217,8 +219,8 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
 
           <div className="space-y-6 lg:col-span-3">
             <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
-              <CardHeader className="border-b border-gray-200 bg-gray-50 px-6 py-4">
-                <CardTitle className="text-xl font-semibold text-gray-800">
+              <CardHeader className="border-b border-gray-200 bg-blue-600 px-6 py-4">
+                <CardTitle className="text-xl font-semibold text-white">
                   Question List
                 </CardTitle>
               </CardHeader>
