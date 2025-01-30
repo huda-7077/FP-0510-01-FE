@@ -73,7 +73,7 @@ export const JobListComponent = () => {
             onSearch={handleSearch}
           />
 
-          <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-4 md:mt-8">
+          <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-2 md:mt-8">
             {isLoadingData &&
               Array.from({ length: 3 }).map((_, index) => (
                 <JobCardSkeleton key={index} />

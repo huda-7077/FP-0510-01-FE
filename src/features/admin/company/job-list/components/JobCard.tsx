@@ -16,9 +16,9 @@ export const JobCard = ({ job }: JobCardProps) => {
   return (
     <Card className="group border border-gray-100 p-3 transition-all duration-200 hover:border-blue-100 hover:shadow-md sm:p-4 md:p-5">
       <div className="flex flex-col items-start justify-between gap-3 sm:gap-4 lg:flex-row lg:items-center">
-        <div className="w-full flex-1 space-y-3 sm:w-auto">
+        <div className="w-full space-y-2 sm:w-auto">
           <div className="w-full sm:w-auto">
-            <h3 className="line-clamp-2 text-base font-semibold text-gray-900 group-hover:text-blue-600 sm:text-lg md:text-xl">
+            <h3 className="line-clamp-2 p-0 text-base font-semibold text-gray-900 group-hover:text-blue-600 sm:text-lg md:text-xl">
               {job.title}
             </h3>
           </div>
