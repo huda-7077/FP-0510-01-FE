@@ -1,44 +1,31 @@
-import { MoreVertical, Calendar, Clock, MapPin, Building2 } from "lucide-react";
+import MarkDown from "@/components/Markdown";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { Job } from "@/types/job";
-import { JobStatusBadge } from "../../job-list/components/JobStatusBadge";
-import { AssessmentStatusBadge } from "../../job-list/components/AssessmentStatusBadge";
-import { Separator } from "@/components/ui/separator";
-import Link from "next/link";
 import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
-import MarkDown from "@/components/Markdown";
+import useLongDateFormatter from "@/hooks/useLongDateFormatter";
+import { Job } from "@/types/job";
+import { Calendar, Clock, MapPin, MoreVertical } from "lucide-react";
+import Link from "next/link";
+import { getAssessmentPath } from "../../consts";
+import { AssessmentStatusBadge } from "../../job-list/components/AssessmentStatusBadge";
+import { JobStatusBadge } from "../../job-list/components/JobStatusBadge";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 interface JobDetailsHeaderProps {
   job: Job;
 }
 
 export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
-  const formatDate = (date: Date) => {
-    return new Date(date).toLocaleDateString("en-US", {
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    });
-  };
+  const { formatLongDate } = useLongDateFormatter();
 
   const { data: assessment } = useGetAssessments({
     jobId: job.id,
   });
-
-  const getAssessmentPath = () => {
-    const baseUrl = "/pre-test-assessment/";
-    const action =
-      assessment && assessment.data.length > 0
-        ? `/update/${job.id}`
-        : `/create/${job.id}`;
-    return baseUrl + action;
-  };
 
   return (
     <div className="space-y-4 rounded-lg bg-white">
@@ -60,7 +47,12 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
               Edit Job Details
             </DropdownMenuItem>
             {job.requiresAssessment && (
-              <Link href={getAssessmentPath()}>
+              <Link
+                href={getAssessmentPath(
+                  (assessment && assessment?.data.length) || 0,
+                  job.id.toString(),
+                )}
+              >
                 <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100">
                   {assessment && assessment.data.length > 0
                     ? "Edit "
@@ -77,7 +69,7 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
       </div>
 
       <div className="flex flex-wrap items-center gap-2 text-sm">
-        <span className="font-medium text-gray-700">{job.category}</span>
+        <span className="font-semibold text-gray-700">{job.category}</span>
         <span className="h-1 w-1 rounded-full bg-gray-300" />
         <div className="flex flex-wrap items-center gap-2">
           <JobStatusBadge status={job.isPublished ? "published" : "draft"} />
@@ -85,22 +77,30 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
         </div>
       </div>
 
-      <div className="flex flex-col flex-wrap gap-4 sm:flex-row sm:gap-6">
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+      <div className="flex flex-col flex-wrap gap-4 sm:flex-row sm:items-center sm:gap-6">
+        <div className="flex items-center gap-2 text-xs text-gray-600">
           <Calendar className="h-4 w-4 text-gray-400" />
-          <span>Created {formatDate(job.createdAt)}</span>
+          <span>Created {formatLongDate(job.createdAt)}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-xs text-gray-600">
           <Clock className="h-4 w-4 text-gray-400" />
-          <span>Deadline {formatDate(job.applicationDeadline)}</span>
+          <span>Deadline {formatLongDate(job.applicationDeadline)}</span>
         </div>
-        <div className="flex items-center gap-2 text-sm text-gray-600">
+        <div className="flex items-center gap-2 text-xs text-gray-600">
           <MapPin className="h-4 w-4 text-gray-400" />
-          <span>Jakarta, Indonesia</span>
+          <span>
+            {job.companyLocation.address}, {job.companyLocation.regency.regency}
+          </span>
         </div>
       </div>
-
-      <MarkDown content={job.description} />
+      <div className="space-y-2 pt-4">
+        <h2 className="text-xl font-semibold text-gray-900 md:text-2xl">
+          Description
+        </h2>
+        <ScrollArea className="h-[260px] w-full rounded-md border bg-gray-50 p-4">
+          <MarkDown content={job.description} />
+        </ScrollArea>
+      </div>
     </div>
   );
 };

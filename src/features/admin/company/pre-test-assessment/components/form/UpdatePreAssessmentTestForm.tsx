@@ -22,6 +22,7 @@ import useDeleteQuestionOptionByQuestionId from "@/hooks/api/question-options/us
 import { CreateAssessmentSchema } from "../../schemas";
 import useUpdateQuestionOptionByQuestionId from "@/hooks/api/question-options/useUpdateQuestionOptionByQuestionId.ts";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
+import AssessmentFormBreadCrumb from "./AssessmentFormBreadCrumb";
 
 interface ModifiedQuestion {
   id: number;
@@ -327,6 +328,7 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
 
   return (
     <div className="container mx-auto p-6">
+      <AssessmentFormBreadCrumb jobId={jobId} crumb={"Edit Assessment"} />
       <form onSubmit={formik.handleSubmit}>
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
           <div className="lg:col-span-2">

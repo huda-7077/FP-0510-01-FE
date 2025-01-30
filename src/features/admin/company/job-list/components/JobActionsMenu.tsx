@@ -8,6 +8,7 @@ import {
 import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
 import { MoreVertical } from "lucide-react";
 import Link from "next/link";
+import { getAssessmentPath } from "../../consts";
 
 interface JobActionsMenuProps {
   jobId: number;
@@ -49,15 +50,6 @@ export const JobActionsMenu = ({
     return isPublished ? "Save to Draft" : "Publish";
   };
 
-  const getAssessmentPath = () => {
-    const baseUrl = "pre-test-assessment/";
-    const action =
-      assessment && assessment.data.length > 0
-        ? `update/${jobId}`
-        : `create/${jobId}`;
-    return baseUrl + action;
-  };
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -79,7 +71,12 @@ export const JobActionsMenu = ({
         </DropdownMenuItem>
 
         {isRequireAssessment && (
-          <Link href={getAssessmentPath()}>
+          <Link
+            href={getAssessmentPath(
+              assessment?.data.length || 0,
+              jobId.toString(),
+            )}
+          >
             <DropdownMenuItem className="cursor-pointer text-sm">
               {assessment && assessment.data.length > 0 ? "Edit " : "Create "}
               Assessment

@@ -1,7 +1,6 @@
-import { Card } from "@/components/ui/card";
-import { ApplicationCard } from "./ApplicationCard";
 import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import { Separator } from "@/components/ui/separator";
+import { ApplicationCard } from "./ApplicationCard";
 
 interface JobApplicationsListProps {
   jobId: number;
@@ -62,7 +61,6 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
                 {applications.length !== 1 ? "s" : ""} applied
               </p>
             </div>
-            {/* Placeholder for future filters or actions */}
             <div className="flex items-center gap-2"></div>
           </div>
           <Separator className="my-4" />

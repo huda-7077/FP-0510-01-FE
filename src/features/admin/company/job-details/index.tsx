@@ -1,12 +1,11 @@
 "use client";
 
 import { DataNotFound } from "@/components/data-not-found/DataNotFound";
-import LoadingScreen from "@/components/loading-screen/LoadingScreen";
+import { JobDetailsHeaderSkeleton } from "@/components/skeletons/JobDetailsHeaderSkeleton";
 import useGetJob from "@/hooks/api/job/useGetJob";
 import { JobApplicationsList } from "./components/JobApplicationList";
 import JobDetailsBreadCrumb from "./components/JobDetailsBreadCrumb";
 import { JobDetailsHeader } from "./components/JobDetailsHeader";
-import { Separator } from "@/components/ui/separator";
 
 interface JobDetailsProps {
   jobId: number;
@@ -15,15 +14,7 @@ interface JobDetailsProps {
 export const AdminJobDetailsComponent = ({ jobId }: JobDetailsProps) => {
   const { data: job, isLoading: isJobLoading } = useGetJob({ jobId });
 
-  if (isJobLoading) {
-    return (
-      <div className="min-h-[400px]">
-        <LoadingScreen message="Loading job details" />
-      </div>
-    );
-  }
-
-  if (!job) {
+  if (!job && !isJobLoading) {
     return (
       <div className="space-y-6">
         <JobDetailsBreadCrumb />
@@ -47,11 +38,15 @@ export const AdminJobDetailsComponent = ({ jobId }: JobDetailsProps) => {
 
           <div className="space-y-12">
             <div className="overflow-hidden">
-              <JobDetailsHeader job={job} />
+              {isJobLoading ? (
+                <JobDetailsHeaderSkeleton />
+              ) : job ? (
+                <JobDetailsHeader job={job} />
+              ) : null}
             </div>
 
             <div className="overflow-hidden">
-              <JobApplicationsList jobId={job.id} />
+              {job && <JobApplicationsList jobId={job.id} />}
             </div>
           </div>
         </div>

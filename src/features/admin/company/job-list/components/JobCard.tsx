@@ -16,40 +16,28 @@ export const JobCard = ({ job }: JobCardProps) => {
   return (
     <Card className="group border border-gray-100 p-3 transition-all duration-200 hover:border-blue-100 hover:shadow-md sm:p-4 md:p-5">
       <div className="flex flex-col items-start justify-between gap-3 sm:gap-4 lg:flex-row lg:items-center">
-        <div className="w-full flex-1 space-y-2 sm:w-auto sm:space-y-3">
-          <div className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-4">
-            <div className="w-full sm:w-auto">
-              <h3 className="line-clamp-2 text-base font-semibold text-gray-900 group-hover:text-blue-600 sm:text-lg md:text-xl">
-                {job.title}
-              </h3>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-2">
-              <JobStatusBadge
-                status={job.isPublished ? "published" : "draft"}
-              />
-              {job.requiresAssessment && <AssessmentStatusBadge />}
-            </div>
+        <div className="w-full flex-1 space-y-3 sm:w-auto">
+          <div className="w-full sm:w-auto">
+            <h3 className="line-clamp-2 text-base font-semibold text-gray-900 group-hover:text-blue-600 sm:text-lg md:text-xl">
+              {job.title}
+            </h3>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 sm:gap-3 sm:text-sm md:text-base">
-            <span className="font-medium">{job.category}</span>
-            {job.company.name && (
-              <>
-                <span className="hidden h-1 w-1 rounded-full bg-gray-300 sm:block" />
-                <span>{job.company.name}</span>
-              </>
-            )}
+          <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600 sm:text-sm">
+            <span className="font-semibold">{job.category}</span>
             <span className="hidden h-1 w-1 rounded-full bg-gray-300 sm:block" />
             <span>
               {formatDaysRemaining(job.applicationDeadline.toString())}
             </span>
           </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <JobStatusBadge status={job.isPublished ? "published" : "draft"} />
+            {job.requiresAssessment && <AssessmentStatusBadge />}
+          </div>
         </div>
 
-        <div className="flex w-full flex-wrap items-center gap-2 sm:w-auto sm:flex-nowrap sm:gap-4 md:gap-5">
+        <div className="flex w-full flex-wrap items-center justify-between gap-2 sm:flex-nowrap sm:gap-4 md:gap-5 lg:w-auto">
           <ApplicantCount jobId={job.id} />
-
           <div className="ml-auto flex items-center gap-2 sm:ml-0 sm:gap-4 md:gap-5">
             <Link href={`/dashboard/admin/jobs/${job.id}`} key={job.id}>
               <Button
@@ -59,7 +47,6 @@ export const JobCard = ({ job }: JobCardProps) => {
                 View Details
               </Button>
             </Link>
-
             <JobActionsMenu
               jobId={job.id}
               isPublished={job.isPublished}

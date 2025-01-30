@@ -1,63 +1,14 @@
-import React from "react";
 import { Button } from "@/components/ui/button";
-import {
-  LayoutDashboard,
-  Users,
-  FileText,
-  Bookmark,
-  Building2,
-  Settings,
-  Menu,
-  LogOut,
-  X,
-} from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LogOut, LucideIcon, Menu, Plus, X } from "lucide-react";
 import Link from "next/link";
-import { LucideIcon } from "lucide-react";
-import { usePathname } from "next/navigation";
+import SidebarLink from "./components/SidebarLink";
 
 interface SidebarProps {
   links: { name: string; url: string; icon: LucideIcon }[];
   isOpen: boolean;
   onToggle: () => void;
 }
-
-interface SidebarLinkProps {
-  icon: LucideIcon;
-  label: string;
-  url: string;
-}
-
-const SidebarLink = ({ icon: Icon, url, label }: SidebarLinkProps) => {
-  const pathname = usePathname();
-  const isActive = pathname.startsWith(url);
-
-  return (
-    <Link href={url} className="block">
-      <div
-        className={cn(
-          "flex items-center space-x-3 rounded-lg px-3 py-2 transition-colors hover:bg-blue-50",
-          isActive && "bg-blue-50 text-blue-600",
-        )}
-      >
-        <Icon
-          className={cn(
-            "h-5 w-5",
-            isActive ? "text-blue-600" : "text-gray-500",
-          )}
-        />
-        <span
-          className={cn(
-            "text-sm font-medium",
-            isActive ? "text-blue-600" : "text-gray-700",
-          )}
-        >
-          {label}
-        </span>
-      </div>
-    </Link>
-  );
-};
 
 const Sidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
   return (
@@ -81,12 +32,23 @@ const Sidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
         )}
       >
         <div className="flex h-full flex-col">
-          <div className="flex-1 space-y-1 overflow-y-auto p-4">
+          <div className="flex-1 space-y-2 overflow-y-auto p-4">
             <div className="mb-4">
               <p className="px-3 text-xs font-medium uppercase text-gray-500">
                 EMPLOYERS DASHBOARD
               </p>
             </div>
+            <Link
+              href="/dashboard/admin/jobs/create"
+              className="flex w-full sm:hidden"
+            >
+              <Button
+                variant="default"
+                className="w-full bg-blue-600 hover:bg-blue-800 md:flex"
+              >
+                <Plus className="mr-2 h-4 w-4" /> Post A Job
+              </Button>
+            </Link>
 
             <div className="space-y-2">
               {links.map((link, index) => (
