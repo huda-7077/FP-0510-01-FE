@@ -15,7 +15,7 @@ interface JobCardProps {
 
 export const JobCard = ({ job }: JobCardProps) => {
   return (
-    <Card className="group border border-gray-100 p-3 px-6 py-4 transition-all duration-200 hover:border-blue-100 hover:shadow-md">
+    <Card className="group rounded-2xl border-2 border-gray-200 p-3 px-6 py-4 shadow-none transition-all duration-200 hover:border-blue-600">
       <div className="flex flex-col items-start justify-between gap-3 sm:gap-4 lg:flex-row lg:items-center">
         <div className="w-full space-y-2 sm:w-auto">
           <div className="w-full sm:w-auto">
@@ -24,7 +24,7 @@ export const JobCard = ({ job }: JobCardProps) => {
             </h3>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2 text-xs text-gray-600">
+          <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
             <span className="font-semibold">{job.category}</span>
             <span className="hidden h-1 w-1 rounded-full bg-gray-300 sm:block" />
             <span>

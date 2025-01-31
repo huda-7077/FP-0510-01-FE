@@ -1,21 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { JobApplication } from "@/types/jobApplication";
 import {
   Calendar,
-  Download,
   Eye,
   Globe,
   GraduationCap,
   Mail,
   MapPin,
   Phone,
-  UserPlus,
 } from "lucide-react";
+import { ApplicationStatus } from "../consts";
 import ApplicantProfilePicture from "./ApplicantProfilePicture";
+import ApplicationShortlistButton from "./ApplicationShortlistButton";
+import ApplicationStatusBadge from "./ApplicationStatusBadge";
+import DownloadCVButton from "./DownloadCVButton";
 
 interface ApplicantDetailsProps {
   applicant: JobApplication;
@@ -23,6 +26,8 @@ interface ApplicantDetailsProps {
 
 const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
   const { formatLongDate } = useLongDateFormatter();
+  const currentStatus = applicant.status;
+  const progressValue = ((ApplicationStatus[currentStatus] + 1) / 4) * 100;
 
   return (
     <Dialog>
@@ -32,39 +37,56 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
           View Details
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto rounded-lg border-none p-0">
+      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto rounded-2xl border-none p-0">
         <div className="flex flex-col">
-          <div className="bg-gradient-to-r from-blue-600 to-blue-700 p-8">
+          <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-8">
             <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between">
               <div className="flex flex-col items-center gap-4 sm:flex-row">
                 <ApplicantProfilePicture
                   profilePicture={applicant.user.profilePicture}
                   fullName={applicant.user.fullName}
-                  ringColor="ring-blue-100"
+                  ringColor="ring-white"
                 />
-                <div className="space-y-1">
-                  <h2 className="line-clamp-1 text-center text-2xl font-bold text-white sm:text-start">
+                <div className="space-y-2">
+                  <h2 className="text-center text-2xl font-bold text-white sm:text-start">
                     {applicant.user.fullName}
                   </h2>
                   <div className="flex flex-col gap-3 sm:flex-row">
-                    <Button variant="default">
-                      <UserPlus className="h-4 w-4 transition-transform group-hover:scale-110" />
-                      <span className="font-medium">Hire Candidate</span>
-                    </Button>
-                    <Button
-                      variant="outline"
-                      onClick={() => window.open(applicant.cvFile, "_blank")}
-                    >
-                      <Download className="h-4 w-4 transition-transform group-hover:-translate-y-1" />
-                      <span className="font-medium">Download CV</span>
-                    </Button>
+                    <ApplicationShortlistButton className="bg-pink-600 hover:bg-pink-500" />
+                    <DownloadCVButton
+                      cvUrl={applicant.cvFile}
+                      clasName="h-8 text-xs sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
+                    />
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div className="grid gap-6 p-8 md:grid-cols-2">
-            <Card>
+          <div className="border-b bg-white px-8 py-6">
+            <div className="mb-4 flex flex-col items-center justify-between gap-2 sm:flex-row">
+              <div>
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Application Status
+                </h3>
+                <p className="hidden text-sm text-gray-500 sm:block">
+                  Current progress in hiring pipeline
+                </p>
+              </div>
+              <ApplicationStatusBadge
+                currentStatus={currentStatus}
+                className="px-4 py-2"
+              />
+            </div>
+            <Progress value={progressValue} className="h-2" />
+            <div className="mt-2 flex justify-between text-xs text-gray-500">
+              <span>Pending</span>
+              <span>In Review</span>
+              <span>Interview</span>
+              <span>Decision</span>
+            </div>
+          </div>
+          <div className="grid gap-6 bg-gray-50 p-8 md:grid-cols-2">
+            <Card className="shadow-sm">
               <CardContent className="p-6">
                 <h3 className="mb-6 text-lg font-semibold text-gray-900">
                   Personal Information
@@ -104,7 +126,7 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card className="shadow-sm">
               <CardContent className="p-6">
                 <h3 className="mb-6 text-lg font-semibold text-gray-900">
                   Contact Information
@@ -143,7 +165,7 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
                 </div>
               </CardContent>
             </Card>
-            <Card className="md:col-span-2">
+            <Card className="shadow-sm md:col-span-2">
               <CardContent className="flex items-center justify-between p-6">
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900">

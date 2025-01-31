@@ -17,11 +17,11 @@ const AssessmentBadge: FC<AssessmentBadgeProps> = ({ userId }) => {
     <span
       className={
         passedStyle +
-        " inline-flex items-center gap-1 rounded-full border px-2 py-1 text-xs font-semibold"
+        " inline-flex items-center gap-1 rounded-md border px-2 py-1 text-xs font-semibold"
       }
     >
-      Score: {95}
       <Check size={12} />
+      Score: {95}
     </span>
   );
 };

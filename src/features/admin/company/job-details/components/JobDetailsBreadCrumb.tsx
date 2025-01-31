@@ -9,12 +9,12 @@ import {
 
 const JobDetailsBreadCrumb = () => {
   return (
-    <Breadcrumb>
+    <Breadcrumb className="font-semibold">
       <BreadcrumbList>
         <BreadcrumbItem>
           <BreadcrumbLink
             href="/dashboard/admin/jobs"
-            className="text-blue-600 hover:text-blue-700"
+            className="rounded-md px-2 py-1 text-blue-600 hover:bg-blue-50/90 hover:text-blue-800"
           >
             Jobs
           </BreadcrumbLink>

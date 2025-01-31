@@ -17,6 +17,9 @@ import Link from "next/link";
 import ApplicantDetails from "./ApplicantDetails";
 import ApplicantProfilePicture from "./ApplicantProfilePicture";
 import AssessmentBadge from "./AssessmentBadge";
+import ApplicationShortlistButton from "./ApplicationShortlistButton";
+import DownloadCVButton from "./DownloadCVButton";
+import ApplicationStatusBadge from "./ApplicationStatusBadge";
 
 interface ApplicationCardProps {
   application: JobApplication;
@@ -27,7 +30,7 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
   const { calculateAge } = useCalculateAge();
 
   return (
-    <Card className="group relative overflow-hidden rounded-lg border border-gray-100 bg-white px-6 py-4 transition-all duration-300 ease-in-out hover:border-blue-100 hover:shadow-md">
+    <Card className="group relative overflow-hidden rounded-2xl border-2 border-gray-200 bg-white px-6 py-4 shadow-none transition-all duration-300 ease-in-out hover:border-blue-600">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
         <div className="flex-shrink-0">
           <ApplicantProfilePicture
@@ -43,11 +46,8 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
               <h3 className="text-base font-semibold tracking-tight text-gray-900">
                 {application.user.fullName}
               </h3>
-              {application.job.requiresAssessment && (
-                <AssessmentBadge userId={application.userId} />
-              )}
             </div>
-            <div className="flex flex-wrap items-center gap-1 text-gray-400 sm:gap-2">
+            <div className="flex flex-wrap items-center gap-1 text-gray-500 sm:gap-2">
               <p className="text-xs font-medium transition-colors group-hover:text-blue-600">
                 {calculateAge(application.user.dateOfBirth.toLocaleString())}{" "}
                 years old
@@ -63,28 +63,31 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
 
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-1">
-              <DollarSign className="h-4 w-4 text-gray-400" />
-              <span className="text-xs text-gray-400">
+              <DollarSign className="h-4 w-4 text-gray-500" />
+              <span className="text-xs text-gray-500">
                 Expecting {useFormatRupiah(application.expectedSalary)} / mo.
               </span>
             </div>
             <div className="flex items-center gap-2">
               <span className="inline-block h-2 w-2 rounded-full bg-green-400" />
-              <p className="text-xs text-gray-400">
+              <p className="text-xs text-gray-500">
                 Applied on {formatLongDate(application.createdAt)}
               </p>
             </div>
           </div>
+          <div className="flex flex-wrap gap-2">
+            <ApplicationStatusBadge
+              currentStatus={application.status}
+              className="px-2 py-1"
+            />
+            {application.job.requiresAssessment && (
+              <AssessmentBadge userId={application.userId} />
+            )}
+          </div>
         </div>
 
         <div className="flex flex-row items-center gap-2 sm:items-end sm:gap-4">
-          <Button
-            variant="default"
-            className="h-8 flex-1 bg-blue-600 text-xs text-white hover:bg-blue-800 hover:text-white sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
-          >
-            <UserPlus className="h-4 w-4" />
-            <span className="font-medium">Hire Candidate</span>
-          </Button>
+          <ApplicationShortlistButton className="bg-blue-600 text-white hover:bg-blue-800 hover:text-white" />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -101,12 +104,12 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
               >
                 <ApplicantDetails applicant={application} />
               </DropdownMenuItem>
-              <Link href={application.cvFile} target="_blank">
-                <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100">
-                  <Download />
-                  Download CV
-                </DropdownMenuItem>
-              </Link>
+              <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100">
+                <DownloadCVButton
+                  cvUrl={application.cvFile}
+                  clasName="flex h-full w-full justify-start border-none bg-transparent p-0 text-start text-black shadow-none hover:bg-transparent hover:text-black"
+                />
+              </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50">
                 <X />
                 Reject Application

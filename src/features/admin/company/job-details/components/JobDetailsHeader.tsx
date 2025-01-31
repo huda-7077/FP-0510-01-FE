@@ -10,11 +10,11 @@ import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
 import useGetAssessmentPath from "@/hooks/assessment/useGetAssessmentPath";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { Job } from "@/types/job";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Calendar, Clock, MapPin, MoreVertical } from "lucide-react";
 import Link from "next/link";
 import { AssessmentStatusBadge } from "../../job-list/components/AssessmentStatusBadge";
 import { JobStatusBadge } from "../../job-list/components/JobStatusBadge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface JobDetailsHeaderProps {
   job: Job;
@@ -96,8 +96,10 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
         <h2 className="text-xl font-semibold text-gray-900 md:text-2xl">
           Description
         </h2>
-        <ScrollArea className="mas-h-[320px] h-fit w-full rounded-md border bg-gray-50 p-4">
-          <MarkDown content={job.description} />
+        <ScrollArea className="h-[320px] w-full rounded-xl border-2 bg-gray-50/60 px-8">
+          <div className="my-4">
+            <MarkDown content={job.description} />
+          </div>
         </ScrollArea>
       </div>
     </div>
