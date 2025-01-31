@@ -1,12 +1,11 @@
 import { DataNotFound } from "@/components/data-not-found/DataNotFound";
-import { Separator } from "@/components/ui/separator";
-import { ApplicationCard } from "./ApplicationCard";
+import PaginationSection from "@/components/PaginationSection";
+import useGetJobApplications from "@/hooks/api/job-applications/useGetJobApplications";
+import useGetEducationLevelsByJobId from "@/hooks/api/user/useGetEducationLevelsByJobId";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
-import useGetJobApplications from "@/hooks/api/job-applications/useGetJobApplications";
+import { ApplicationCard } from "./ApplicationCard";
 import { JobApplicationListHeader } from "./JobApplicationListHeader";
-import useGetEducationLevelsByJobId from "@/hooks/api/user/useGetEducationLevelsByJobId";
-import PaginationSection from "@/components/PaginationSection";
 
 interface JobApplicationsListProps {
   jobId: number;

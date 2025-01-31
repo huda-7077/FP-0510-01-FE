@@ -1,3 +1,4 @@
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -9,8 +10,6 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Pencil, Trash2 } from "lucide-react";
-import NoQuestionsFound from "./NoQuestionsFound";
-import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 
 interface Question {
   id: number;

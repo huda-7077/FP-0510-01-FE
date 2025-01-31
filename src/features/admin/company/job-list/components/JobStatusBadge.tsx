@@ -1,4 +1,3 @@
-import { cn } from "@/lib/utils";
 import { JobStatus } from "@/types/job";
 
 interface JobStatusBadgeProps {

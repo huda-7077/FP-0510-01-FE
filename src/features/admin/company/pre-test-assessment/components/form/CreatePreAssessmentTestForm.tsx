@@ -49,8 +49,7 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
     );
   };
 
-  const { mutateAsync: createAssessment, isPending: createAssessmentPending } =
-    useCreateAssessment();
+  const { mutateAsync: createAssessment } = useCreateAssessment();
 
   const {
     mutateAsync: createAssessmentQuestion,

@@ -1,34 +1,22 @@
 "use client";
 
-import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import {
-  Check,
-  DollarSign,
-  Download,
-  Eye,
-  GraduationCap,
-  MoreVertical,
-  UserPlus,
-  X,
-} from "lucide-react";
+import { Card } from "@/components/ui/card";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { JobApplication } from "@/types/jobApplication";
-import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import useCalculateAge from "@/hooks/useCalculateAge";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
 import useFormatRupiah from "@/hooks/useFormatRupiah";
+import useLongDateFormatter from "@/hooks/useLongDateFormatter";
+import { JobApplication } from "@/types/jobApplication";
+import { DollarSign, Download, MoreVertical, UserPlus, X } from "lucide-react";
 import Link from "next/link";
 import ApplicantDetails from "./ApplicantDetails";
-import useGetInitials from "@/hooks/useGetInitials";
-import AssessmentBadge from "./AssessmentBadge/AssessmentBadge";
 import ApplicantProfilePicture from "./ApplicantProfilePicture";
+import AssessmentBadge from "./AssessmentBadge";
 
 interface ApplicationCardProps {
   application: JobApplication;

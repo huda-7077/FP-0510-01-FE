@@ -1,14 +1,13 @@
 "use client";
 
-import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import PaginationSection from "@/components/PaginationSection";
+import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 import useGetJobCategories from "@/hooks/api/job/useGetJobCategories";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
-import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 
 export const JobListComponent = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));

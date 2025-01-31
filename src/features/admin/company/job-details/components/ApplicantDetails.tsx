@@ -1,9 +1,7 @@
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
-import useGetInitials from "@/hooks/useGetInitials";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { JobApplication } from "@/types/jobApplication";
 import {
@@ -21,11 +19,9 @@ import ApplicantProfilePicture from "./ApplicantProfilePicture";
 
 interface ApplicantDetailsProps {
   applicant: JobApplication;
-  onHire?: () => void;
-  onSendMail?: () => void;
 }
 
-const ApplicantDetails = ({ applicant, onHire }: ApplicantDetailsProps) => {
+const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
   const { formatLongDate } = useLongDateFormatter();
 
   return (
@@ -51,7 +47,7 @@ const ApplicantDetails = ({ applicant, onHire }: ApplicantDetailsProps) => {
                     {applicant.user.fullName}
                   </h2>
                   <div className="flex flex-col gap-3 sm:flex-row">
-                    <Button variant="default" onClick={onHire}>
+                    <Button variant="default">
                       <UserPlus className="h-4 w-4 transition-transform group-hover:scale-110" />
                       <span className="font-medium">Hire Candidate</span>
                     </Button>

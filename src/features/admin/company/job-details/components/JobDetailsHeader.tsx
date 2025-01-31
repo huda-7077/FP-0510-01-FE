@@ -7,25 +7,29 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
+import useGetAssessmentPath from "@/hooks/assessment/useGetAssessmentPath";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { Job } from "@/types/job";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
 import { Calendar, Clock, MapPin, MoreVertical } from "lucide-react";
 import Link from "next/link";
-import { getAssessmentPath } from "../../consts";
 import { AssessmentStatusBadge } from "../../job-list/components/AssessmentStatusBadge";
 import { JobStatusBadge } from "../../job-list/components/JobStatusBadge";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
 
 interface JobDetailsHeaderProps {
   job: Job;
 }
 
 export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
-  const { formatLongDate } = useLongDateFormatter();
-
   const { data: assessment } = useGetAssessments({
     jobId: job.id,
   });
+
+  const { formatLongDate } = useLongDateFormatter();
+  const { getAssessmentPath } = useGetAssessmentPath(
+    (assessment && assessment?.data.length) || 0,
+    job.id.toString(),
+  );
 
   return (
     <div className="space-y-4 rounded-lg bg-white">
@@ -47,12 +51,7 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
               Edit Job Details
             </DropdownMenuItem>
             {job.requiresAssessment && (
-              <Link
-                href={getAssessmentPath(
-                  (assessment && assessment?.data.length) || 0,
-                  job.id.toString(),
-                )}
-              >
+              <Link href={getAssessmentPath}>
                 <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100">
                   {assessment && assessment.data.length > 0
                     ? "Edit "
