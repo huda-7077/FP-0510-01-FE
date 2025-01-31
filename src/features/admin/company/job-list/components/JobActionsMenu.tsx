@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
-import { MoreVertical } from "lucide-react";
+import { MoreVertical, Pencil, SquarePen } from "lucide-react";
 import Link from "next/link";
 import { getAssessmentPath } from "../../consts";
 
@@ -67,6 +67,7 @@ export const JobActionsMenu = ({
           onClick={() => onEditJobDetails?.(jobId)}
           className="cursor-pointer text-sm"
         >
+          <SquarePen />
           Edit Job Details
         </DropdownMenuItem>
 
@@ -78,6 +79,7 @@ export const JobActionsMenu = ({
             )}
           >
             <DropdownMenuItem className="cursor-pointer text-sm">
+              <Pencil />
               {assessment && assessment.data.length > 0 ? "Edit " : "Create "}
               Assessment
             </DropdownMenuItem>

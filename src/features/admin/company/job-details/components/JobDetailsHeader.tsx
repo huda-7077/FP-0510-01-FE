@@ -97,7 +97,7 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
         <h2 className="text-xl font-semibold text-gray-900 md:text-2xl">
           Description
         </h2>
-        <ScrollArea className="h-[260px] w-full rounded-md border bg-gray-50 p-4">
+        <ScrollArea className="mas-h-[320px] h-fit w-full rounded-md border bg-gray-50 p-4">
           <MarkDown content={job.description} />
         </ScrollArea>
       </div>
