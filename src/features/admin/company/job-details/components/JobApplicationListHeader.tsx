@@ -10,21 +10,21 @@ import {
 import { Search, X } from "lucide-react";
 import { useRef, useState } from "react";
 
-interface JobListHeaderProps {
-  totalJobs: number;
-  jobCategories: string[];
-  onCategoryChange: (category: string) => void;
+interface JobApplicationListHeaderProps {
+  totalJobApplications: number;
+  userEducationLevels: string[];
+  onEducationLevelChange: (category: string) => void;
   onSortChange: (sort: string) => void;
   onSearch: (searchQuery: string) => void;
 }
 
-export const JobListHeader = ({
-  totalJobs,
-  jobCategories,
-  onCategoryChange,
+export const JobApplicationListHeader = ({
+  totalJobApplications,
+  userEducationLevels,
+  onEducationLevelChange,
   onSortChange,
   onSearch,
-}: JobListHeaderProps) => {
+}: JobApplicationListHeaderProps) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [selectedSort, setSelectedSort] = useState<string>("");
 
@@ -49,12 +49,14 @@ export const JobListHeader = ({
     <div className="space-y-4 border-b border-gray-200 pb-4">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <h1 className="text-2xl font-semibold text-gray-900">My Jobs</h1>
+          <h2 className="text-xl font-semibold text-gray-900 md:text-2xl">
+            Applicants
+          </h2>
           <Badge
             variant="secondary"
             className="rounded-full bg-blue-50 px-2.5 py-0.5 text-sm font-medium text-blue-700"
           >
-            {totalJobs}
+            {totalJobApplications}
           </Badge>
         </div>
       </div>
@@ -66,7 +68,7 @@ export const JobListHeader = ({
           <input
             ref={searchInputRef}
             type="text"
-            placeholder="Search job title..."
+            placeholder="Search applicant name..."
             onChange={(e) => onSearch(e.target.value)}
             className="h-9 w-full rounded-md border border-gray-200 bg-white pl-10 pr-8 text-sm outline-none placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
@@ -80,15 +82,15 @@ export const JobListHeader = ({
           )}
         </div>
         <div className="flex w-full flex-col items-center gap-3 sm:flex-row">
-          <Select onValueChange={onCategoryChange}>
-            <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[180px]">
-              <SelectValue placeholder="All Categories" />
+          <Select onValueChange={onEducationLevelChange}>
+            <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[240px]">
+              <SelectValue placeholder="All Education Level" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              {jobCategories.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
+              <SelectItem value="all">All Education Level</SelectItem>
+              {userEducationLevels.map((educationLevel) => (
+                <SelectItem key={educationLevel} value={educationLevel}>
+                  {educationLevel}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -99,10 +101,8 @@ export const JobListHeader = ({
                 <SelectValue placeholder="Sort By" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="applicationDeadline">
-                  Application Deadline
-                </SelectItem>
-                <SelectItem value="createdAt">Created Date</SelectItem>
+                <SelectItem value="expectedSalary">Expected Salary</SelectItem>
+                <SelectItem value="dateOfBirth">Age</SelectItem>
               </SelectContent>
             </Select>
 

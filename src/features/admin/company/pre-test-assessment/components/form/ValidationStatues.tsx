@@ -11,7 +11,7 @@ export function ValidationStatus({ questionCount }: ValidationStatusProps) {
   const progress = Math.min((questionCount / 25) * 100, 100);
 
   return (
-    <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+    <Card className="overflow-hidden border border-gray-200 bg-white shadow-md">
       <CardContent className="space-y-4 p-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">

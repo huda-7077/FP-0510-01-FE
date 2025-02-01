@@ -1,14 +1,13 @@
 "use client";
 
-import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import PaginationSection from "@/components/PaginationSection";
+import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 import useGetJobCategories from "@/hooks/api/job/useGetJobCategories";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
-import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 
 export const JobListComponent = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -73,7 +72,7 @@ export const JobListComponent = () => {
             onSearch={handleSearch}
           />
 
-          <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-4 md:mt-8">
+          <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-2 md:mt-8">
             {isLoadingData &&
               Array.from({ length: 3 }).map((_, index) => (
                 <JobCardSkeleton key={index} />

@@ -1,3 +1,4 @@
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -9,7 +10,6 @@ import {
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
 import { Pencil, Trash2 } from "lucide-react";
-import NoQuestionsFound from "./NoQuestionsFound";
 
 interface Question {
   id: number;
@@ -29,7 +29,13 @@ export function QuestionListTable({
   onDelete,
   onEdit,
 }: QuestionListTableProps) {
-  if (questions.length <= 0) return <NoQuestionsFound />;
+  if (questions.length <= 0)
+    return (
+      <DataNotFound
+        title="No Questions Found"
+        message="Add your first question to get started"
+      />
+    );
 
   return (
     <div className="relative overflow-hidden">

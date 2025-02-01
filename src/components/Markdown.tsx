@@ -13,7 +13,7 @@ const MarkDown: FC<MarkDownProps> = ({ content }) => {
     ),
 
     p: ({ children }) => (
-      <p className="mb-4 text-sm leading-relaxed text-gray-700">{children}</p>
+      <p className="mb-2 text-sm leading-relaxed text-gray-700">{children}</p>
     ),
 
     li: ({ children }) => (
@@ -23,11 +23,11 @@ const MarkDown: FC<MarkDownProps> = ({ content }) => {
     ),
 
     ul: ({ children }) => (
-      <ul className="mb-6 list-disc space-y-2 pl-4">{children}</ul>
+      <ul className="mb-4 list-disc space-y-2 pl-4">{children}</ul>
     ),
 
     ol: ({ children }) => (
-      <ol className="mb-6 list-decimal space-y-2 pl-4">{children}</ol>
+      <ol className="mb-4 list-decimal space-y-2 pl-4">{children}</ol>
     ),
 
     blockquote: ({ children }) => (

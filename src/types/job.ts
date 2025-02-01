@@ -1,5 +1,4 @@
 import { Company } from "./company";
-import { CompanyLocation } from "./companyLocation";
 
 export type JobStatus = "published" | "draft";
 
