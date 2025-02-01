@@ -9,6 +9,10 @@ export interface Assessment {
       status: string;
       createdAt: Date;
       updatedAt: Date;
+      userAssessments: {
+        userId: number;
+        score: number;
+      }[];
     },
   ];
 }

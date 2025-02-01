@@ -19,12 +19,19 @@ import ApplicantProfilePicture from "./ApplicantProfilePicture";
 import ApplicationShortlistButton from "./ApplicationShortlistButton";
 import ApplicationStatusBadge from "./ApplicationStatusBadge";
 import DownloadCVButton from "./DownloadCVButton";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ApplicantDetailsProps {
   applicant: JobApplication;
+  score: number;
+  assessmentStatus: string;
 }
 
-const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
+const ApplicantDetails = ({
+  applicant,
+  score,
+  assessmentStatus,
+}: ApplicantDetailsProps) => {
   const { formatLongDate } = useLongDateFormatter();
   const currentStatus = applicant.status;
   const progressValue = ((ApplicationStatus[currentStatus] + 1) / 4) * 100;
@@ -39,9 +46,9 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
       </DialogTrigger>
       <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto rounded-2xl border-none p-0">
         <div className="flex flex-col">
-          <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-8">
-            <div className="flex flex-col items-center gap-6 md:flex-row md:justify-between">
-              <div className="flex flex-col items-center gap-4 sm:flex-row">
+          <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-8 sm:px-20">
+            <div className="flex flex-col items-center gap-6 sm:flex-row md:justify-between">
+              <div className="flex flex-col items-center gap-8 sm:flex-row">
                 <ApplicantProfilePicture
                   profilePicture={applicant.user.profilePicture}
                   fullName={applicant.user.fullName}
@@ -52,7 +59,10 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
                     {applicant.user.fullName}
                   </h2>
                   <div className="flex flex-col gap-3 sm:flex-row">
-                    <ApplicationShortlistButton className="bg-pink-600 hover:bg-pink-500" />
+                    <ApplicationShortlistButton
+                      className="bg-pink-600 hover:bg-pink-500"
+                      isDisabled={applicant.status !== "PENDING"}
+                    />
                     <DownloadCVButton
                       cvUrl={applicant.cvFile}
                       clasName="h-8 text-xs sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
@@ -62,7 +72,7 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
               </div>
             </div>
           </div>
-          <div className="border-b bg-white px-8 py-6">
+          <div className="border-b bg-white p-8 shadow-md sm:px-20">
             <div className="mb-4 flex flex-col items-center justify-between gap-2 sm:flex-row">
               <div>
                 <h3 className="text-lg font-semibold text-gray-900">
@@ -85,105 +95,121 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
               <span>Decision</span>
             </div>
           </div>
-          <div className="grid gap-6 bg-gray-50 p-8 md:grid-cols-2">
-            <Card className="shadow-sm">
-              <CardContent className="p-6">
-                <h3 className="mb-6 text-lg font-semibold text-gray-900">
-                  Personal Information
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <Calendar className="mt-1 h-5 w-5 text-blue-600" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-400">
-                        Date of Birth
-                      </p>
-                      <p className="text-gray-900">
-                        {formatLongDate(applicant.user.dateOfBirth)}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Globe className="mt-1 h-5 w-5 text-blue-600" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-400">
-                        Nationality
-                      </p>
-                      <p className="text-gray-900">Indonesia</p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <GraduationCap className="mt-1 h-5 w-5 text-blue-600" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-400">
-                        Education Level
-                      </p>
-                      <p className="text-gray-900">
-                        {applicant.user.educationLevel}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="shadow-sm">
-              <CardContent className="p-6">
-                <h3 className="mb-6 text-lg font-semibold text-gray-900">
-                  Contact Information
-                </h3>
-                <div className="space-y-4">
-                  <div className="flex items-start gap-4">
-                    <MapPin className="mt-1 h-5 w-5 text-blue-600" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-400">
-                        Location
-                      </p>
-                      <p className="text-gray-900">
-                        {applicant.user.currentAddress},{" "}
-                        {applicant.user.regency.regency}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Phone className="mt-1 h-5 w-5 text-blue-600" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-400">Phone</p>
-                      <p className="text-gray-900">
-                        {applicant.user.phoneNumber || "+1-202-555-0141"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex items-start gap-4">
-                    <Mail className="mt-1 h-5 w-5 text-blue-600" />
-                    <div>
-                      <p className="text-sm font-medium text-gray-400">Email</p>
-                      <p className="text-gray-900">
-                        {applicant.user.email || "esther.howard@gmail.com"}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-            <Card className="shadow-sm md:col-span-2">
-              <CardContent className="flex items-center justify-between p-6">
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900">
-                    Assessment Score
+          <div className="h-full bg-gray-50/70 p-8 sm:px-20">
+            <div className="grid h-full gap-6 sm:mx-0 md:grid-cols-2">
+              <Card className="border-2 shadow-none">
+                <CardContent className="p-6">
+                  <h3 className="mb-6 text-lg font-semibold text-gray-900">
+                    Personal Information
                   </h3>
-                  <p className="text-sm text-gray-400">
-                    Overall performance evaluation
-                  </p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-center">
-                    <p className="text-3xl font-bold text-green-600">95</p>
-                    <p className="text-sm text-gray-400">Score</p>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4">
+                      <Calendar className="mt-1 h-5 w-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-400">
+                          Date of Birth
+                        </p>
+                        <p className="text-gray-900">
+                          {formatLongDate(applicant.user.dateOfBirth)}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <Globe className="mt-1 h-5 w-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-400">
+                          Nationality
+                        </p>
+                        <p className="text-gray-900">Indonesia</p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <GraduationCap className="mt-1 h-5 w-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-400">
+                          Education Level
+                        </p>
+                        <p className="text-gray-900">
+                          {applicant.user.educationLevel}
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                  <Separator orientation="vertical" className="h-12" />
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+              <Card className="border-2 shadow-none">
+                <CardContent className="p-6">
+                  <h3 className="mb-6 text-lg font-semibold text-gray-900">
+                    Contact Information
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex items-start gap-4">
+                      <MapPin className="mt-1 h-5 w-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-400">
+                          Location
+                        </p>
+                        <p className="text-gray-900">
+                          {applicant.user.currentAddress},{" "}
+                          {applicant.user.regency.regency}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <Phone className="mt-1 h-5 w-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-400">
+                          Phone
+                        </p>
+                        <p className="text-gray-900">
+                          {applicant.user.phoneNumber || "+1-202-555-0141"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-4">
+                      <Mail className="mt-1 h-5 w-5 text-blue-600" />
+                      <div>
+                        <p className="text-sm font-medium text-gray-400">
+                          Email
+                        </p>
+                        <p className="text-gray-900">
+                          {applicant.user.email || "esther.howard@gmail.com"}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+              {applicant.job.requiresAssessment && (
+                <Card className="border-2 shadow-none md:col-span-2">
+                  <CardContent className="flex items-center justify-between p-6">
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        Assessment Score
+                      </h3>
+                      <p className="text-sm text-gray-400">
+                        Overall performance evaluation
+                      </p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="text-center">
+                        <p
+                          className={`text-3xl font-bold ${
+                            assessmentStatus === "Passed"
+                              ? "text-green-600"
+                              : "text-red-600"
+                          }`}
+                        >
+                          {score}
+                        </p>
+                        <p className="text-sm text-gray-400">Score</p>
+                      </div>
+                      <Separator orientation="vertical" className="h-12" />
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
+            </div>
           </div>
         </div>
       </DialogContent>

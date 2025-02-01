@@ -5,15 +5,18 @@ import { FC } from "react";
 interface ApplicationShortlistButtonProps {
   jobApplicationId?: number;
   className?: string;
+  isDisabled?: boolean;
 }
 
 const ApplicationShortlistButton: FC<ApplicationShortlistButtonProps> = ({
   className,
   jobApplicationId,
+  isDisabled = false,
 }) => {
   return (
     <Button
       variant="default"
+      disabled={isDisabled}
       className={`h-8 flex-1 text-xs sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5 ${className}`}
       // onClick={ Update Job Application Status to PENDING}
     >

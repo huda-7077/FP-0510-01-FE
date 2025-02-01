@@ -3,7 +3,8 @@ import { Assessment } from "@/types/assessment";
 import { useQuery } from "@tanstack/react-query";
 
 interface GetAssessmentsQuery {
-  jobId: number;
+  jobId?: number;
+  userId?: number;
 }
 
 const useGetAssessments = (queries: GetAssessmentsQuery) => {

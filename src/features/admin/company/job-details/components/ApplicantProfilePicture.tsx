@@ -16,7 +16,7 @@ const ApplicantProfilePicture: FC<ApplicantProfilePictureProps> = ({
   const { getInitials } = useGetInitials();
 
   return (
-    <Avatar className={`h-20 w-20 ring-4 ${ringColor}`}>
+    <Avatar className={`h-24 w-24 ring-4 ${ringColor}`}>
       <AvatarImage
         src={profilePicture}
         alt={fullName}

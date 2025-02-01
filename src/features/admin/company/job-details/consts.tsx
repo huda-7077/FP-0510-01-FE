@@ -1,4 +1,13 @@
-import { CalendarCheck, CheckCircle2, Clock, Eye, XCircle } from "lucide-react";
+import {
+  CalendarCheck,
+  Check,
+  CheckCircle2,
+  CircleAlert,
+  Clock,
+  Eye,
+  X,
+  XCircle,
+} from "lucide-react";
 
 export const ApplicationStatus = {
   PENDING: 0,
@@ -28,4 +37,22 @@ export const getApplicationStatusIcon = (status: string) => {
     REJECTED: <XCircle className="h-5 w-5" />,
   };
   return icons[status] || null;
+};
+
+export const getAssessmentStatusColor = (status: string) => {
+  const colors: any = {
+    Passed: "border-green-500 bg-green-50/90 text-green-600",
+    Failed: "border-red-500 bg-red-50/90 text-red-600",
+  };
+
+  return colors[status] || "border-gray-500 bg-gray-50/90 text-gray-600";
+};
+
+export const getAssessmentStatusIcon = (status: string) => {
+  const icons: any = {
+    Passed: <Check className="h-5 w-5" />,
+    Failed: <X className="h-5 w-5" />,
+  };
+
+  return icons[status] || <CircleAlert className="h-5 w-5" />;
 };

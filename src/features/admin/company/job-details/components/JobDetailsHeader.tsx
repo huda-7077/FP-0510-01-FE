@@ -1,3 +1,5 @@
+"use client";
+
 import MarkDown from "@/components/Markdown";
 import { Button } from "@/components/ui/button";
 import {

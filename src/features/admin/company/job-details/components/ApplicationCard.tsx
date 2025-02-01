@@ -8,26 +8,73 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
 import useCalculateAge from "@/hooks/useCalculateAge";
 import useFormatRupiah from "@/hooks/useFormatRupiah";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { JobApplication } from "@/types/jobApplication";
-import { DollarSign, Download, MoreVertical, UserPlus, X } from "lucide-react";
-import Link from "next/link";
+import { DollarSign, MoreVertical, X } from "lucide-react";
+import { useEffect, useState } from "react";
 import ApplicantDetails from "./ApplicantDetails";
 import ApplicantProfilePicture from "./ApplicantProfilePicture";
-import AssessmentBadge from "./AssessmentBadge";
 import ApplicationShortlistButton from "./ApplicationShortlistButton";
-import DownloadCVButton from "./DownloadCVButton";
 import ApplicationStatusBadge from "./ApplicationStatusBadge";
+import AssessmentBadge from "./AssessmentBadge";
+import DownloadCVButton from "./DownloadCVButton";
 
 interface ApplicationCardProps {
   application: JobApplication;
 }
 
 export const ApplicationCard = ({ application }: ApplicationCardProps) => {
+  const [score, setScore] = useState(0);
+  const [assessmentStatus, setAssessmentStatus] = useState("");
   const { formatLongDate } = useLongDateFormatter();
   const { calculateAge } = useCalculateAge();
+
+  const { data: assessments } = useGetAssessments({
+    jobId: application.jobId,
+  });
+
+  useEffect(() => {
+    if (
+      application.job.requiresAssessment &&
+      assessments &&
+      assessments.data.length > 0
+    ) {
+      setScore(
+        (assessments.data[0]?.userAssessments || []).find(
+          (userAssessment) => userAssessment.userId === application.userId,
+        )?.score || 0,
+      );
+    }
+  }, [assessments]);
+
+  useEffect(() => {
+    if (
+      application.job.requiresAssessment &&
+      assessments &&
+      assessments.data &&
+      assessments.data.length > 0 &&
+      Array.isArray(assessments.data[0].userAssessments)
+    ) {
+      const userAssessment = assessments.data[0].userAssessments.find(
+        (userAssessment) => userAssessment.userId === application.userId,
+      );
+
+      if (!userAssessment) {
+        setAssessmentStatus("");
+      } else {
+        if (score >= assessments.data[0].passingScore) {
+          setAssessmentStatus("Passed");
+        } else {
+          setAssessmentStatus("Failed");
+        }
+      }
+    } else {
+      setAssessmentStatus("");
+    }
+  }, [score]);
 
   return (
     <Card className="group relative overflow-hidden rounded-2xl border-2 border-gray-200 bg-white px-6 py-4 shadow-none transition-all duration-300 ease-in-out hover:border-blue-600">
@@ -81,13 +128,19 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
               className="px-2 py-1"
             />
             {application.job.requiresAssessment && (
-              <AssessmentBadge userId={application.userId} />
+              <AssessmentBadge
+                score={score}
+                assessmentStatus={assessmentStatus}
+              />
             )}
           </div>
         </div>
 
         <div className="flex flex-row items-center gap-2 sm:items-end sm:gap-4">
-          <ApplicationShortlistButton className="bg-blue-600 text-white hover:bg-blue-800 hover:text-white" />
+          <ApplicationShortlistButton
+            className="bg-blue-600 text-white hover:bg-blue-800 hover:text-white"
+            isDisabled={application.status !== "PENDING"}
+          />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -102,7 +155,11 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
                 className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100"
                 onSelect={(e) => e.preventDefault()}
               >
-                <ApplicantDetails applicant={application} />
+                <ApplicantDetails
+                  applicant={application}
+                  score={score}
+                  assessmentStatus={assessmentStatus}
+                />
               </DropdownMenuItem>
               <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100">
                 <DownloadCVButton
