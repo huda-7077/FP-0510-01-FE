@@ -2,6 +2,7 @@ import { Payment } from "./payment";
 
 export interface Subscription {
   id: number;
+  userId: number;
   paymentId: number;
   expiredDate: Date;
   status: SubscriptionStatus;
@@ -13,6 +14,8 @@ export enum SubscriptionStatus {
   INACTIVE = "INACTIVE",
   ACTIVE = "ACTIVE",
   EXPIRED = "EXPIRED",
+  MAILED = "MAILED",
+  RENEWED = "RENEWED",
 }
 
 export interface SubscriptionCategory {

@@ -8,25 +8,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import useCreatePayments from "@/hooks/api/payment/useCreatePayment";
 import { CreditCard, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-interface CheckoutDialogProps {
+interface RenewSubscriptionDialogProps {
   isOpen: boolean;
   onClose: () => void;
   categoryName: string;
   basePrice: number;
+  duration: number;
 }
 
 const DURATION_OPTIONS = [
@@ -36,13 +29,13 @@ const DURATION_OPTIONS = [
   { months: 12, label: "12 Months" },
 ];
 
-export function CheckoutDialog({
+export function RenewSubscriptionDialog({
   isOpen,
   onClose,
   categoryName,
   basePrice,
-}: CheckoutDialogProps) {
-  const [selectedDuration, setSelectedDuration] = useState(1);
+  duration,
+}: RenewSubscriptionDialogProps) {
   const [paymentMethod, setPaymentMethod] = useState<
     "PAYMENT_GATEWAY" | "PAYMENT_MANUAL"
   >("PAYMENT_GATEWAY");
@@ -51,15 +44,15 @@ export function CheckoutDialog({
   const { mutateAsync: createPayment, isPending: createPaymentPending } =
     useCreatePayments();
 
-  const totalAmount = basePrice * selectedDuration;
+  const totalAmount = basePrice * duration;
 
   const handleCreatePayment = async () => {
     try {
       const payment = await createPayment({
-        duration: selectedDuration,
+        duration: duration,
         category: categoryName,
         paymentMethod: paymentMethod,
-        isRenewal: false,
+        isRenewal: true,
       });
       return payment;
     } catch (error) {
@@ -82,7 +75,7 @@ export function CheckoutDialog({
       <DialogContent className="max-h-screen max-w-lg overflow-y-auto p-6 sm:p-8 md:max-h-[90vh]">
         <DialogHeader className="mb-6">
           <DialogTitle className="text-2xl font-bold text-gray-900">
-            Complete Your Purchase
+            Complete Your Renewal
           </DialogTitle>
           <DialogDescription className="mt-2 text-base text-gray-600">
             Select your preferred duration and payment method to continue
@@ -90,37 +83,6 @@ export function CheckoutDialog({
         </DialogHeader>
 
         <div className="space-y-8">
-          <div className="space-y-3">
-            <Label
-              htmlFor="duration"
-              className="text-lg font-semibold text-gray-900"
-            >
-              Subscription Duration
-            </Label>
-            <Select
-              value={selectedDuration.toString()}
-              onValueChange={(value) => setSelectedDuration(Number(value))}
-            >
-              <SelectTrigger
-                id="duration"
-                className="h-12 border-gray-200 bg-white text-base"
-              >
-                <SelectValue placeholder="Select duration" />
-              </SelectTrigger>
-              <SelectContent>
-                {DURATION_OPTIONS.map((option) => (
-                  <SelectItem
-                    key={option.months}
-                    value={option.months.toString()}
-                    className="text-base"
-                  >
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-gray-900">
               Payment Method
@@ -177,7 +139,7 @@ export function CheckoutDialog({
             </h3>
             <div className="space-y-3 border-b border-gray-200 pb-4">
               <div className="flex justify-between text-base">
-                <span className="text-gray-600">Selected Plan</span>
+                <span className="text-gray-600">Plan</span>
                 <span className="font-medium text-gray-900">
                   {categoryName}
                 </span>
@@ -185,8 +147,7 @@ export function CheckoutDialog({
               <div className="flex justify-between text-base">
                 <span className="text-gray-600">Duration</span>
                 <span className="font-medium text-gray-900">
-                  {selectedDuration}{" "}
-                  {selectedDuration === 1 ? "month" : "months"}
+                  {duration} {duration === 1 ? "month" : "months"}
                 </span>
               </div>
             </div>

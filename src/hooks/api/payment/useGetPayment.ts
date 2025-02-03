@@ -1,8 +1,9 @@
-import { axiosInstance } from "@/lib/axios";
+import useAxios from "@/hooks/useAxios";
 import { PaymentData } from "@/types/payment";
 import { useQuery } from "@tanstack/react-query";
 
 const useGetPayment = (uuid: string) => {
+  const { axiosInstance } = useAxios();
   return useQuery({
     queryKey: ["payment", uuid],
     queryFn: async () => {

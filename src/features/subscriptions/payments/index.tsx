@@ -1,16 +1,17 @@
 "use client";
 
-import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
+import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import useGetPayment from "@/hooks/api/payment/useGetPayment";
-import { useFormik } from "formik";
 import useUpdatePayment from "@/hooks/api/payment/useUpdatePayment";
-import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Image from "next/image";
+import { useFormik } from "formik";
 import { Clock, Receipt, Upload, X } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 
 interface PaymentPageProps {
   uuid: string;
@@ -18,7 +19,7 @@ interface PaymentPageProps {
 
 const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
   const [countdown, setCountdown] = useState(0);
-  const { data, isPending: isGetPaymentPending } = useGetPayment(uuid);
+  const { data, isLoading: isGetPaymentLoading } = useGetPayment(uuid);
   const { mutateAsync: updatePayment, isPending: isUpdatePaymentPending } =
     useUpdatePayment();
 
@@ -36,7 +37,6 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
     },
   });
 
-  // ... (keeping all the handlers and effects the same)
   const handlePaymentProofChange = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if (files && files.length) {
@@ -112,6 +112,10 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
     }`;
   };
 
+  if (isGetPaymentLoading) {
+    return <LoadingScreen message="Loading payment details" />;
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/50 to-white px-4 py-12">
       <Card className="mx-auto max-w-2xl shadow-lg">
@@ -131,7 +135,6 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
         </CardHeader>
 
         <CardContent className="space-y-8">
-          {/* Payment Information */}
           <div className="rounded-xl bg-gray-50 p-6">
             <div className="space-y-4">
               <div className="flex justify-between text-base">
@@ -161,7 +164,7 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
               <div className="flex justify-between text-base">
                 <span className="text-gray-600">Duration</span>
                 <span className="font-medium text-gray-900">
-                  {data?.duration} months
+                  {data?.duration} {data?.duration === 1 ? "month" : "months"}
                 </span>
               </div>
               <div className="border-t pt-4">
@@ -177,7 +180,28 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
             </div>
           </div>
 
-          {/* Manual Payment Upload Section */}
+          {data?.paymentProof && data.status === "PAID" && (
+            <div className="space-y-4">
+              <div className="flex items-center gap-2">
+                <Receipt className="h-5 w-5 text-blue-600" />
+                <h3 className="text-lg font-semibold text-gray-900">
+                  Payment Proof
+                </h3>
+              </div>
+
+              <div className="relative h-48 w-full">
+                <Image
+                  src={data?.paymentProof}
+                  alt="Payment Proof Preview"
+                  fill
+                  priority
+                  sizes="100%"
+                  className="rounded-lg object-cover"
+                />
+              </div>
+            </div>
+          )}
+
           {data?.expiredAt && data?.paymentMethod === "PAYMENT_MANUAL" && (
             <div className="space-y-4">
               <div className="flex items-center gap-2">
@@ -264,10 +288,9 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
             </div>
           )}
 
-          {/* Payment Gateway Button */}
           {data?.expiredAt && data?.paymentMethod === "PAYMENT_GATEWAY" && (
             <div className="flex justify-center pt-4">
-              <Link target="_blank" href={data.invoiceUrl}>
+              <Link href={data.invoiceUrl}>
                 <Button className="h-12 bg-blue-600 px-8 text-base font-semibold hover:bg-blue-700">
                   Proceed to Payment
                 </Button>
@@ -275,10 +298,9 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
             </div>
           )}
 
-          {/* Invoice Link for Paid Status */}
           {data?.status === "PAID" && (
             <div className="flex justify-center">
-              <Link target="_blank" href={data?.invoiceUrl}>
+              <Link href={data?.invoiceUrl}>
                 <Button
                   variant="outline"
                   className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50"

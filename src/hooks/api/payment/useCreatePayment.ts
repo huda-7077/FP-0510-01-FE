@@ -7,6 +7,7 @@ interface CreatePaymentsPayload {
   duration: number;
   category: string;
   paymentMethod: "PAYMENT_MANUAL" | "PAYMENT_GATEWAY";
+  isRenewal: boolean;
 }
 
 const useCreatePayments = () => {
