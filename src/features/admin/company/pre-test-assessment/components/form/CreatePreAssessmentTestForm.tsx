@@ -49,8 +49,7 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
     );
   };
 
-  const { mutateAsync: createAssessment, isPending: createAssessmentPending } =
-    useCreateAssessment();
+  const { mutateAsync: createAssessment } = useCreateAssessment();
 
   const {
     mutateAsync: createAssessmentQuestion,
@@ -110,151 +109,153 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
   }, [createAssessmentQuestionPending, createQuestionOptionsPending]);
 
   return (
-    <div className="container mx-auto p-6">
-      <AssessmentFormBreadCrumb jobId={jobId} crumb={"Create Assessment"} />
-      <form onSubmit={formik.handleSubmit}>
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-5">
-          <div className="lg:col-span-2">
-            <div className="sticky top-6 space-y-6">
-              <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
-                <CardHeader className="border-b border-gray-200 bg-blue-600 px-6 py-4">
-                  <CardTitle className="text-xl font-semibold text-white">
-                    Test Details
-                  </CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-5 p-6">
-                  <div>
-                    <Label
-                      htmlFor="title"
-                      className="mb-2 block text-sm font-semibold text-gray-700"
-                    >
-                      Title
-                    </Label>
-                    <Input
-                      id="title"
-                      name="title"
-                      value={formik.values.title}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="Enter test title"
-                      className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                      disabled={isProcessing}
-                      required
-                    />
-                    {!!formik.touched.title && !!formik.errors.title && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {formik.errors.title}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <Label
-                      htmlFor="description"
-                      className="mb-2 block text-sm font-semibold text-gray-700"
-                    >
-                      Description
-                    </Label>
-                    <Textarea
-                      id="description"
-                      name="description"
-                      value={formik.values.description}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="Enter test description"
-                      className="min-h-[100px] w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                      rows={4}
-                      disabled={isProcessing}
-                    />
-                    {!!formik.touched.description &&
-                      !!formik.errors.description && (
+    <div className="min-h-screen w-full bg-gray-50">
+      <div className="container mx-auto p-6">
+        <AssessmentFormBreadCrumb jobId={jobId} crumb={"Create Assessment"} />
+        <form onSubmit={formik.handleSubmit}>
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
+            <div className="lg:col-span-2">
+              <div className="sticky top-6 space-y-4">
+                <Card className="overflow-hidden border border-gray-200 bg-white shadow-md">
+                  <CardHeader className="border-b border-gray-200 bg-blue-600 px-6 py-4">
+                    <CardTitle className="text-xl font-semibold text-white">
+                      Test Details
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-5 p-6">
+                    <div>
+                      <Label
+                        htmlFor="title"
+                        className="mb-2 block text-sm font-semibold text-gray-700"
+                      >
+                        Title
+                      </Label>
+                      <Input
+                        id="title"
+                        name="title"
+                        value={formik.values.title}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="Enter test title"
+                        className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        disabled={isProcessing}
+                        required
+                      />
+                      {!!formik.touched.title && !!formik.errors.title && (
                         <p className="mt-1 text-sm text-red-500">
-                          {formik.errors.description}
+                          {formik.errors.title}
                         </p>
                       )}
-                  </div>
-                  <div>
-                    <Label
-                      htmlFor="score"
-                      className="mb-2 block text-sm font-semibold text-gray-700"
-                    >
-                      Passing Score
-                    </Label>
-                    <Input
-                      id="passingScore"
-                      type="number"
-                      min={0}
-                      max={100}
-                      value={formik.values.passingScore}
-                      onChange={formik.handleChange}
-                      onBlur={formik.handleBlur}
-                      placeholder="Enter test passing score"
-                      className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
-                      disabled={isProcessing}
-                    />
-                    {!!formik.touched.passingScore &&
-                      !!formik.errors.passingScore && (
-                        <p className="mt-1 text-sm text-red-500">
-                          {formik.errors.passingScore}
-                        </p>
-                      )}
-                  </div>
-                </CardContent>
-              </Card>
+                    </div>
+                    <div>
+                      <Label
+                        htmlFor="description"
+                        className="mb-2 block text-sm font-semibold text-gray-700"
+                      >
+                        Description
+                      </Label>
+                      <Textarea
+                        id="description"
+                        name="description"
+                        value={formik.values.description}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="Enter test description"
+                        className="min-h-[100px] w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        rows={4}
+                        disabled={isProcessing}
+                      />
+                      {!!formik.touched.description &&
+                        !!formik.errors.description && (
+                          <p className="mt-1 text-sm text-red-500">
+                            {formik.errors.description}
+                          </p>
+                        )}
+                    </div>
+                    <div>
+                      <Label
+                        htmlFor="score"
+                        className="mb-2 block text-sm font-semibold text-gray-700"
+                      >
+                        Passing Score
+                      </Label>
+                      <Input
+                        id="passingScore"
+                        type="number"
+                        min={0}
+                        max={100}
+                        value={formik.values.passingScore}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        placeholder="Enter test passing score"
+                        className="w-full rounded-md border border-gray-200 px-3 py-2 text-sm placeholder:text-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                        disabled={isProcessing}
+                      />
+                      {!!formik.touched.passingScore &&
+                        !!formik.errors.passingScore && (
+                          <p className="mt-1 text-sm text-red-500">
+                            {formik.errors.passingScore}
+                          </p>
+                        )}
+                    </div>
+                  </CardContent>
+                </Card>
 
-              <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
+                <Card className="overflow-hidden border border-gray-200 bg-white shadow-md">
+                  <CardHeader className="border-b border-gray-200 bg-blue-600 px-6 py-4">
+                    <CardTitle className="text-xl font-semibold text-white">
+                      Add New Question
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent className="p-6">
+                    <QuestionForm
+                      onAddQuestion={addQuestion}
+                      isProcessing={isProcessing}
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            <div className="space-y-4 lg:col-span-3">
+              <Card className="overflow-hidden border border-gray-200 bg-white shadow-md">
                 <CardHeader className="border-b border-gray-200 bg-blue-600 px-6 py-4">
                   <CardTitle className="text-xl font-semibold text-white">
-                    Add New Question
+                    Question List
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="p-6">
-                  <QuestionForm
-                    onAddQuestion={addQuestion}
-                    isProcessing={isProcessing}
+                  <QuestionListTable
+                    questions={questions}
+                    onDelete={deleteQuestion}
+                    onEdit={editQuestion}
                   />
+                </CardContent>
+              </Card>
+
+              <ValidationStatus questionCount={questions.length} />
+
+              <Card className="overflow-hidden border border-gray-200 bg-white shadow-md">
+                <CardContent className="p-6">
+                  <p className="mb-4 text-xs text-red-500">
+                    *The Question Will Be Saved Once You Save it as Draft.
+                  </p>
+                  <div className="flex h-full items-center justify-end gap-2">
+                    <Button
+                      type="submit"
+                      onClick={() => setSubmitType("draft")}
+                      disabled={isProcessing}
+                      className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-400"
+                    >
+                      {isProcessing ? "Saving..." : "Save as Draft"}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </div>
           </div>
-
-          <div className="space-y-6 lg:col-span-3">
-            <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
-              <CardHeader className="border-b border-gray-200 bg-blue-600 px-6 py-4">
-                <CardTitle className="text-xl font-semibold text-white">
-                  Question List
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="p-6">
-                <QuestionListTable
-                  questions={questions}
-                  onDelete={deleteQuestion}
-                  onEdit={editQuestion}
-                />
-              </CardContent>
-            </Card>
-
-            <ValidationStatus questionCount={questions.length} />
-
-            <Card className="overflow-hidden border border-gray-200 bg-white shadow-sm">
-              <CardContent className="p-6">
-                <p className="mb-4 text-xs text-red-500">
-                  *The Question Will Be Saved Once You Save it as Draft.
-                </p>
-                <div className="flex h-full items-center justify-end gap-2">
-                  <Button
-                    type="submit"
-                    onClick={() => setSubmitType("draft")}
-                    disabled={isProcessing}
-                    className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-400"
-                  >
-                    {isProcessing ? "Saving..." : "Save as Draft"}
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   );
 };

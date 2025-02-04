@@ -6,16 +6,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
-import { MoreVertical } from "lucide-react";
+import useGetAssessmentPath from "@/hooks/assessment/useGetAssessmentPath";
+import { MoreVertical, Pencil, SquarePen } from "lucide-react";
 import Link from "next/link";
-import { getAssessmentPath } from "../../consts";
 
 interface JobActionsMenuProps {
   jobId: number;
   isRequireAssessment: boolean;
   isPublished: boolean;
   onEditJobDetails?: (id: number) => void;
-  onEditStatus?: (id: number) => void;
 }
 
 export const JobActionsMenu = ({
@@ -23,15 +22,15 @@ export const JobActionsMenu = ({
   isRequireAssessment,
   isPublished,
   onEditJobDetails,
-  onEditStatus,
 }: JobActionsMenuProps) => {
-  const {
-    data: assessment,
-    isLoading: isAssessmentLoading,
-    refetch: refetchAssessment,
-  } = useGetAssessments({
+  const { data: assessment } = useGetAssessments({
     jobId,
   });
+
+  const { getAssessmentPath } = useGetAssessmentPath(
+    (assessment && assessment?.data.length) || 0,
+    jobId.toString(),
+  );
 
   const getPublishStatusStyle = () => {
     if (
@@ -67,17 +66,14 @@ export const JobActionsMenu = ({
           onClick={() => onEditJobDetails?.(jobId)}
           className="cursor-pointer text-sm"
         >
+          <SquarePen />
           Edit Job Details
         </DropdownMenuItem>
 
         {isRequireAssessment && (
-          <Link
-            href={getAssessmentPath(
-              assessment?.data.length || 0,
-              jobId.toString(),
-            )}
-          >
+          <Link href={getAssessmentPath}>
             <DropdownMenuItem className="cursor-pointer text-sm">
+              <Pencil />
               {assessment && assessment.data.length > 0 ? "Edit " : "Create "}
               Assessment
             </DropdownMenuItem>

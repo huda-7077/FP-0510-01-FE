@@ -1,45 +1,45 @@
 import { DataNotFound } from "@/components/data-not-found/DataNotFound";
-import { Separator } from "@/components/ui/separator";
+import PaginationSection from "@/components/PaginationSection";
+import useGetJobApplications from "@/hooks/api/job-applications/useGetJobApplications";
+import useGetEducationLevelsByJobId from "@/hooks/api/user/useGetEducationLevelsByJobId";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { useDebounce } from "use-debounce";
 import { ApplicationCard } from "./ApplicationCard";
+import { JobApplicationListHeader } from "./JobApplicationListHeader";
 
 interface JobApplicationsListProps {
   jobId: number;
 }
 
 export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
-  // This would typically come from an API call
-  const applications = [
-    {
-      id: 1,
-      applicantName: "John Doe",
-      email: "john@example.com",
-      appliedDate: new Date().toISOString(),
-      status: "pending",
-    },
-    {
-      id: 2,
-      applicantName: "Jane Smith",
-      email: "jane@example.com",
-      appliedDate: new Date().toISOString(),
-      status: "pending",
-    },
-    {
-      id: 3,
-      applicantName: "Robert Johnson",
-      email: "robert@example.com",
-      appliedDate: new Date().toISOString(),
-      status: "pending",
-    },
-    {
-      id: 4,
-      applicantName: "Sarah Williams",
-      email: "sarah@example.com",
-      appliedDate: new Date().toISOString(),
-      status: "pending",
-    },
-  ];
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [search, setSearch] = useQueryState("search", { defaultValue: "" });
+  const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "id" });
+  const [debouncedSearch] = useDebounce(search, 500);
+  const [educationLevel, setEducationLevel] = useQueryState("educationLevel", {
+    defaultValue: "",
+  });
 
-  if (applications.length === 0) {
+  const { data: jobApplications, isPending: isJobApplicationsPending } =
+    useGetJobApplications({
+      page,
+      sortOrder: "asc",
+      sortBy,
+      take: 10,
+      search: debouncedSearch,
+      jobId,
+      educationLevel,
+    });
+
+  const { data: educationLevels } = useGetEducationLevelsByJobId({
+    jobId,
+  });
+
+  if (
+    !isJobApplicationsPending &&
+    jobApplications &&
+    jobApplications?.data.length === 0
+  ) {
     return (
       <div className="flex min-h-[400px] items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50/50">
         <DataNotFound title="No Applications Found" />
@@ -47,42 +47,63 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
     );
   }
 
+  const onChangePage = (page: number) => {
+    setPage(page);
+  };
+
+  const handleSearch = (query: string) => {
+    setSearch(query);
+    setPage(1);
+  };
+
+  const handleSortChange = (sort: string) => {
+    setSortBy(sort);
+  };
+
+  const onEducationLevelChange = (educationLevel: string) => {
+    if (educationLevel === "all") {
+      setEducationLevel("");
+      setPage(1);
+      return;
+    }
+    setEducationLevel(educationLevel);
+    setPage(1);
+  };
+
+  const validEducationLevels = educationLevels?.data ?? [];
+
   return (
     <div className="rounded-lg bg-white">
       <div className="space-y-2 md:space-y-3">
         <div className="mb-6">
-          <div className="flex items-center justify-between">
-            <div className="flex w-full justify-between">
-              <h2 className="text-xl font-semibold text-gray-900 md:text-2xl">
-                Applications
-              </h2>
-              <p className="mt-1 text-sm text-gray-500">
-                {applications.length} candidate
-                {applications.length !== 1 ? "s" : ""} applied
-              </p>
-            </div>
-            <div className="flex items-center gap-2"></div>
+          <div className="w-full">
+            <JobApplicationListHeader
+              userEducationLevels={validEducationLevels}
+              onSearch={handleSearch}
+              onSortChange={handleSortChange}
+              onEducationLevelChange={onEducationLevelChange}
+              totalJobApplications={jobApplications?.meta.total || 0}
+            />
           </div>
-          <Separator className="my-4" />
         </div>
 
         <div className="grid grid-cols-1 gap-2 md:gap-4">
-          {applications.map((application) => (
-            <div
-              key={application.id}
-              className="transform transition-transform duration-200 hover:-translate-y-1"
-            >
-              <ApplicationCard application={application} />
-            </div>
+          {jobApplications?.data.map((application) => (
+            <ApplicationCard application={application} key={application.id} />
           ))}
         </div>
 
-        <div className="mt-6 flex items-center justify-between border-t border-gray-100 pt-6">
-          <p className="text-sm text-gray-500">
-            Showing {applications.length} results
-          </p>
-          {/* Pagination will be added here */}
-          <div className="flex items-center gap-2"></div>
+        <div className="mt-6 flex justify-center gap-2 border-t border-gray-100 pt-6">
+          {jobApplications &&
+            jobApplications.data.length > 0 &&
+            jobApplications.meta.total > jobApplications.meta.take && (
+              <PaginationSection
+                onChangePage={onChangePage}
+                page={Number(page)}
+                take={jobApplications.meta.take || 4}
+                total={jobApplications.meta.total}
+              />
+            )}
         </div>
       </div>
     </div>

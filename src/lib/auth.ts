@@ -1,11 +1,11 @@
-import NextAuth from "next-auth";
-import Google from "next-auth/providers/google";
-import Credentials from "next-auth/providers/credentials";
-import { axiosInstance } from "@/lib/axios";
 import {
   NEXT_PUBLIC_GOOGLE_CLIENT_ID,
   NEXT_PUBLIC_GOOGLE_CLIENT_SECRET,
 } from "@/config";
+import { axiosInstance } from "@/lib/axios";
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import Google from "next-auth/providers/google";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   trustHost: true,
@@ -30,7 +30,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   ],
   session: {
     strategy: "jwt",
-    maxAge: 2 * 60 * 60, // 2 hours
+    maxAge: 2 * 60 * 60,
   },
   pages: {
     signIn: "/login",
@@ -44,7 +44,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             token: account.access_token,
           });
           if (response.data) {
-            // Store the backend response in the user object
             profile!.backendData = response.data;
             return true;
           }
@@ -57,7 +56,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user, account, profile }) {
       if (account?.provider === "google") {
         token.accessToken = account.access_token;
-        // Store the backend data in the JWT token
         if (profile?.backendData) {
           token.backendData = profile.backendData;
         }
@@ -68,7 +66,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }: any) {
       if (token) {
         session.accessToken = token.accessToken;
-        // Pass the backend data to the session
         if (token.backendData) {
           session.user = token.backendData;
         } else {

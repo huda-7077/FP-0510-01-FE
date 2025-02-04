@@ -37,17 +37,12 @@ export const AdminJobDetailsComponent = ({ jobId }: JobDetailsProps) => {
           </div>
 
           <div className="space-y-12">
-            <div className="overflow-hidden">
-              {isJobLoading ? (
-                <JobDetailsHeaderSkeleton />
-              ) : job ? (
-                <JobDetailsHeader job={job} />
-              ) : null}
-            </div>
-
-            <div className="overflow-hidden">
-              {job && <JobApplicationsList jobId={job.id} />}
-            </div>
+            {isJobLoading ? (
+              <JobDetailsHeaderSkeleton />
+            ) : job ? (
+              <JobDetailsHeader job={job} />
+            ) : null}
+            {job && <JobApplicationsList jobId={job.id} />}
           </div>
         </div>
       </div>

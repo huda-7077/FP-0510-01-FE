@@ -133,7 +133,6 @@ export function QuestionForm({
           />
         </div>
 
-        {/* Options Section */}
         <div className="space-y-4">
           <Label className="text-base font-semibold text-gray-900">
             Answer Options

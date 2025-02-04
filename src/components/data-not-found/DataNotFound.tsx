@@ -23,7 +23,7 @@ export function DataNotFound({
 
         <div className="mt-6 max-w-[280px]">
           <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
-          <p className="mt-2 text-sm text-gray-600">{message}</p>
+          <p className="mt-2 text-xs text-gray-600">{message}</p>
         </div>
 
         {actionLabel && onAction && (
