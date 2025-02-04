@@ -7,7 +7,7 @@ import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const VerifyTokenPage = () => {
@@ -15,54 +15,45 @@ const VerifyTokenPage = () => {
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
   const token = searchParams.get("token");
-  const [status, setStatus] = useState<"loading" | "success" | "error">(
-    "loading",
-  );
-  const [errorMessage, setErrorMessage] = useState<string>(
-    "The verification link is invalid or has expired. Please try again.",
-  );
+
+  const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
+  const [errorMessage, setErrorMessage] = useState<string>("The verification link is invalid or has expired.");
+  
+  const [isVerified, setIsVerified] = useState<boolean>(false);
   const { mutate: verifyEmail } = useVerifyEmail();
 
   useEffect(() => {
     if (!token) {
       setStatus("error");
+      setErrorMessage("No verification token provided");
+      return;
+    }
+
+    if (isVerified) {
+      setStatus("success");
       return;
     }
 
     verifyEmail(token, {
-      onSuccess: () => {
-        setStatus("success");
-        dispatch(setVerificationSuccess());
-        setTimeout(() => router.push("/verify/success"), 2000);
-      },
-      onError: (error: any) => {
-        if (error?.response?.data?.isVerified) {
+      onSuccess: (data) => {
+        if (data.isVerified) {
           setStatus("success");
-          dispatch(setVerificationSuccess());
-          setTimeout(() => router.push("/verify/success"), 2000);
-          return;
-        }
-
-        const errorMessage = error?.response?.data?.message;
-        if (errorMessage?.includes("expired")) {
-          setErrorMessage(
-            "Your verification link has expired",
-          );
-        } else if (errorMessage?.includes("cooldown")) {
-          setErrorMessage(errorMessage); 
-        } else if (errorMessage?.includes("already verified")) {
-          setStatus("success");
+          setIsVerified(true);  // Mark the token as verified
           dispatch(setVerificationSuccess());
           setTimeout(() => router.push("/verify/success"), 2000);
         } else {
-          setErrorMessage(
-            "Verification failed. Please request a new verification email.",
-          );
+          setStatus("error");
+          setErrorMessage("Email verification failed.");
         }
+      },
+      onError: (error: any) => {
         setStatus("error");
+        setErrorMessage(
+          error?.response?.data?.message || "Verification failed. Please try again."
+        );
       },
     });
-  }, [token, verifyEmail, router, dispatch]);
+  }, [token, verifyEmail, dispatch, router, isVerified]);  
 
   return (
     <div>
@@ -106,7 +97,7 @@ const VerifyTokenPage = () => {
               {status === "loading" &&
                 "Please wait while we verify your email address."}
               {status === "success" &&
-                "Your email has been successfully verified. Redirecting to login..."}
+                "Your email has been successfully verified. Redirecting..."}
             </p>
 
             {status === "error" && (

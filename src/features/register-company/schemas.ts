@@ -17,7 +17,10 @@ export const companyRegisterSchema = yup.object().shape({
     .oneOf([yup.ref("password")], "Passwords must match")
     .required("Please confirm your password"),
   fullName: yup.string().required("Company name is required"),
-  phoneNumber: yup.string().required("Phone number is required"),
+  phoneNumber: yup
+    .string()
+    .required("Phone number is required")
+    .matches(/^\d+$/, "Phone number must contain only numbers"),
   terms: yup
     .boolean()
     .oneOf([true], "You must accept the terms of services")

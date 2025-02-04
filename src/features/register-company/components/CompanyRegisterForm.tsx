@@ -65,15 +65,30 @@ export function CompanyRegisterForm({
 
       <div className="grid gap-2">
         <div className="grid gap-2">
-          <Input
-            id="fullName"
-            name="fullName"
-            type="text"
-            placeholder="Company Name"
-            value={formik.values.fullName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+          <div className="group relative">
+            <label
+              htmlFor="fullName"
+              className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground"
+            >
+              <span className="inline-flex bg-background px-2">
+                Company Name
+              </span>
+            </label>
+            <Input
+              id="fullName"
+              name="fullName"
+              type="text"
+              placeholder=""
+              value={formik.values.fullName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={
+                formik.touched.fullName && formik.errors.fullName
+                  ? "border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
+                  : "text-gray-500"
+              }
+            />
+          </div>
           <div className="flex min-h-[20px] items-center gap-1">
             {formik.touched.fullName && formik.errors.fullName ? (
               <>
@@ -85,15 +100,30 @@ export function CompanyRegisterForm({
         </div>
 
         <div className="grid gap-2">
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Email address"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+          <div className="group relative">
+            <label
+              htmlFor="email"
+              className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground"
+            >
+              <span className="inline-flex bg-background px-2">
+                Email address
+              </span>
+            </label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder=""
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={
+                formik.touched.email && formik.errors.email
+                  ? "border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
+                  : "text-gray-500"
+              }
+            />
+          </div>
           <div className="flex min-h-[20px] items-center gap-1">
             {formik.touched.email && formik.errors.email ? (
               <>
@@ -105,15 +135,30 @@ export function CompanyRegisterForm({
         </div>
 
         <div className="grid gap-2">
-          <Input
-            id="phoneNumber"
-            name="phoneNumber"
-            type="tel"
-            placeholder="Phone Number"
-            value={formik.values.phoneNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+          <div className="group relative">
+            <label
+              htmlFor="phoneNumber"
+              className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground"
+            >
+              <span className="inline-flex bg-background px-2">
+                Phone Number
+              </span>
+            </label>
+            <Input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="tel"
+              placeholder=""
+              value={formik.values.phoneNumber}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={
+                formik.touched.phoneNumber && formik.errors.phoneNumber
+                  ? "border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
+                  : "text-gray-500"
+              }
+            />
+          </div>
           <div className="flex min-h-[20px] items-center gap-1">
             {formik.touched.phoneNumber && formik.errors.phoneNumber ? (
               <>
@@ -128,15 +173,28 @@ export function CompanyRegisterForm({
 
         <div className="grid gap-2">
           <div className="relative">
-            <Input
-              id="password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
+            <div className="group relative">
+              <label
+                htmlFor="password"
+                className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground"
+              >
+                <span className="inline-flex bg-background px-2">Password</span>
+              </label>
+              <Input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder=""
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className={
+                  formik.touched.password && formik.errors.password
+                    ? "border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
+                    : "text-gray-500"
+                }
+              />
+            </div>
             <button
               type="button"
               className="absolute right-3 top-1/2 -translate-y-1/2"
@@ -161,15 +219,31 @@ export function CompanyRegisterForm({
 
         <div className="grid gap-2">
           <div className="relative">
-            <Input
-              id="confirmPassword"
-              name="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm Password"
-              value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
+            <div className="group relative">
+              <label
+                htmlFor="confirmPassword"
+                className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground"
+              >
+                <span className="inline-flex bg-background px-2">
+                  Confirm Password
+                </span>
+              </label>
+              <Input
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder=""
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className={
+                  formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword
+                    ? "border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
+                    : "text-gray-500"
+                }
+              />
+            </div>
             <button
               type="button"
               className="absolute right-3 top-1/2 -translate-y-1/2"
@@ -209,7 +283,7 @@ export function CompanyRegisterForm({
             >
               I've read and agree with your{" "}
               <a href="/terms" target="_blank" className="text-[#0A65CC]">
-                Terms of Services
+                Terms of Service
               </a>
             </label>
           </div>

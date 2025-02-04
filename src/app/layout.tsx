@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import { PathTracker } from "./path-tracker";
+import TokenProvider from "@/providers/TokenProvider";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,16 +44,16 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <NextAuthProvider>
-            <NuqsProvider>
-              <StoreProvider>
-                <ReactQueryProvider>
-                  <PathTracker>
-                  {children}
-                  </PathTracker>
+            <TokenProvider>
+              <NuqsProvider>
+                <StoreProvider>
+                  <ReactQueryProvider>
+                    <PathTracker>{children}</PathTracker>
                   </ReactQueryProvider>
-                <ToastContainer />
-              </StoreProvider>
-            </NuqsProvider>
+                  <ToastContainer />
+                </StoreProvider>
+              </NuqsProvider>
+            </TokenProvider>
           </NextAuthProvider>
         </ThemeProvider>
       </body>

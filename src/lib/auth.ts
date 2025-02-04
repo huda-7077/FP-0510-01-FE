@@ -15,7 +15,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       clientSecret: NEXT_PUBLIC_GOOGLE_CLIENT_SECRET!,
       authorization: {
         params: {
-          prompt: "consent",
+          prompt: "select_account",
           access_type: "offline",
           response_type: "code",
         },
