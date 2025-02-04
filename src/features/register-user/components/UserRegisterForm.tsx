@@ -17,6 +17,7 @@ import {
 import { useState } from "react";
 import { userRegisterSchema } from "../schemas";
 import Link from "next/link";
+import Image from "next/image";
 
 export function UserRegisterForm({
   className,
@@ -25,7 +26,7 @@ export function UserRegisterForm({
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { mutateAsync: register, isPending } = useRegister();
-  const { login } = useGoogleAuth();
+  const { login: googleLogin } = useGoogleAuth();
 
   const formik = useFormik({
     initialValues: {
@@ -67,15 +68,28 @@ export function UserRegisterForm({
 
       <div className="grid gap-2">
         <div className="grid gap-2">
-          <Input
-            id="fullName"
-            name="fullName"
-            type="text"
-            placeholder="Full Name"
-            value={formik.values.fullName}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+          <div className="group relative">
+            <label
+              htmlFor="fullName"
+              className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground"
+            >
+              <span className="inline-flex bg-background px-2">Full Name</span>
+            </label>
+            <Input
+              id="fullName"
+              name="fullName"
+              type="text"
+              placeholder=""
+              value={formik.values.fullName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={
+                formik.touched.fullName && formik.errors.fullName
+                  ? "border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
+                  : "text-gray-500"
+              }
+            />
+          </div>
           <div className="flex min-h-[20px] items-center gap-1">
             {formik.touched.fullName && formik.errors.fullName ? (
               <>
@@ -87,15 +101,30 @@ export function UserRegisterForm({
         </div>
 
         <div className="grid gap-2">
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            placeholder="Email address"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
+          <div className="group relative">
+            <label
+              htmlFor="email"
+              className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground"
+            >
+              <span className="inline-flex bg-background px-2">
+                Email address
+              </span>
+            </label>
+            <Input
+              id="email"
+              name="email"
+              type="email"
+              placeholder=""
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              className={
+                formik.touched.email && formik.errors.email
+                  ? "border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
+                  : "text-gray-500"
+              }
+            />
+          </div>
           <div className="flex min-h-[20px] items-center gap-1">
             {formik.touched.email && formik.errors.email ? (
               <>
@@ -108,15 +137,28 @@ export function UserRegisterForm({
 
         <div className="grid gap-3">
           <div className="relative">
-            <Input
-              id="password"
-              name="password"
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={formik.values.password}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
+            <div className="group relative">
+              <label
+                htmlFor="password"
+                className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground"
+              >
+                <span className="inline-flex bg-background px-2">Password</span>
+              </label>
+              <Input
+                id="password"
+                name="password"
+                type={showPassword ? "text" : "password"}
+                placeholder=""
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className={
+                  formik.touched.password && formik.errors.password
+                    ? "border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
+                    : "text-gray-500"
+                }
+              />
+            </div>
             <button
               type="button"
               className="absolute right-3 top-1/2 -translate-y-1/2"
@@ -141,15 +183,31 @@ export function UserRegisterForm({
 
         <div className="grid gap-2">
           <div className="relative">
-            <Input
-              id="confirmPassword"
-              name="confirmPassword"
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm Password"
-              value={formik.values.confirmPassword}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-            />
+            <div className="group relative">
+              <label
+                htmlFor="confirmPassword"
+                className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all group-focus-within:pointer-events-none group-focus-within:top-0 group-focus-within:cursor-default group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground has-[+input:not(:placeholder-shown)]:pointer-events-none has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:cursor-default has-[+input:not(:placeholder-shown)]:text-xs has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground"
+              >
+                <span className="inline-flex bg-background px-2">
+                  Confirm password
+                </span>
+              </label>
+              <Input
+                id="confirmPassword"
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder=""
+                value={formik.values.confirmPassword}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                className={
+                  formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword
+                    ? "border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
+                    : "text-gray-500"
+                }
+              />
+            </div>
             <button
               type="button"
               className="absolute right-3 top-1/2 -translate-y-1/2"
@@ -189,7 +247,7 @@ export function UserRegisterForm({
             >
               I've read and agree with your{" "}
               <a href="/terms" target="_blank" className="text-[#0A65CC]">
-                Terms of Services
+                Terms of Service
               </a>
             </label>
           </div>
@@ -225,26 +283,12 @@ export function UserRegisterForm({
         <Button
           variant="outline"
           className="w-full"
-          onClick={() => login()}
+          onClick={() => googleLogin()}
           type="button"
-          disabled={!formik.values.terms}
+          disabled={isPending || !formik.values.terms}
         >
-          <svg
-            className="mr-2 h-4 w-4"
-            aria-hidden="true"
-            focusable="false"
-            data-prefix="fab"
-            data-icon="google"
-            role="img"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 488 512"
-          >
-            <path
-              fill="currentColor"
-              d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
-            ></path>
-          </svg>
-          Sign up with Google
+          <Image src="/google-icon.svg" alt="google" width={16} height={16} />
+          Sign in with Google
         </Button>
       </div>
     </form>

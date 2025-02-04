@@ -4,30 +4,10 @@ import { Button } from "@/components/ui/button";
 import { MailIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useResendVerification } from "@/hooks/api/auth/useResendVerification";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 export default function VerificationPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const email = searchParams.get("email");
-  const { mutate: resendVerification, isPending } = useResendVerification();
-  const [countdown, setCountdown] = useState(60); // Start with 60 seconds
-
-  useEffect(() => {
-    if (countdown > 0) {
-      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [countdown]);
-
-  const handleResend = () => {
-    if (email) {
-      resendVerification(email);
-      setCountdown(60);
-    }
-  };
 
   return (
     <div>
@@ -66,19 +46,6 @@ export default function VerificationPage() {
                 onClick={() => router.push("/login")}
               >
                 Back to Login
-              </Button>
-
-              <Button
-                variant="outline"
-                className="w-48"
-                onClick={handleResend}
-                disabled={isPending || countdown > 0}
-              >
-                {isPending
-                  ? "Sending..."
-                  : countdown > 0
-                    ? `Resend in ${countdown}s`
-                    : "Resend Verification Email"}
               </Button>
             </div>
           </div>
