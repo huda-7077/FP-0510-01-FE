@@ -1,17 +1,23 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import { useSession } from "next-auth/react";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useGetAssessmentQuestions from "@/hooks/api/assessment-question/useGetAssessmentQuestions";
 import useGetUserAssessment from "@/hooks/api/user-assessment/useGetUserAssessment";
 import useUpdateUserAssessment from "@/hooks/api/user-assessment/useUpdateUserAssessment";
 import { AssessmentQuestionData } from "@/types/assessmentQuestion";
+import { LoaderCircle } from "lucide-react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { FC, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import {
+  handleAnswerChange,
+  handleNextQuestion,
+  handleSubmit,
+} from "../consts";
 import AssessmentQuestionHeader from "./AssessmentQuestionHeader";
-import { handleNextQuestion, handleSubmit } from "../consts";
 
 interface PreAssessmentTestProps {
   userAssessmentId: number;
@@ -83,10 +89,6 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
     }
   }, [questions, isQuestionsLoading, currentQuestionIndex]);
 
-  const handleAnswerChange = (answerId: string) => {
-    if (userAssessment?.status !== "DONE") setSelectedAnswer(answerId);
-  };
-
   const isAnswerCorrect =
     questions?.data[currentQuestionIndex]?.assessmentOptions.find(
       (option) => option.id === Number(selectedAnswer),
@@ -135,10 +137,6 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
     return <LoadingScreen />;
   }
 
-  if (status === "unauthenticated" || !session?.user?.id) {
-    return null;
-  }
-
   return (
     <div className="min-h-screen bg-gray-100">
       <AssessmentQuestionHeader
@@ -150,45 +148,61 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
           handleSubmit(userAssessment, score, router, updateUserAssessment)
         }
       />
-      <div className="container mx-auto flex h-screen items-center py-8 sm:py-16">
-        <div className="mx-80 w-full rounded-lg bg-white p-6 shadow-md">
+      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+        <Card className="w-full max-w-xl overflow-hidden rounded-2xl border-2 border-gray-300 bg-white">
           {currentQuestion && (
-            <>
-              <h2 className="mb-4 text-lg text-gray-800">
-                {currentQuestion.question}
-              </h2>
-              <div className="space-y-4">
+            <CardContent className="p-8">
+              <CardHeader>
+                <CardTitle className="texl-xl text-gray-800 sm:text-lg">
+                  {currentQuestion.question}
+                </CardTitle>
+              </CardHeader>
+              <div className="space-y-6 px-4 sm:px-6 lg:px-8">
                 {currentQuestion.assessmentOptions.map((option) => (
-                  <div key={option.id}>
-                    <label className="flex items-center space-x-2">
-                      <input
-                        type="radio"
-                        name="option"
-                        className="h-4 w-4 text-blue-600 focus:ring-blue-500"
-                        value={option.id}
-                        required
-                        onChange={(e) => handleAnswerChange(e.target.value)}
-                        checked={selectedAnswer === option.id.toString()}
-                        disabled={userAssessment?.status === "DONE"}
-                      />
-                      <span className="text-gray-700">{option.option}</span>
-                    </label>
-                  </div>
+                  <label
+                    key={option.id}
+                    className="flex cursor-pointer items-baseline space-x-3"
+                  >
+                    <input
+                      type="radio"
+                      name="option"
+                      value={option.id.toString()}
+                      checked={selectedAnswer === option.id.toString()}
+                      onChange={(e) =>
+                        handleAnswerChange(
+                          e.target.value,
+                          userAssessment,
+                          setSelectedAnswer,
+                        )
+                      }
+                      disabled={userAssessment?.status === "DONE"}
+                    />
+                    <span className="text-base text-gray-700">
+                      {option.option}
+                    </span>
+                  </label>
                 ))}
               </div>
               <div className="mt-8 flex justify-end">
                 {currentQuestionIndex === (questions?.data?.length || 0) - 1 ? (
                   <Button
-                    className="bg-blue-600 text-white hover:bg-blue-700"
+                    className="rounded-lg bg-blue-600 px-6 py-3 text-lg font-semibold text-white transition-colors duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                     disabled={!selectedAnswer || isSubmitting}
                     onClick={handleSubmitClick}
                   >
-                    {isSubmitting ? <span>Submitting...</span> : "Submit"}
+                    {isSubmitting ? (
+                      <span className="flex items-center gap-2">
+                        <LoaderCircle className="animate-spin" color="#fff" />
+                        Submitting...
+                      </span>
+                    ) : (
+                      "Submit"
+                    )}
                   </Button>
                 ) : (
                   <Button
                     onClick={handleNext}
-                    className="bg-blue-600 text-white hover:bg-blue-700"
+                    className="rounded-lg bg-blue-600 px-6 py-3 text-lg font-semibold text-white transition-colors duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                     disabled={
                       !selectedAnswer ||
                       isSubmitting ||
@@ -199,9 +213,9 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
                   </Button>
                 )}
               </div>
-            </>
+            </CardContent>
           )}
-        </div>
+        </Card>
       </div>
     </div>
   );

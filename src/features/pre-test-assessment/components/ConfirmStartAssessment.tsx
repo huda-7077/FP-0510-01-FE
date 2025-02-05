@@ -58,6 +58,7 @@ const ConfirmStartAssessment: FC<ConfirmStartAssessmentProps> = ({
               iconClass="text-amber-600"
               bgColor="bg-amber-50"
               textColor="text-amber-700"
+              borderColor="border-amber-400"
             />
             <InfoCard
               icon={<Clock className="text-blue-600" size={20} />}
@@ -66,6 +67,7 @@ const ConfirmStartAssessment: FC<ConfirmStartAssessmentProps> = ({
               iconClass="text-blue-600"
               bgColor="bg-blue-50"
               textColor="text-blue-700"
+              borderColor="border-blue-400"
             />
             <InfoCard
               icon={<ShieldCheck className="text-green-600" size={20} />}
@@ -74,6 +76,7 @@ const ConfirmStartAssessment: FC<ConfirmStartAssessmentProps> = ({
               iconClass="text-green-600"
               bgColor="bg-green-50"
               textColor="text-green-700"
+              borderColor="border-green-400"
             />
           </div>
 

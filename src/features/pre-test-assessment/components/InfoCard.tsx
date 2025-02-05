@@ -5,8 +5,11 @@ const InfoCard = ({
   iconClass,
   bgColor,
   textColor,
+  borderColor,
 }: any) => (
-  <div className={`flex items-start rounded-md border-l-4 ${bgColor} p-4`}>
+  <div
+    className={`flex items-start rounded-md border-l-4 ${bgColor} ${borderColor} p-4`}
+  >
     {icon && (
       <div className={`mr-3 mt-1 flex-shrink-0 ${iconClass}`}>{icon}</div>
     )}

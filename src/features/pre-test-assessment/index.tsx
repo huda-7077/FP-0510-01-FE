@@ -1,14 +1,13 @@
 "use client";
 
-import { FC, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
-import ConfirmStartAssessment from "./components/ConfirmStartAssessment";
 import useGetUserAssessments from "@/hooks/api/user-assessment/useGetUserAssessments";
 import useUpdateUserAssessment from "@/hooks/api/user-assessment/useUpdateUserAssessment";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { FC, useEffect } from "react";
+import { toast } from "react-toastify";
+import ConfirmStartAssessment from "./components/ConfirmStartAssessment";
 
 interface PreAssessmentTestProps {
   assessmentId: number;
@@ -38,17 +37,13 @@ const PreTestAssessmentComponent: FC<PreAssessmentTestProps> = ({
 
     if (userAssessment.status === "EXPIRED") {
       toast.error("Your assessment test has expired");
+      router.push("/"); // redirect to user dashboard
     } else if (userAssessment.status !== "PENDING") {
       toast.error("You cannot redo an assessment");
+      router.push("/"); // redirect to user dashboard
     } else if (!userAssessment.assessment) {
       toast.error("Assessment data not found");
-    }
-
-    if (
-      userAssessment.status !== "PENDING" &&
-      userAssessment.status !== "EXPIRED"
-    ) {
-      router.push("/");
+      router.push("/"); // redirect to user dashboard
     }
   }, [userAssessments, isUserAssessmentLoading, router]);
 
@@ -59,7 +54,7 @@ const PreTestAssessmentComponent: FC<PreAssessmentTestProps> = ({
 
       await updateUserAssessment({ id: userAssessment.id, status: "STARTED" });
 
-      const initialRemainingTime = 20;
+      const initialRemainingTime = 7200;
       localStorage.setItem("remainingTime", initialRemainingTime.toString());
 
       toast.success("Good Luck!");

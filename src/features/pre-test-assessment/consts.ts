@@ -60,19 +60,34 @@ export const handleSubmit = async (
     return;
   }
 
-  if (userAssessment && userAssessment.status === "ON_DOING") {
-    try {
-      await updateUserAssessment({
-        id: userAssessment.id,
-        status: "DONE",
-        score,
-      });
-      toast.success(`Thank you for taking the test! We will contact you soon.`);
-      router.push("/"); // Redirect to the home page or dashboard
-    } catch (error) {
-      console.error("Error updating user assessment:", error);
-      toast.error("Failed to update the score. Please try again.");
-      router.push("/"); // Redirect to home or show error page
+  if (userAssessment) {
+    if (
+      userAssessment.status === "ON_DOING" ||
+      userAssessment.status === "STARTED"
+    ) {
+      try {
+        await updateUserAssessment({
+          id: userAssessment.id,
+          status: "DONE",
+          score,
+        });
+        toast.success(
+          `Thank you for taking the test! We will contact you soon.`,
+        );
+        router.push("/"); // Redirect to the home page or dashboard
+      } catch (error) {
+        console.error("Error updating user assessment:", error);
+        toast.error("Failed to update the score. Please try again.");
+        router.push("/"); // Redirect to home or show error page
+      }
     }
   }
+};
+
+export const handleAnswerChange = (
+  answerId: string,
+  userAssessment: UserAssessmentData | undefined,
+  setSelectedAnswer: React.Dispatch<React.SetStateAction<string | null>>,
+) => {
+  if (userAssessment?.status !== "DONE") setSelectedAnswer(answerId);
 };
