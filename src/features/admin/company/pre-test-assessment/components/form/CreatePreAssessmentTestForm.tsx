@@ -16,6 +16,7 @@ import { QuestionForm } from "./QuestionForm";
 import { QuestionListTable } from "./QuestionListTable";
 import { ValidationStatus } from "./ValidationStatues";
 import AssessmentFormBreadCrumb from "./AssessmentFormBreadCrumb";
+import { redirect } from "next/navigation";
 
 interface Question {
   id: number;
@@ -96,6 +97,7 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
 
         formik.resetForm();
         setQuestions([]);
+        redirect(`/dashboard/admin/jobs/${jobId}`);
       } catch (error) {
         toast.error(`${error}`);
       }

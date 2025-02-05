@@ -23,6 +23,7 @@ import { CreateAssessmentSchema } from "../../schemas";
 import useUpdateQuestionOptionByQuestionId from "@/hooks/api/question-options/useUpdateQuestionOptionByQuestionId.ts";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import AssessmentFormBreadCrumb from "./AssessmentFormBreadCrumb";
+import { redirect } from "next/navigation";
 
 interface ModifiedQuestion {
   id: number;
@@ -242,6 +243,8 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
           }
 
           await Promise.all([refetchAssessment(), refetchQuestions()]);
+
+          redirect(`/dashboard/admin/jobs/${jobId}`);
         }
       } catch (error) {
         toast.error(`${error}`);
