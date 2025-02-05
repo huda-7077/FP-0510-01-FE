@@ -3,6 +3,7 @@
 import { FC, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { useSession } from "next-auth/react";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import useGetAssessmentQuestions from "@/hooks/api/assessment-question/useGetAssessmentQuestions";
@@ -20,7 +21,7 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
   userAssessmentId,
 }) => {
   const router = useRouter();
-  const userId = 2; // Placeholder for user ID
+  const { data: session, status } = useSession();
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [currentQuestion, setCurrentQuestion] =
     useState<AssessmentQuestionData | null>(null);
@@ -34,18 +35,22 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
     data: userAssessment,
     isLoading: isUserAssessmentLoading,
     refetch: refetchUserAssessment,
-  } = useGetUserAssessment({ id: userAssessmentId });
+  } = useGetUserAssessment({
+    id: userAssessmentId,
+  });
+
   const { data: questions, isLoading: isQuestionsLoading } =
     useGetAssessmentQuestions({
       assessmentId: userAssessment?.assessmentId || 0,
     });
+
   const {
     mutateAsync: updateUserAssessment,
     isPending: isUpdateUserAssessmentPending,
   } = useUpdateUserAssessment();
 
   useEffect(() => {
-    if (!toastShown && userAssessment) {
+    if (!toastShown && userAssessment && session?.user?.id) {
       const statusMessages: Record<string, string> = {
         DONE: "You cannot redo an assessment",
         EXPIRED: "Your assessment test has expired",
@@ -54,7 +59,7 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
 
       if (
         statusMessages[userAssessment.status] ||
-        userId !== userAssessment.userId
+        Number(session.user.id) !== userAssessment.userId
       ) {
         toast.error(
           statusMessages[userAssessment.status] ||
@@ -64,16 +69,12 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
         setToastShown(true);
       }
     }
-  }, [userAssessment, router, toastShown, userId]);
+  }, [userAssessment, router, toastShown, session]);
 
   useEffect(() => {
-    setRemainingTime(
-      localStorage.getItem("remainingTime")
-        ? parseInt(localStorage.getItem("remainingTime")!, 10)
-        : 7200,
-    );
-    if (!localStorage.getItem("remainingTime"))
-      localStorage.setItem("remainingTime", "7200");
+    const savedTime = localStorage.getItem("remainingTime");
+    setRemainingTime(savedTime ? parseInt(savedTime, 10) : 7200);
+    if (!savedTime) localStorage.setItem("remainingTime", "7200");
   }, []);
 
   useEffect(() => {
@@ -110,17 +111,32 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
     if (isSubmitting || userAssessment?.status === "DONE") return;
 
     setIsSubmitting(true);
-    setScore((prev) => (isAnswerCorrect ? prev + 4 : prev));
-    await handleSubmit(userAssessment, score, router, updateUserAssessment);
-    setIsSubmitting(false);
+
+    try {
+      const newScore = isAnswerCorrect ? score + 4 : score;
+      setScore(newScore);
+      await handleSubmit(
+        userAssessment,
+        newScore,
+        router,
+        updateUserAssessment,
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (
+    status === "loading" ||
     isUserAssessmentLoading ||
     isQuestionsLoading ||
     ["PENDING", "EXPIRED", "DONE"].includes(userAssessment?.status || "")
   ) {
     return <LoadingScreen />;
+  }
+
+  if (status === "unauthenticated" || !session?.user?.id) {
+    return null;
   }
 
   return (

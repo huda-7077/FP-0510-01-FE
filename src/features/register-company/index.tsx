@@ -10,7 +10,7 @@ export default function CompanyRegisterPage() {
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <Link href="/">
-            <Image src="/logo.svg" alt="logo" width={116} height={30} />
+            <Image src="/logo-company.svg" alt="logo" width={187} height={102} />
           </Link>
         </div>
         <div className="flex flex-1 items-center justify-center">

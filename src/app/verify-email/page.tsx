@@ -7,4 +7,4 @@ const VerifyEmailToken = () => {
   return <VerifyTokenPage />;
 };
 
-export default VerifyEmailGuard(VerifyEmailToken);
+export default VerifyEmailToken;

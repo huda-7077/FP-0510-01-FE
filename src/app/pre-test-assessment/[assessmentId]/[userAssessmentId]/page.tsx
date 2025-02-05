@@ -1,4 +1,5 @@
 import AssessmentQuestionComponent from "@/features/pre-test-assessment/components/AssessmentQuestionComponent";
+import UserAuthGuard from "@/hoc/UserAuthGuard";
 import React from "react";
 
 const AssessmentQuestion = ({
@@ -13,4 +14,4 @@ const AssessmentQuestion = ({
   );
 };
 
-export default AssessmentQuestion;
+export default UserAuthGuard(AssessmentQuestion);

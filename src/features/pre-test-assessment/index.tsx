@@ -8,6 +8,7 @@ import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import ConfirmStartAssessment from "./components/ConfirmStartAssessment";
 import useGetUserAssessments from "@/hooks/api/user-assessment/useGetUserAssessments";
 import useUpdateUserAssessment from "@/hooks/api/user-assessment/useUpdateUserAssessment";
+import { useSession } from "next-auth/react";
 
 interface PreAssessmentTestProps {
   assessmentId: number;
@@ -16,11 +17,13 @@ interface PreAssessmentTestProps {
 const PreTestAssessmentComponent: FC<PreAssessmentTestProps> = ({
   assessmentId,
 }) => {
+  const session = useSession();
+  const userId = session.data?.user.id;
   const router = useRouter();
   const { mutateAsync: updateUserAssessment } = useUpdateUserAssessment();
 
   const { data: userAssessments, isLoading: isUserAssessmentLoading } =
-    useGetUserAssessments({ assessmentId, userId: 2 });
+    useGetUserAssessments({ assessmentId, userId });
 
   useEffect(() => {
     if (isUserAssessmentLoading) return;

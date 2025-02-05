@@ -1,4 +1,5 @@
 import PreTestAssessmentComponent from "@/features/pre-test-assessment";
+import UserAuthGuard from "@/hoc/UserAuthGuard";
 
 const PreTestAssessment = ({
   params,
@@ -10,4 +11,4 @@ const PreTestAssessment = ({
   );
 };
 
-export default PreTestAssessment;
+export default UserAuthGuard(PreTestAssessment);
