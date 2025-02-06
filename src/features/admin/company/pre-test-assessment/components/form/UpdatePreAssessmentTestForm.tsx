@@ -23,6 +23,7 @@ import { CreateAssessmentSchema } from "../../schemas";
 import useUpdateQuestionOptionByQuestionId from "@/hooks/api/question-options/useUpdateQuestionOptionByQuestionId.ts";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import AssessmentFormBreadCrumb from "./AssessmentFormBreadCrumb";
+import { useRouter } from "next/navigation";
 
 interface ModifiedQuestion {
   id: number;
@@ -40,6 +41,8 @@ interface PreAssessmentTestFormProps {
 export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
   jobId,
 }) => {
+  const router = useRouter();
+
   const {
     data: assessment,
     isLoading: isAssessmentLoading,
@@ -242,6 +245,8 @@ export const UpdatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
           }
 
           await Promise.all([refetchAssessment(), refetchQuestions()]);
+
+          router.push(`/dashboard/admin/jobs/${jobId}`);
         }
       } catch (error) {
         toast.error(`${error}`);
