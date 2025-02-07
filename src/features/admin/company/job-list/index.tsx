@@ -8,8 +8,12 @@ import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
+import { useSession } from "next-auth/react";
 
 export const JobListComponent = () => {
+  const session = useSession();
+  const user = session.data && session.data.user;
+
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "id" });
@@ -19,9 +23,7 @@ export const JobListComponent = () => {
   });
 
   const { data: jobCategories, isPending: isJobCategoriesPending } =
-    useGetJobCategories({
-      companyId: 1,
-    });
+    useGetJobCategories({ companyId: user?.companyId });
 
   const { data: jobs, isPending: isJobsPending } = useGetJobs({
     page,
@@ -29,7 +31,7 @@ export const JobListComponent = () => {
     sortBy,
     take: 10,
     category,
-    companyId: 1,
+    companyId: user?.companyId,
     search: debouncedSearch,
   });
 
@@ -70,6 +72,7 @@ export const JobListComponent = () => {
             onCategoryChange={onCategoryChange}
             onSortChange={handleSortChange}
             onSearch={handleSearch}
+            isDisabled={isJobCategoriesPending}
           />
 
           <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-2 md:mt-8">

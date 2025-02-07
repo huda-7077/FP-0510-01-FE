@@ -10,6 +10,7 @@ export interface AssessmentData {
   userAssessments: {
     userId: number;
     score: number;
+    status: string;
   }[];
 }
 

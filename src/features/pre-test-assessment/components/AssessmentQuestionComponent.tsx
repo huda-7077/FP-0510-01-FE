@@ -1,5 +1,4 @@
 "use client";
-
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -35,47 +34,28 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
   const [score, setScore] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [toastShown, setToastShown] = useState(false);
 
-  const {
-    data: userAssessment,
-    isLoading: isUserAssessmentLoading,
-    refetch: refetchUserAssessment,
-  } = useGetUserAssessment({
-    id: userAssessmentId,
-  });
+  const { data: userAssessment, isLoading: isUserAssessmentLoading } =
+    useGetUserAssessment({ id: userAssessmentId });
 
   const { data: questions, isLoading: isQuestionsLoading } =
     useGetAssessmentQuestions({
       assessmentId: userAssessment?.assessmentId || 0,
     });
 
-  const {
-    mutateAsync: updateUserAssessment,
-    isPending: isUpdateUserAssessmentPending,
-  } = useUpdateUserAssessment();
+  const { mutateAsync: updateUserAssessment } = useUpdateUserAssessment();
 
   useEffect(() => {
-    if (!toastShown && userAssessment && session?.user?.id) {
-      const statusMessages: Record<string, string> = {
-        DONE: "You cannot redo an assessment",
-        EXPIRED: "Your assessment test has expired",
-        PENDING: "You do not have access to this assessment",
-      };
-
-      if (
-        statusMessages[userAssessment.status] ||
-        Number(session.user.id) !== userAssessment.userId
-      ) {
-        toast.error(
-          statusMessages[userAssessment.status] ||
-            "You do not have access to this assessment",
-        );
-        router.push("/");
-        setToastShown(true);
-      }
+    if (
+      (!isUserAssessmentLoading && !userAssessment) ||
+      (session?.user &&
+        userAssessment &&
+        Number(session.user.id) !== userAssessment.userId)
+    ) {
+      toast.error("You do not have access to this assessment");
+      router.push("/");
     }
-  }, [userAssessment, router, toastShown, session]);
+  }, [userAssessment, session, router]);
 
   useEffect(() => {
     const savedTime = localStorage.getItem("remainingTime");
@@ -101,7 +81,6 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
       currentQuestionIndex,
       setCurrentQuestionIndex,
       router,
-      refetchUserAssessment,
       questions,
       setScore,
       isAnswerCorrect,
@@ -111,9 +90,7 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
 
   const handleSubmitClick = async () => {
     if (isSubmitting || userAssessment?.status === "DONE") return;
-
     setIsSubmitting(true);
-
     try {
       const newScore = isAnswerCorrect ? score + 4 : score;
       setScore(newScore);
@@ -148,16 +125,16 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
           handleSubmit(userAssessment, score, router, updateUserAssessment)
         }
       />
-      <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12 sm:px-6 lg:px-8">
+      <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
         <Card className="w-full max-w-xl overflow-hidden rounded-2xl border-2 border-gray-300 bg-white">
           {currentQuestion && (
-            <CardContent className="p-8">
+            <CardContent className="space-y-6 p-8">
               <CardHeader>
-                <CardTitle className="texl-xl text-gray-800 sm:text-lg">
+                <CardTitle className="text-lg text-gray-800">
                   {currentQuestion.question}
                 </CardTitle>
               </CardHeader>
-              <div className="space-y-6 px-4 sm:px-6 lg:px-8">
+              <div>
                 {currentQuestion.assessmentOptions.map((option) => (
                   <label
                     key={option.id}
@@ -183,7 +160,7 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
                   </label>
                 ))}
               </div>
-              <div className="mt-8 flex justify-end">
+              <div className="flex justify-end">
                 {currentQuestionIndex === (questions?.data?.length || 0) - 1 ? (
                   <Button
                     className="rounded-lg bg-blue-600 px-6 py-3 text-lg font-semibold text-white transition-colors duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -203,11 +180,7 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
                   <Button
                     onClick={handleNext}
                     className="rounded-lg bg-blue-600 px-6 py-3 text-lg font-semibold text-white transition-colors duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                    disabled={
-                      !selectedAnswer ||
-                      isSubmitting ||
-                      isUpdateUserAssessmentPending
-                    }
+                    disabled={!selectedAnswer || isSubmitting}
                   >
                     Next
                   </Button>

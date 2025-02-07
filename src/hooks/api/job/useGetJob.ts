@@ -6,14 +6,14 @@ interface GetJobQuery {
   jobId: number;
 }
 
-const useGetJob = (query: GetJobQuery) => {
+const useGetJob = ({ jobId }: GetJobQuery) => {
   return useQuery({
-    queryKey: ["jobs", query],
+    queryKey: ["jobs"],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<Job>(`/jobs/${query.jobId}`);
-
+      const { data } = await axiosInstance.get<Job>(`/jobs/${jobId}`);
       return data;
     },
+    enabled: !!jobId,
   });
 };
 
