@@ -1,5 +1,6 @@
 "use client";
 
+import { AlertDialogComponent } from "@/components/AlertDialogComponent";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,6 +20,8 @@ interface PaymentPageProps {
 
 const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
   const [countdown, setCountdown] = useState(0);
+  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
+  const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
   const { data, isLoading: isGetPaymentLoading } = useGetPayment(uuid);
   const { mutateAsync: updatePayment, isPending: isUpdatePaymentPending } =
     useUpdatePayment();
@@ -69,13 +72,23 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
   };
 
   const handleCancel = () => {
-    formik.setFieldValue("action", "CANCEL");
-    formik.handleSubmit();
+    setIsCancelDialogOpen(true);
   };
 
   const handleConfirm = () => {
+    setIsConfirmDialogOpen(true);
+  };
+
+  const onCancelConfirm = () => {
+    formik.setFieldValue("action", "CANCEL");
+    formik.handleSubmit();
+    setIsCancelDialogOpen(false);
+  };
+
+  const onConfirmConfirm = () => {
     formik.setFieldValue("action", "CONFIRM");
     formik.handleSubmit();
+    setIsConfirmDialogOpen(false);
   };
 
   useEffect(() => {
@@ -189,14 +202,14 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
                 </h3>
               </div>
 
-              <div className="relative h-48 w-full">
+              <div className="overflow-hidden rounded-lg">
                 <Image
                   src={data?.paymentProof}
                   alt="Payment Proof Preview"
-                  fill
-                  priority
-                  sizes="100%"
-                  className="rounded-lg object-cover"
+                  width={0}
+                  height={0}
+                  sizes="100vw"
+                  className="h-auto w-full object-contain"
                 />
               </div>
             </div>
@@ -212,19 +225,19 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
               </div>
 
               <div
-                className="relative mt-2 flex h-48 w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 transition-all hover:bg-gray-100"
+                className="relative mt-2 flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed border-gray-300 bg-gray-50 transition-all hover:bg-gray-100"
                 onDrop={handleDrop}
                 onDragOver={handleDragOver}
               >
                 {selectedImage ? (
-                  <div className="relative h-full w-full">
+                  <div className="overflow-hidden rounded-lg">
                     <Image
                       src={selectedImage}
                       alt="Payment Proof Preview"
-                      fill
-                      priority
-                      sizes="100%"
-                      className="rounded-lg object-cover"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      className="h-auto w-full object-contain"
                     />
                     {!data?.paymentProof && (
                       <Button
@@ -312,6 +325,26 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
           )}
         </CardContent>
       </Card>
+
+      <AlertDialogComponent
+        isOpen={isCancelDialogOpen}
+        onClose={() => setIsCancelDialogOpen(false)}
+        onConfirm={onCancelConfirm}
+        title="Cancel Payment"
+        description="Are you sure you want to cancel this payment?"
+        confirmText="Yes, Cancel"
+        cancelText="No"
+      />
+
+      <AlertDialogComponent
+        isOpen={isConfirmDialogOpen}
+        onClose={() => setIsConfirmDialogOpen(false)}
+        onConfirm={onConfirmConfirm}
+        title="Confirm Payment"
+        description="Are you sure you want to confirm this payment?"
+        confirmText="Yes, Confirm"
+        cancelText="No"
+      />
     </div>
   );
 };
