@@ -130,6 +130,8 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
             </p>
           ) : (
             <ManageApplicationButton
+              isRequireAssessment={application.job.requiresAssessment}
+              applicantName={application.user.fullName}
               jobApplicationId={application.id}
               status={application.status}
               userAssessmentStatus={userAssessment?.status || ""}

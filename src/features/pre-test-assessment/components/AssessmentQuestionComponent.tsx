@@ -1,7 +1,7 @@
 "use client";
+
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import useGetAssessmentQuestions from "@/hooks/api/assessment-question/useGetAssessmentQuestions";
 import useGetUserAssessment from "@/hooks/api/user-assessment/useGetUserAssessment";
 import useUpdateUserAssessment from "@/hooks/api/user-assessment/useUpdateUserAssessment";
@@ -115,7 +115,7 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
   }
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-200">
       <AssessmentQuestionHeader
         index={currentQuestionIndex}
         totalQuestions={25}
@@ -126,19 +126,17 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
         }
       />
       <div className="flex min-h-screen items-center justify-center px-4 py-12 sm:px-6 lg:px-8">
-        <Card className="w-full max-w-xl overflow-hidden rounded-2xl border-2 border-gray-300 bg-white">
+        <div className="w-full max-w-4xl rounded-3xl bg-white p-8 shadow-lg ring-1 ring-gray-200 transition-shadow hover:shadow-xl sm:p-10">
           {currentQuestion && (
-            <CardContent className="space-y-6 p-8">
-              <CardHeader>
-                <CardTitle className="text-lg text-gray-800">
-                  {currentQuestion.question}
-                </CardTitle>
-              </CardHeader>
-              <div>
+            <>
+              <h2 className="mb-6 text-lg text-gray-800">
+                {currentQuestion.question}
+              </h2>
+              <div className="space-y-4">
                 {currentQuestion.assessmentOptions.map((option) => (
                   <label
                     key={option.id}
-                    className="flex cursor-pointer items-baseline space-x-3"
+                    className="flex cursor-pointer items-center space-x-3 rounded-lg border border-gray-200 p-4 italic transition-colors hover:bg-gray-50"
                   >
                     <input
                       type="radio"
@@ -153,6 +151,7 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
                         )
                       }
                       disabled={userAssessment?.status === "DONE"}
+                      className="h-5 w-5 accent-blue-600"
                     />
                     <span className="text-base text-gray-700">
                       {option.option}
@@ -160,7 +159,7 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
                   </label>
                 ))}
               </div>
-              <div className="flex justify-end">
+              <div className="mt-8 flex justify-end space-x-4">
                 {currentQuestionIndex === (questions?.data?.length || 0) - 1 ? (
                   <Button
                     className="rounded-lg bg-blue-600 px-6 py-3 text-lg font-semibold text-white transition-colors duration-300 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -186,9 +185,9 @@ const AssessmentQuestionComponent: FC<PreAssessmentTestProps> = ({
                   </Button>
                 )}
               </div>
-            </CardContent>
+            </>
           )}
-        </Card>
+        </div>
       </div>
     </div>
   );

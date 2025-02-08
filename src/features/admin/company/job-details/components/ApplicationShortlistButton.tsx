@@ -1,19 +1,36 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Textarea } from "@/components/ui/textarea";
 import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateAssessment";
 import { CheckCircle, Clock, LoaderCircle, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { toast } from "react-toastify";
+import ApplicationAcceptanceAlert from "./ApplicationAcceptanceAlert";
 
 interface ApplicationShortlistButtonProps {
+  isRequireAssessment: boolean;
+  applicantName: string;
   jobApplicationId: number;
   status: string;
   userAssessmentStatus: string;
 }
 
 const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
+  isRequireAssessment,
+  applicantName,
   jobApplicationId,
   userAssessmentStatus,
   status,
@@ -25,9 +42,13 @@ const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
     isPending: isUpdateJobApplicationPending,
   } = useUpdateJobApplication();
 
-  const handleJobApplicationUpdate = async (status: string) => {
+  const handleJobApplicationUpdate = async (status: string, notes?: string) => {
     try {
-      await updateJobApplication({ id: jobApplicationId, status: status });
+      await updateJobApplication({
+        id: jobApplicationId,
+        status: status,
+        notes,
+      });
       if (status === "IN_REVIEW") {
         toast.success("User shortlisted successfully");
       } else if (status === "ACCEPTED") {
@@ -42,7 +63,8 @@ const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
 
   return (
     <div className="flex gap-3">
-      {userAssessmentStatus === "DONE" && status === "IN_REVIEW" ? (
+      {(userAssessmentStatus === "DONE" && status === "IN_REVIEW") ||
+      (!isRequireAssessment && status === "IN_REVIEW") ? (
         <Button
           onClick={() => router.push(`/schedule-interview/${jobApplicationId}`)}
         >
@@ -50,29 +72,27 @@ const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
           Schedule Interview
         </Button>
       ) : (
-        <Button
-          className="bg-green-600 p-3 text-white shadow-none hover:bg-green-700"
-          disabled={isUpdateJobApplicationPending || status === "IN_REVIEW"}
-          onClick={() =>
-            status === "INTERVIEW_SCHEDULED"
-              ? handleJobApplicationUpdate("ACCEPTED")
-              : handleJobApplicationUpdate("IN_REVIEW")
+        <ApplicationAcceptanceAlert
+          applicantName={applicantName}
+          buttonIcon={<CheckCircle className="h-24 w-24" />}
+          color="blue"
+          handleClick={handleJobApplicationUpdate}
+          isDisabled={isUpdateJobApplicationPending}
+          status={status}
+          updatedStatus={
+            status === "INTERVIEW_SCHEDULED" ? "ACCEPTED" : "IN_REVIEW"
           }
-        >
-          {isUpdateJobApplicationPending ? (
-            <LoaderCircle className="h-24 w-24 animate-spin" />
-          ) : (
-            <CheckCircle className="h-24 w-24" />
-          )}
-        </Button>
+        />
       )}
-      <Button
-        className="border-2 border-red-600 bg-transparent p-3 text-red-600 shadow-none hover:bg-red-600 hover:text-white"
-        disabled={isUpdateJobApplicationPending}
-        onClick={() => handleJobApplicationUpdate("REJECTED")}
-      >
-        <XCircle className="h-24 w-24" />
-      </Button>
+      <ApplicationAcceptanceAlert
+        applicantName={applicantName}
+        buttonIcon={<XCircle className="h-24 w-24" />}
+        color="red"
+        handleClick={handleJobApplicationUpdate}
+        isDisabled={isUpdateJobApplicationPending}
+        status={status}
+        updatedStatus="REJECTED"
+      />
     </div>
   );
 };

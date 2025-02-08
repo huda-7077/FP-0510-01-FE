@@ -18,6 +18,7 @@ export const AdminJobDetailsComponent = ({ jobId }: JobDetailsProps) => {
 
   const { data: job, isLoading: isJobLoading } = useGetJob({
     jobId,
+    companyId: user?.companyId || 0,
   });
 
   if (!job && !isJobLoading) {

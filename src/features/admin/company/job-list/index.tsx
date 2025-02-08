@@ -67,7 +67,7 @@ export const JobListComponent = () => {
       <div className="container mx-auto w-full">
         <div>
           <JobListHeader
-            totalJobs={jobs?.data.length || 0}
+            totalJobs={jobs?.meta.total || 0}
             jobCategories={validCategories}
             onCategoryChange={onCategoryChange}
             onSortChange={handleSortChange}

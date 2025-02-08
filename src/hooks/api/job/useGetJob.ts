@@ -4,13 +4,16 @@ import { useQuery } from "@tanstack/react-query";
 
 interface GetJobQuery {
   jobId: number;
+  companyId?: number;
 }
 
-const useGetJob = ({ jobId }: GetJobQuery) => {
+const useGetJob = ({ jobId, companyId }: GetJobQuery) => {
   return useQuery({
-    queryKey: ["jobs"],
+    queryKey: ["jobs", companyId],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<Job>(`/jobs/${jobId}`);
+      const { data } = await axiosInstance.get<Job>(`/jobs/${jobId}`, {
+        params: { companyId },
+      });
       return data;
     },
     enabled: !!jobId,
