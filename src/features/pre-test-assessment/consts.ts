@@ -1,6 +1,5 @@
 import { AssessmentQuestion } from "@/types/assessmentQuestion";
 import { UserAssessmentData } from "@/types/userAssessment";
-import { QueryObserverResult, RefetchOptions } from "@tanstack/react-query";
 import { toast } from "react-toastify";
 
 export const handleNextQuestion = async (
@@ -12,9 +11,6 @@ export const handleNextQuestion = async (
   currentQuestionIndex: number,
   setCurrentQuestionIndex: React.Dispatch<React.SetStateAction<number>>,
   router: any,
-  refetchUserAssessment: (
-    options?: RefetchOptions | undefined,
-  ) => Promise<QueryObserverResult<UserAssessmentData, Error>>,
   questions: AssessmentQuestion | undefined,
   setScore: React.Dispatch<React.SetStateAction<number>>,
   isAnswerCorrect: boolean,
@@ -29,8 +25,6 @@ export const handleNextQuestion = async (
         id: userAssessment.id,
         status: "ON_DOING",
       });
-
-      await refetchUserAssessment();
     } catch (error) {
       console.error("Error updating user assessment:", error);
       router.push("/");

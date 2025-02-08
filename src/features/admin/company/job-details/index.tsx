@@ -6,13 +6,20 @@ import useGetJob from "@/hooks/api/job/useGetJob";
 import { JobApplicationsList } from "./components/JobApplicationList";
 import JobDetailsBreadCrumb from "./components/JobDetailsBreadCrumb";
 import { JobDetailsHeader } from "./components/JobDetailsHeader";
+import { useSession } from "next-auth/react";
 
 interface JobDetailsProps {
   jobId: number;
 }
 
 export const AdminJobDetailsComponent = ({ jobId }: JobDetailsProps) => {
-  const { data: job, isLoading: isJobLoading } = useGetJob({ jobId });
+  const session = useSession();
+  const user = session.data && session.data.user;
+
+  const { data: job, isLoading: isJobLoading } = useGetJob({
+    jobId,
+    companyId: user?.companyId || 0,
+  });
 
   if (!job && !isJobLoading) {
     return (

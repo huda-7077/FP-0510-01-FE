@@ -2,7 +2,7 @@ import { axiosInstance } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
 interface GetJobCategoriesQuery {
-  companyId: number;
+  companyId?: number;
 }
 
 interface JobCategories {

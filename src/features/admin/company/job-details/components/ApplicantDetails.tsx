@@ -16,10 +16,8 @@ import {
 } from "lucide-react";
 import { ApplicationStatus } from "../consts";
 import ApplicantProfilePicture from "./ApplicantProfilePicture";
-import ApplicationShortlistButton from "./ApplicationShortlistButton";
 import ApplicationStatusBadge from "./ApplicationStatusBadge";
 import DownloadCVButton from "./DownloadCVButton";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ApplicantDetailsProps {
   applicant: JobApplication;
@@ -59,10 +57,6 @@ const ApplicantDetails = ({
                     {applicant.user.fullName}
                   </h2>
                   <div className="flex flex-col gap-3 sm:flex-row">
-                    <ApplicationShortlistButton
-                      className="bg-pink-600 hover:bg-pink-500"
-                      isDisabled={applicant.status !== "PENDING"}
-                    />
                     <DownloadCVButton
                       cvUrl={applicant.cvFile}
                       clasName="h-8 text-xs sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
