@@ -1,9 +1,8 @@
 import { DeveloperLayout } from "@/components/layouts/DeveloperLayout";
+import DeveloperAuthGuard from "@/hoc/DeveloperAuthGuard";
 
-export default async function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   return <DeveloperLayout>{children}</DeveloperLayout>;
-}
+};
+
+export default DeveloperAuthGuard(DashboardLayout);

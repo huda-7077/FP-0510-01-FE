@@ -1,6 +1,4 @@
-import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
-import { Check } from "lucide-react";
-import React, { FC } from "react";
+import { FC } from "react";
 import { getAssessmentStatusColor, getAssessmentStatusIcon } from "../consts";
 
 interface AssessmentBadgeProps {

@@ -16,10 +16,8 @@ import {
 } from "lucide-react";
 import { ApplicationStatus } from "../consts";
 import ApplicantProfilePicture from "./ApplicantProfilePicture";
-import ApplicationShortlistButton from "./ApplicationShortlistButton";
 import ApplicationStatusBadge from "./ApplicationStatusBadge";
 import DownloadCVButton from "./DownloadCVButton";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface ApplicantDetailsProps {
   applicant: JobApplication;
@@ -44,7 +42,7 @@ const ApplicantDetails = ({
           View Details
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[90vh] max-w-5xl overflow-y-auto rounded-2xl border-none p-0">
+      <DialogContent className="h-screen max-w-5xl overflow-y-auto border-none p-0 md:h-fit md:max-h-[90vh] md:rounded-2xl">
         <div className="flex flex-col">
           <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-8 sm:px-20">
             <div className="flex flex-col items-center gap-6 sm:flex-row md:justify-between">
@@ -59,10 +57,6 @@ const ApplicantDetails = ({
                     {applicant.user.fullName}
                   </h2>
                   <div className="flex flex-col gap-3 sm:flex-row">
-                    <ApplicationShortlistButton
-                      className="bg-pink-600 hover:bg-pink-500"
-                      isDisabled={applicant.status !== "PENDING"}
-                    />
                     <DownloadCVButton
                       cvUrl={applicant.cvFile}
                       clasName="h-8 text-xs sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
@@ -95,7 +89,7 @@ const ApplicantDetails = ({
               <span>Decision</span>
             </div>
           </div>
-          <div className="h-full bg-gray-50/70 p-8 sm:px-20">
+          <div className="bg-gray-50/70 p-8 sm:px-20">
             <div className="grid h-full gap-6 sm:mx-0 md:grid-cols-2">
               <Card className="border-2 shadow-none">
                 <CardContent className="p-6">

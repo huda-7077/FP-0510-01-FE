@@ -1,3 +1,4 @@
+import { AssessmentData } from "./assessment";
 import { Company } from "./company";
 
 export type JobStatus = "published" | "draft";
@@ -24,6 +25,6 @@ export interface Job {
       regency: string;
     };
   };
-
+  assessments: Pick<AssessmentData, "id" | "passingScore">[];
   company: Pick<Company, "name" | "logo" | "industry">;
 }
