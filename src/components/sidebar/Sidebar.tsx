@@ -1,16 +1,23 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { LogOut, LucideIcon, Menu, Plus, X } from "lucide-react";
-import Link from "next/link";
+import { LogOut, LucideIcon, Menu, X } from "lucide-react";
 import SidebarLink from "./components/SidebarLink";
 
 interface SidebarProps {
   links: { name: string; url: string; icon: LucideIcon }[];
   isOpen: boolean;
   onToggle: () => void;
+  dashboardName: string;
+  addOn?: JSX.Element;
 }
 
-const Sidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
+const Sidebar = ({
+  links,
+  isOpen,
+  onToggle,
+  dashboardName,
+  addOn,
+}: SidebarProps) => {
   return (
     <>
       <Button
@@ -35,20 +42,11 @@ const Sidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
           <div className="flex-1 space-y-2 overflow-y-auto p-4">
             <div className="mb-4">
               <p className="px-3 text-xs font-medium uppercase text-gray-500">
-                EMPLOYERS DASHBOARD
+                {dashboardName}
               </p>
             </div>
-            <Link
-              href="/dashboard/admin/jobs/create"
-              className="flex w-full sm:hidden"
-            >
-              <Button
-                variant="default"
-                className="w-full bg-blue-600 hover:bg-blue-800 md:flex"
-              >
-                <Plus className="mr-2 h-4 w-4" /> Post A Job
-              </Button>
-            </Link>
+
+            {addOn}
 
             <div className="space-y-2">
               {links.map((link, index) => (

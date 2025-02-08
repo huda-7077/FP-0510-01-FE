@@ -1,4 +1,5 @@
 import { Payment } from "./payment";
+import { User } from "./user";
 
 export interface Subscription {
   id: number;
@@ -8,6 +9,7 @@ export interface Subscription {
   status: SubscriptionStatus;
   createdAt: Date;
   payment: Payment;
+  user: Pick<User, "email" | "fullName">;
 }
 
 export enum SubscriptionStatus {

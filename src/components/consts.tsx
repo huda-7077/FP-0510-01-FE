@@ -1,4 +1,12 @@
-import { Building, Clock, FileStack, Luggage, User } from "lucide-react";
+import {
+  Building,
+  CircleDollarSign,
+  Clock,
+  CreditCard,
+  FileStack,
+  Luggage,
+  UserPlus,
+} from "lucide-react";
 
 export const adminSidebarLinks = [
   {
@@ -20,5 +28,23 @@ export const adminSidebarLinks = [
     name: "Interview Schedules",
     url: "/dashboard/admin/interview-schedules",
     icon: Clock,
+  },
+];
+
+export const developerSidebarLinks = [
+  {
+    name: "Subscriptions",
+    url: "/dashboard/developer/subscriptions",
+    icon: UserPlus,
+  },
+  {
+    name: "Payments",
+    url: "/dashboard/developer/payments",
+    icon: CreditCard,
+  },
+  {
+    name: "Subscription Categories",
+    url: "/dashboard/developer/subscription-categories",
+    icon: CircleDollarSign,
   },
 ];

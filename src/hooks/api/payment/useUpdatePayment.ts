@@ -24,7 +24,7 @@ const useUpdatePayment = () => {
       }
 
       const { data } = await axiosInstance.patch(
-        "/payments/update",
+        "/payments",
         updatePaymentForm,
       );
       return data;
