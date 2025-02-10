@@ -1,3 +1,5 @@
+import { Regency } from "./location";
+
 export interface CompanyLocation {
   id: number;
   companyId: number;
@@ -7,4 +9,5 @@ export interface CompanyLocation {
   latitude: string;
   longitude: string;
   createdAt: Date;
+  regency: Regency
 }

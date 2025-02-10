@@ -1,4 +1,15 @@
-import { Building, Clock, FileStack, Luggage, User } from "lucide-react";
+import {
+  BellRing,
+  Bookmark,
+  BriefcaseBusiness,
+  Building,
+  Clock,
+  FileStack,
+  Layers,
+  Luggage,
+  PencilLine,
+  Settings,
+} from "lucide-react";
 
 export const adminSidebarLinks = [
   {
@@ -20,5 +31,43 @@ export const adminSidebarLinks = [
     name: "Interview Schedules",
     url: "/dashboard/admin/interview-schedules",
     icon: Clock,
+  },
+  {
+    name: "Settings",
+    url: "/dashboard/admin/settings",
+    icon: Settings,
+  },
+];
+
+export const userSidebarLinks = [
+  {
+    name: "Overview",
+    url: "/dashboard/user/overview",
+    icon: Layers,
+  },
+  {
+    name: "Applied Jobs",
+    url: "/dashboard/user/apply-jobs",
+    icon: BriefcaseBusiness,
+  },
+  {
+    name: "Favorite Jobs",
+    url: "/dashboard/user/apply-jobs",
+    icon: Bookmark,
+  },
+  {
+    name: "Job Alerts",
+    url: "/dashboard/user/job-alerts",
+    icon: BellRing,
+  },
+  {
+    name: "Create CV",
+    url: "/dashboard/user/cv-generator",
+    icon: PencilLine,
+  },
+  {
+    name: "Settings",
+    url: "/dashboard/user/settings",
+    icon: Settings,
   },
 ];

@@ -17,7 +17,7 @@ export const useLogin = () => {
       window.location.href = lastPath;
     },
     onError: (error: any) => {
-      toast.error(error.response?.data || "Login failed");
+      toast.error(error.response?.data.message || "Login failed");
     },
   });
 };
