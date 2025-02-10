@@ -59,13 +59,13 @@ const CVGenerator = () => {
   return (
     <div className="container mx-auto p-4">
       <form onSubmit={formik.handleSubmit}>
-        <Card className="mx-auto w-full max-w-4xl bg-white shadow-sm">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold text-blue-600">
+        <div className="mx-auto w-full max-w-4xl bg-white shadow-sm space-y-3">
+          <div>
+            <h1 className="text-2xl font-bold text-blue-600">
               CV Generator
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-6">
+            </h1>
+          </div>
+          <div className="space-y-6">
             <div className="space-y-2">
               <Label className="font-semibold text-gray-700" htmlFor="fullName">
                 Full Name
@@ -241,7 +241,7 @@ const CVGenerator = () => {
                   </p>
                 )}
             </div>
-          </CardContent>
+          </div>
           <CardFooter>
             <Button
               type="submit"
@@ -250,7 +250,7 @@ const CVGenerator = () => {
               Generate CV
             </Button>
           </CardFooter>
-        </Card>
+        </div>
       </form>
       {showPDF && isClient && (
         <CVPreviewDialog

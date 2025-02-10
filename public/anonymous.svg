@@ -1,0 +1,35 @@
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2200 2200" width="2200" height="2200">
+	<title>anonymous</title>
+	<defs>
+		<radialGradient id="g1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(515.029,0,0,515.029,984.383,561.156)">
+			<stop offset="0" stop-color="#8cd3ff"/>
+			<stop offset=".013" stop-color="#8ad1fe"/>
+			<stop offset=".323" stop-color="#69a6eb"/>
+			<stop offset=".603" stop-color="#5186dd"/>
+			<stop offset=".837" stop-color="#4273d4"/>
+			<stop offset="1" stop-color="#3d6cd1"/>
+		</radialGradient>
+		<radialGradient id="g2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="matrix(326.648,398.304,-398.304,326.648,992.391,1348.713)">
+			<stop offset="0" stop-color="#8cd3ff"/>
+			<stop offset=".117" stop-color="#80c4f8"/>
+			<stop offset=".518" stop-color="#5c94e3"/>
+			<stop offset=".825" stop-color="#4577d6"/>
+			<stop offset="1" stop-color="#3d6cd1"/>
+		</radialGradient>
+	</defs>
+	<style>
+		.s0 { fill: #ffffff } 
+		.s1 { fill: url(#g1) } 
+		.s2 { fill: url(#g2) } 
+	</style>
+	<g id="Background">
+		<path fill-rule="evenodd" class="s0" d="m0 0h2200v2200h-2200z"/>
+		<rect width="2200" height="2200" id="Color Fill 1" style="fill: #d0e5f9"/>
+	</g>
+	<g id="Objects">
+		<g>
+			<path fill-rule="evenodd" class="s1" d="m1100 969.4c-181.4 0-328-146.7-328-328.1 0-181.4 146.6-328 328-328 181.4 0 328 146.6 328 328 0 181.4-146.6 328.1-328 328.1z"/>
+			<path class="s2" d="m1611.5 1766.5c-138.9 94.7-317.1 120.2-511.5 120.2-194.4 0-372.6-25.5-511.5-120.2-45.2-30.7-69.8-83.6-64.8-137.9 35.6-381.1 324.4-561 576.3-561 251.9 0 540.7 179.9 576.3 561 5 54.3-19.6 107.2-64.8 137.9z"/>
+		</g>
+	</g>
+</svg>

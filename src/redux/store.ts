@@ -1,12 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
 import userReducer from "./slices/userSlice";
 import verificationReducer from "./slices/verificationSlice";
+import verificationTimerReducer from "./slices/verificationTimerSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       user: userReducer,
       verification: verificationReducer,
+      verificationTime: verificationTimerReducer,
     },
   });
 };

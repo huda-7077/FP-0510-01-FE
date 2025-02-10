@@ -1,3 +1,6 @@
+import { Company } from "./company";
+import { WorkExperience } from "./workExperience";
+
 export type UserRole = "USER" | "ADMIN" | "DEVELOPER";
 export type UserGender = "MALE" | "FEMALE";
 
@@ -16,25 +19,36 @@ export interface User {
   profilePicture?: string;
   phoneNumber?: string;
   cvUrl?: string;
+  headline?: string;
+  skills?: string[];
   isVerified: boolean;
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
+  regency?: {
+    provinceId: number;
+    province?: {
+      id: number;
+      province: string;
+    };
+  };
+  experience?: WorkExperience[];
+  company?: Company;
 }
 
-export interface Company {
-  id: number;
-  name: string;
-  description: string;
-  industry: string;
-  logo: string;
-  links: string;
-  employeeCount: number;
-  establishedYear: number;
-  isDeleted: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-}
+// export interface Company {
+//   id: number;
+//   name: string;
+//   description: string;
+//   industry: string;
+//   logo: string;
+//   links: string;
+//   employeeCount: number;
+//   establishedYear: number;
+//   isDeleted: boolean;
+//   createdAt: Date;
+//   updatedAt: Date;
+// }
 
 export interface RegisterPayload {
   email: string;
