@@ -13,11 +13,13 @@ export const useLogin = () => {
       toast.success("Login successful");
       await signIn("credentials", { ...data, redirect: false });
       const lastPath = localStorage.getItem("lastPath") || "/";
-      console.log('Retrieved path:', lastPath);
+      console.log("Retrieved path:", lastPath);
       window.location.href = lastPath;
     },
     onError: (error: any) => {
-      toast.error(error.response?.data.message || "Login failed");
+      toast.error(
+        error.response?.data?.message || error.response?.data || "Login failed",
+      );
     },
   });
 };

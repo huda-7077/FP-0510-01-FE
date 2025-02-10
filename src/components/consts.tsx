@@ -3,12 +3,15 @@ import {
   Bookmark,
   BriefcaseBusiness,
   Building,
+  CircleDollarSign,
   Clock,
+  CreditCard,
   FileStack,
   Layers,
   Luggage,
   PencilLine,
   Settings,
+  UserPlus,
 } from "lucide-react";
 
 export const adminSidebarLinks = [
@@ -69,5 +72,23 @@ export const userSidebarLinks = [
     name: "Settings",
     url: "/dashboard/user/settings",
     icon: Settings,
+  },
+];
+
+export const developerSidebarLinks = [
+  {
+    name: "Subscriptions",
+    url: "/dashboard/developer/subscriptions",
+    icon: UserPlus,
+  },
+  {
+    name: "Payments",
+    url: "/dashboard/developer/payments",
+    icon: CreditCard,
+  },
+  {
+    name: "Subscription Categories",
+    url: "/dashboard/developer/subscription-categories",
+    icon: CircleDollarSign,
   },
 ];

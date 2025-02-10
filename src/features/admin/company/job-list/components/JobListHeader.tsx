@@ -13,12 +13,14 @@ import { useRef, useState } from "react";
 interface JobListHeaderProps {
   totalJobs: number;
   jobCategories: string[];
+  isDisabled: boolean;
   onCategoryChange: (category: string) => void;
   onSortChange: (sort: string) => void;
   onSearch: (searchQuery: string) => void;
 }
 
 export const JobListHeader = ({
+  isDisabled,
   totalJobs,
   jobCategories,
   onCategoryChange,
@@ -66,6 +68,7 @@ export const JobListHeader = ({
           <input
             ref={searchInputRef}
             type="text"
+            disabled={isDisabled}
             placeholder="Search job title..."
             onChange={(e) => onSearch(e.target.value)}
             className="h-9 w-full rounded-md border border-gray-200 bg-white pl-10 pr-8 text-sm outline-none placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
@@ -80,7 +83,7 @@ export const JobListHeader = ({
           )}
         </div>
         <div className="flex w-full flex-col items-center gap-3 sm:flex-row">
-          <Select onValueChange={onCategoryChange}>
+          <Select onValueChange={onCategoryChange} disabled={isDisabled}>
             <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[180px]">
               <SelectValue placeholder="All Categories" />
             </SelectTrigger>
@@ -94,7 +97,11 @@ export const JobListHeader = ({
             </SelectContent>
           </Select>
           <div className="flex w-full items-center gap-2">
-            <Select onValueChange={handleSortChange} value={selectedSort}>
+            <Select
+              onValueChange={handleSortChange}
+              value={selectedSort}
+              disabled={isDisabled}
+            >
               <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[160px]">
                 <SelectValue placeholder="Sort By" />
               </SelectTrigger>

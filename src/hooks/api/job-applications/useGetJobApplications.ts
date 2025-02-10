@@ -1,5 +1,4 @@
 import { axiosInstance } from "@/lib/axios";
-import { Job } from "@/types/job";
 import { JobApplication } from "@/types/jobApplication";
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";

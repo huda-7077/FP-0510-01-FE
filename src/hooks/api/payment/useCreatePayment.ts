@@ -15,7 +15,7 @@ const useCreatePayments = () => {
 
   return useMutation({
     mutationFn: async (payload: CreatePaymentsPayload) => {
-      const { data } = await axiosInstance.post("/payments/create", payload);
+      const { data } = await axiosInstance.post("/payments", payload);
       return data;
     },
     onSuccess: () => {

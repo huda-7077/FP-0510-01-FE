@@ -6,11 +6,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import useGetInitials from "@/hooks/useGetInitials";
 import { Plus } from "lucide-react";
+import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
 const Adminbar = () => {
+  const { data: session } = useSession();
+  const { getInitials } = useGetInitials();
+
   return (
     <nav className="sticky left-0 top-0 z-50 border-b bg-white">
       <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
@@ -37,14 +42,22 @@ const Adminbar = () => {
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                 <Avatar className="h-8 w-8">
-                  <AvatarImage src="/" alt="User" />
-                  <AvatarFallback>U</AvatarFallback>
+                  <AvatarImage
+                    src={session?.user.profilePicture}
+                    alt={session?.user.fullName}
+                  />
+                  <AvatarFallback>
+                    {getInitials(session?.user.fullName || "")}
+                  </AvatarFallback>
                 </Avatar>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end" forceMount>
               <DropdownMenuItem>Profile Settings</DropdownMenuItem>
-              <DropdownMenuItem className="text-red-600">
+              <DropdownMenuItem
+                className="cursor-pointer text-red-600"
+                onClick={() => signOut({ callbackUrl: "/login" })}
+              >
                 Logout
               </DropdownMenuItem>
             </DropdownMenuContent>

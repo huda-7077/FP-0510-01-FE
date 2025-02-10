@@ -1,5 +1,6 @@
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
 import { JobListComponent } from "@/features/admin/company/job-list";
+import AdminAuthGuard from "@/hoc/AdminAuthGuard";
 
 const JobList = () => {
   return (
@@ -9,4 +10,4 @@ const JobList = () => {
   );
 };
 
-export default JobList;
+export default AdminAuthGuard(JobList);
