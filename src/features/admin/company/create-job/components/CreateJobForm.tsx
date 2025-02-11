@@ -233,7 +233,6 @@ const CreateJobForm = () => {
             name="companyLocationId"
             label="Company Location"
             placeholder="Select Company Location"
-            companyId={companyId}
             formik={formik}
           />
 

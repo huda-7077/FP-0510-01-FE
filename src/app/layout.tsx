@@ -10,6 +10,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import { PathTracker } from "./path-tracker";
 import TokenProvider from "@/providers/TokenProvider";
+import "leaflet/dist/leaflet.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",

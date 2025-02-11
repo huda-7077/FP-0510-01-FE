@@ -1,4 +1,4 @@
-import { Company } from "./company";
+import { Regency } from "./location";
 
 export interface CompanyLocation {
   id: number;
@@ -9,9 +9,5 @@ export interface CompanyLocation {
   latitude: string;
   longitude: string;
   createdAt: Date;
-  regency: {
-    regency: string;
-    province: string;
-  };
-  company: Pick<Company, "name">;
+  regency: Regency;
 }

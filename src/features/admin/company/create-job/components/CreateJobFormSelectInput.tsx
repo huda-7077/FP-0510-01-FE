@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import useGetCompanyLocations from "@/hooks/api/company-location/useGetCompanyLocations";
+import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
 import { MapPin } from "lucide-react";
 import React from "react";
 
@@ -17,7 +17,6 @@ interface FormikSelectProps {
   name: string;
   label: string;
   placeholder?: string;
-  companyId: number; // Add companyId as a required prop
   formik: any; // Replace `any` with a proper Formik type if available
   className?: string;
 }
@@ -26,12 +25,11 @@ const CreateJobFormSelectInput: React.FC<FormikSelectProps> = ({
   name,
   label,
   placeholder = "Select company locations",
-  companyId,
   formik,
   className = "",
 }) => {
   const { data: companyLocations, isLoading: isCompanyLocationsLoading } =
-    useGetCompanyLocations({ companyId, take: 100 });
+    useGetCompanyLocations();
 
   return (
     <div className={`space-y-2 ${className}`}>
@@ -57,7 +55,7 @@ const CreateJobFormSelectInput: React.FC<FormikSelectProps> = ({
                 Loading...
               </SelectItem>
             ) : (
-              companyLocations?.data.map((location) => (
+              companyLocations?.map((location) => (
                 <SelectItem key={location.id} value={String(location.id)}>
                   {location.address}, {location.regency.regency}
                 </SelectItem>

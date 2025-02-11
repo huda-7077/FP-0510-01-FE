@@ -1,26 +1,24 @@
-import { axiosInstance } from "@/lib/axios";
+import useAxios from "@/hooks/useAxios";
 import { CompanyLocation } from "@/types/companyLocation";
-import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
 
-interface GetCompanyLocationsQuery extends PaginationQueries {
-  search?: string;
-  companyId: number;
-}
+export const useGetCompanyLocations = () => {
+  const { data: session } = useSession();
+  const { axiosInstance } = useAxios();
 
-const useGetCompanyLocations = (queries: GetCompanyLocationsQuery) => {
   return useQuery({
-    queryKey: ["company-locations", queries],
+    queryKey: ["companyLocations"],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<
-        PageableResponse<CompanyLocation>
-      >("/company-locations", {
-        params: queries,
+      const token = session?.user.token;
+      const { data } = await axiosInstance.get("/company-locations", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
-      return data;
+      return (data as CompanyLocation[]) || [];
     },
+    staleTime: 60000,
   });
 };
-
-export default useGetCompanyLocations;
