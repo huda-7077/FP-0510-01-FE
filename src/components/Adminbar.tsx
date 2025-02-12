@@ -11,8 +11,10 @@ import { Plus } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Adminbar = () => {
+  const router = useRouter();
   const { data: session } = useSession();
   const { getInitials } = useGetInitials();
 
@@ -21,12 +23,7 @@ const Adminbar = () => {
       <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
         <div className="flex items-center p-4">
           <Link href="/">
-            <Image
-              src="/logo-company.svg"
-              alt="logo"
-              width={125}
-              height={50}
-            />
+            <Image src="/logo-company.svg" alt="logo" width={125} height={50} />
           </Link>
         </div>
 
@@ -34,6 +31,7 @@ const Adminbar = () => {
           <Button
             variant="default"
             className="hidden bg-blue-600 hover:bg-blue-800 md:flex"
+            onClick={() => router.push("/dashboard/admin/jobs/create")}
           >
             <Plus className="mr-2 h-4 w-4" /> Post A Job
           </Button>

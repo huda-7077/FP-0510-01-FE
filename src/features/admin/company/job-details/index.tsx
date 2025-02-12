@@ -3,10 +3,10 @@
 import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import { JobDetailsHeaderSkeleton } from "@/components/skeletons/JobDetailsHeaderSkeleton";
 import useGetJob from "@/hooks/api/job/useGetJob";
+import { useSession } from "next-auth/react";
 import { JobApplicationsList } from "./components/JobApplicationList";
 import JobDetailsBreadCrumb from "./components/JobDetailsBreadCrumb";
 import { JobDetailsHeader } from "./components/JobDetailsHeader";
-import { useSession } from "next-auth/react";
 
 interface JobDetailsProps {
   jobId: number;

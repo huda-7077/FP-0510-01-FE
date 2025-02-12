@@ -49,7 +49,6 @@ const RichTextEditor: FC<RichTextEditorProps> = ({
 
   return (
     <div className="flex flex-col space-y-2">
-      <label className="text-sm">{label}</label>
       <div
         ref={editorRef}
         className="border-gray-300"

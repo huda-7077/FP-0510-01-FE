@@ -9,14 +9,14 @@ interface GetJobQuery {
 
 const useGetJob = ({ jobId, companyId }: GetJobQuery) => {
   return useQuery({
-    queryKey: ["jobs", companyId],
+    queryKey: ["jobs", companyId, jobId], // Include both companyId and jobId in the queryKey
     queryFn: async () => {
       const { data } = await axiosInstance.get<Job>(`/jobs/${jobId}`, {
         params: { companyId },
       });
       return data;
     },
-    enabled: !!jobId,
+    enabled: !!jobId, // Ensure the query only runs if jobId is defined
   });
 };
 

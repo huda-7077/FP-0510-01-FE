@@ -10,15 +10,24 @@ export const useGetCompanyLocations = () => {
   return useQuery({
     queryKey: ["companyLocations"],
     queryFn: async () => {
-      const token = session?.user.token;
-      const { data } = await axiosInstance.get("/company-locations", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      try {
+        const token = session?.user?.token;
 
-      return (data as CompanyLocation[]) || [];
+        const { data } = await axiosInstance.get("/company-locations", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!Array.isArray(data)) {
+          throw new Error("Invalid data format received from the server");
+        }
+
+        return data as CompanyLocation[];
+      } catch (error) {
+        console.error("Error fetching company locations:", error);
+        throw error; // Re-throw the error for React Query to handle
+      }
     },
-    staleTime: 60000,
   });
 };

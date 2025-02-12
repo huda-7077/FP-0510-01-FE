@@ -1,5 +1,5 @@
 "use client";
-
+import { useEffect, useRef, useState } from "react";
 import PaginationSection from "@/components/PaginationSection";
 import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 import useGetJobCategories from "@/hooks/api/job/useGetJobCategories";
@@ -9,23 +9,30 @@ import { useDebounce } from "use-debounce";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
 import { useSession } from "next-auth/react";
+import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
 
 export const JobListComponent = () => {
   const session = useSession();
   const user = session.data && session.data.user;
 
+  // Query states
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "id" });
-  const [debouncedSearch] = useDebounce(search, 500);
   const [category, setCategory] = useQueryState("category", {
     defaultValue: "",
   });
 
+  const [debouncedSearch] = useDebounce(search, 500);
+
   const { data: jobCategories, isPending: isJobCategoriesPending } =
     useGetJobCategories({ companyId: user?.companyId });
 
-  const { data: jobs, isPending: isJobsPending } = useGetJobs({
+  const {
+    data: jobs,
+    isPending: isJobsPending,
+    refetch: refetchJobs,
+  } = useGetJobs({
     page,
     sortOrder: "asc",
     sortBy,
@@ -34,6 +41,15 @@ export const JobListComponent = () => {
     companyId: user?.companyId,
     search: debouncedSearch,
   });
+
+  const [triggerRefetch, setTriggerRefetch] = useState(false);
+
+  useEffect(() => {
+    if (triggerRefetch) {
+      refetchJobs();
+      setTriggerRefetch(false);
+    }
+  }, [triggerRefetch, refetchJobs]);
 
   const onChangePage = (page: number) => {
     setPage(page);
@@ -59,8 +75,11 @@ export const JobListComponent = () => {
   };
 
   const validCategories = jobCategories?.data ?? [];
-
   const isLoadingData = isJobsPending && isJobCategoriesPending;
+
+  const notifyDatabaseChange = () => {
+    setTriggerRefetch(true);
+  };
 
   return (
     <div className="px-4 py-4">
@@ -74,14 +93,18 @@ export const JobListComponent = () => {
             onSearch={handleSearch}
             isDisabled={isJobCategoriesPending}
           />
-
           <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-2 md:mt-8">
             {isLoadingData &&
               Array.from({ length: 3 }).map((_, index) => (
                 <JobCardSkeleton key={index} />
               ))}
-
-            {jobs?.data.map((job) => <JobCard key={job.id} job={job} />)}
+            {jobs?.data.map((job) => (
+              <JobCard
+                key={job.id}
+                job={job}
+                notifyDatabaseChange={notifyDatabaseChange}
+              />
+            ))}
           </div>
         </div>
         {jobs && jobs.data.length > 0 && jobs.meta.total > jobs.meta.take && (
