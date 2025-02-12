@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import React, { useState } from "react";
 import { Tags } from "lucide-react";
 
-interface TagsInputProps {
+interface EditJobFormTagInputProps {
   label: string;
   placeholder?: string;
   value: string[];
@@ -14,7 +14,7 @@ interface TagsInputProps {
   onChange: (tags: string[]) => void;
 }
 
-const TagsInput: React.FC<TagsInputProps> = ({
+const TagsInput: React.FC<EditJobFormTagInputProps> = ({
   label,
   placeholder = "Enter tags",
   value,

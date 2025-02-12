@@ -1,6 +1,18 @@
 "use client";
 
+import DeleteLoadingScreen from "@/components/loading-screen/DeleteLoadingScreen";
 import MarkDown from "@/components/Markdown";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -8,30 +20,66 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
-import useGetAssessmentPath from "@/hooks/assessment/useGetAssessmentPath";
+import useDeleteJob from "@/hooks/api/job/useDeleteJob";
+import useGetAssessmentPath from "@/hooks/useGetAssessmentPath";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { Job } from "@/types/job";
-import { Calendar, Clock, MapPin, MoreVertical } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  MapPin,
+  MoreVertical,
+  Pen,
+  PenSquare,
+  Trash2,
+} from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "react-toastify";
 import { AssessmentStatusBadge } from "../../job-list/components/AssessmentStatusBadge";
 import { JobStatusBadge } from "../../job-list/components/JobStatusBadge";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface JobDetailsHeaderProps {
   job: Job;
 }
 
 export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
+  const router = useRouter();
+  const { mutateAsync: deleteJob, isPending: isDeleteJobPending } =
+    useDeleteJob();
+
   const { data: assessment } = useGetAssessments({
     jobId: job.id,
   });
 
   const { formatLongDate } = useLongDateFormatter();
+
   const { getAssessmentPath } = useGetAssessmentPath(
     (assessment && assessment?.data.length) || 0,
     job.id.toString(),
   );
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleJobDelete = async (event: React.MouseEvent) => {
+    try {
+      await deleteJob(job.id);
+      setIsDialogOpen(false);
+      document.body.style.pointerEvents = "auto";
+      router.push("/dashboard/admin/jobs");
+      toast.success("Job Deleted Successfully");
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed Updating Job");
+    }
+  };
+
+  if (isDeleteJobPending) {
+    return <DeleteLoadingScreen message="Deleting Job..." />;
+  }
 
   return (
     <div className="space-y-4 rounded-lg bg-white">
@@ -49,12 +97,15 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 space-y-1 p-2">
-            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100">
-              Edit Job Details
-            </DropdownMenuItem>
+            <Link href={`/dashboard/admin/jobs/edit/${job.id}`}>
+              <DropdownMenuItem className="cursor-pointer rounded-md p-2 text-sm font-medium transition-colors hover:bg-gray-100">
+                <PenSquare /> Edit Job Details
+              </DropdownMenuItem>
+            </Link>
             {job.requiresAssessment && (
               <Link href={getAssessmentPath}>
-                <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100">
+                <DropdownMenuItem className="cursor-pointer rounded-md px-2 text-sm font-medium transition-colors hover:bg-gray-100">
+                  <Pen />
                   {assessment && assessment.data.length > 0
                     ? "Edit "
                     : "Create "}
@@ -62,8 +113,43 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
                 </DropdownMenuItem>
               </Link>
             )}
-            <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50">
-              Delete Job
+            <DropdownMenuItem
+              className="m-0 rounded-md p-0"
+              onSelect={(e) => e.preventDefault()}
+            >
+              <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    className="m-0 flex w-full cursor-pointer justify-start border-none px-2 text-sm font-medium text-red-600 shadow-none hover:bg-red-50 hover:text-red-600"
+                  >
+                    <Trash2 /> Delete Job
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action will delete your job vacancy and remove your
+                      data from the list. if you accidentaly delete your data,
+                      you can contact the developer to recover it.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel disabled={isDeleteJobPending}>
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={handleJobDelete}
+                      disabled={isDeleteJobPending}
+                    >
+                      {isDeleteJobPending ? "Deleting..." : "Continue"}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import React from "react";
 
-interface CreateJobFormInputProps {
+interface EditJobFormInputProps {
   name: string;
   label: string;
   placeholder?: string;
@@ -16,7 +16,7 @@ interface CreateJobFormInputProps {
   isDisabled: boolean;
 }
 
-const CreateJobFormInput: React.FC<CreateJobFormInputProps> = ({
+const EditJobFormInput: React.FC<EditJobFormInputProps> = ({
   name,
   label,
   placeholder = "",
@@ -57,4 +57,4 @@ const CreateJobFormInput: React.FC<CreateJobFormInputProps> = ({
   );
 };
 
-export default CreateJobFormInput;
+export default EditJobFormInput;

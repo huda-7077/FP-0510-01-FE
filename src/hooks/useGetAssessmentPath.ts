@@ -5,7 +5,7 @@ const useGetAssessmentPath = (assessmentLength: number, jobId: string) => {
 
   const getAssessmentPath = useMemo(() => {
     const action =
-      assessmentLength > 0 ? `/update/${jobId}` : `/create/${jobId}`;
+      assessmentLength <= 0 ? `/create/${jobId}` : `/update/${jobId}`;
     return baseUrl + action;
   }, [assessmentLength, jobId]);
 

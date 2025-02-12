@@ -1,9 +1,12 @@
 "use client";
+import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import useCreateJob, { CreateJobPayload } from "@/hooks/api/job/useCreateJob";
+import useGetJob from "@/hooks/api/job/useGetJob";
+import useUpdateJob, { UpdateJobPayload } from "@/hooks/api/job/useUpdateJob";
+import useFormatTitleCase from "@/hooks/useFormatTitleCase";
 import { formatISO } from "date-fns";
 import { useFormik } from "formik";
 import {
@@ -19,61 +22,70 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
-import CreateJobFormHeader from "./CreateJobFormHeader";
-import CreateJobFormInput from "./CreateJobFormInput";
-import CreateJobFormSelectInput from "./CreateJobFormSelectInput";
-import TagsInput from "./CreateJobFormTagInput";
-import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { createJobSchema } from "../schemas";
-import useFormatTitleCase from "@/hooks/useFormatTitleCase";
+import EditJobFormHeader from "./EditJobFormHeader";
+import EditJobFormInput from "./EditJobFormInput";
+import EditJobFormSelectInput from "./EditJobFormSelectInput";
+import TagsInput from "./EditJobFormTagInput";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
+import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
 });
 
-const CreateJobForm = () => {
+interface EditJobFormProps {
+  id: number;
+}
+
+const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
   const router = useRouter();
   const { data: session, status } = useSession();
   const user = session?.user;
   const companyId = user?.companyId || 0;
 
-  const [selectedImage, setSelectedImage] = useState<string>("");
-  const [isPublished, setIsPublished] = useState<boolean>(false);
-  const [requiresAssessment, setRequiresAssessment] = useState<boolean>(false);
-
-  const bannerImageReff = useRef<HTMLInputElement>(null);
+  // State Management
+  const [selectedImage, setSelectedImage] = useState("");
+  const [isPublished, setIsPublished] = useState(false);
+  const [requiresAssessment, setRequiresAssessment] = useState(false);
+  const bannerImageReff = useRef<HTMLInputElement | null>(null);
 
   const { formatTitleCase } = useFormatTitleCase();
 
-  useEffect(() => {
-    if (requiresAssessment) {
-      setIsPublished(false);
-    }
-  }, [isPublished, requiresAssessment]);
+  // Fetch Job Data
+  const { data: job, isPending: isJobPending } = useGetJob({
+    jobId: id,
+    companyId,
+  });
 
-  const { mutateAsync: createJob, isPending: isCreateJobPending } =
-    useCreateJob();
+  // Update Job Mutation
+  const { mutateAsync: updateJob, isPending: isUpdateJobPending } =
+    useUpdateJob(id);
 
+  const { data: companyLocations, isLoading: isCompanyLocationsLoading } =
+    useGetCompanyLocations();
+
+  // Formik Initialization
   const formik = useFormik({
     initialValues: {
-      companyId,
+      companyId: 0,
       title: "",
       description: "",
       bannerImage: null,
       category: "",
       salary: 0,
-      tags: [],
+      tags: [] as string[],
       applicationDeadline: "",
-      isPublished,
-      requiresAssessment,
-      companyLocationId: "",
+      isPublished: false,
+      requiresAssessment: false,
+      companyLocationId: 0,
     },
     validationSchema: createJobSchema,
     onSubmit: async (values) => {
       try {
-        const payload: CreateJobPayload = {
+        const payload: UpdateJobPayload = {
           companyId,
           title: values.title,
           description: values.description,
@@ -86,9 +98,9 @@ const CreateJobForm = () => {
           requiresAssessment,
           companyLocationId: Number(values.companyLocationId),
         };
-        const newJob = await createJob(payload);
-        router.push(`/dashboard/admin/jobs/${newJob.id}`);
-        toast.success("Job Created Successfully");
+        const updatedJob = await updateJob(payload);
+        router.push(`/dashboard/admin/jobs/${updatedJob.id}`);
+        toast.success("Job Updated Successfully");
       } catch (error) {
         console.log(error);
         toast.error((error as Error).toString());
@@ -96,9 +108,45 @@ const CreateJobForm = () => {
     },
   });
 
-  if (status === "loading") {
-    return <LoadingScreen />;
-  }
+  useEffect(() => {
+    if (!isJobPending && job) {
+      const applicationDeadline = job.applicationDeadline
+        ? !isNaN(new Date(job.applicationDeadline).getTime())
+          ? new Date(
+              new Date(job.applicationDeadline).getTime() -
+                new Date().getTimezoneOffset() * 60000,
+            )
+              .toISOString()
+              .slice(0, 10)
+          : ""
+        : "";
+
+      // Reset Formik Values
+      formik.resetForm({
+        values: {
+          companyId: job.companyId,
+          title: job.title || "",
+          description: job.description || "",
+          bannerImage: null,
+          category: job.category || "",
+          salary: job.salary || 0,
+          tags: job.tags || [],
+          applicationDeadline,
+          isPublished: job.isPublished,
+          requiresAssessment: job.requiresAssessment,
+          companyLocationId: job.companyLocationId,
+        },
+      });
+
+      setSelectedImage(job.bannerImage || "");
+      setIsPublished(job.isPublished);
+      setRequiresAssessment(job.requiresAssessment);
+
+      if (bannerImageReff.current) {
+        bannerImageReff.current.value = "";
+      }
+    }
+  }, [job, isJobPending, id]);
 
   const onChangeThumbnail = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -116,9 +164,17 @@ const CreateJobForm = () => {
     }
   };
 
+  if (status === "loading" || isJobPending || isCompanyLocationsLoading) {
+    return <LoadingScreen />;
+  }
+
+  if (!job) {
+    return <DataNotFound />;
+  }
+
   return (
     <div className="p-4 md:p-8">
-      <CreateJobFormHeader />
+      <EditJobFormHeader />
       <form onSubmit={formik.handleSubmit}>
         <div className="space-y-8">
           {/* Banner Image Preview */}
@@ -147,7 +203,7 @@ const CreateJobForm = () => {
                 type="file"
                 accept="image/*"
                 onChange={onChangeThumbnail}
-                disabled={isCreateJobPending}
+                disabled={isUpdateJobPending}
                 className="border-blue-100 bg-white hover:cursor-pointer focus:border-blue-500 focus:ring-blue-200"
               />
               {selectedImage && (
@@ -168,14 +224,14 @@ const CreateJobForm = () => {
             )}
           </div>
 
-          <CreateJobFormInput
+          <EditJobFormInput
             name="title"
             label="Job Title"
             placeholder="Ex. Junior Software Engineer"
             formik={formik}
             icon={<Tag size={18} />}
             isNotEmpty={true}
-            isDisabled={isCreateJobPending}
+            isDisabled={isUpdateJobPending}
           />
 
           <div className="space-y-2">
@@ -199,16 +255,16 @@ const CreateJobForm = () => {
           </div>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <CreateJobFormInput
+            <EditJobFormInput
               name="category"
               label="Job Category"
               placeholder="Ex. Software Development"
               formik={formik}
               icon={<LibraryBig size={18} />}
               isNotEmpty={true}
-              isDisabled={isCreateJobPending}
+              isDisabled={isUpdateJobPending}
             />
-            <CreateJobFormInput
+            <EditJobFormInput
               name="salary"
               label="Salary"
               placeholder="10000000"
@@ -216,9 +272,9 @@ const CreateJobForm = () => {
               type="number"
               icon={<DollarSign size={18} />}
               isNotEmpty={false}
-              isDisabled={isCreateJobPending}
+              isDisabled={isUpdateJobPending}
             />
-            <CreateJobFormInput
+            <EditJobFormInput
               name="applicationDeadline"
               label="Application Deadline"
               placeholder="Choose when the job application ends"
@@ -226,7 +282,7 @@ const CreateJobForm = () => {
               formik={formik}
               icon={<Calendar size={18} />}
               isNotEmpty={true}
-              isDisabled={isCreateJobPending}
+              isDisabled={isUpdateJobPending}
             />
           </div>
 
@@ -237,15 +293,16 @@ const CreateJobForm = () => {
             formik={formik}
             onChange={(tags: string[]) => formik.setFieldValue("tags", tags)}
             isNotEmpty={true}
-            isDisabled={isCreateJobPending}
+            isDisabled={isUpdateJobPending}
           />
 
-          <CreateJobFormSelectInput
+          <EditJobFormSelectInput
             name="companyLocationId"
             label="Company Location"
             placeholder="Select Company Location"
+            companyLocations={companyLocations || []}
             formik={formik}
-            isDisabled={isCreateJobPending}
+            isDisabled={isUpdateJobPending}
           />
 
           <div className="flex flex-col justify-between gap-4 sm:flex-row">
@@ -253,7 +310,7 @@ const CreateJobForm = () => {
               <div className="flex items-center space-x-2">
                 <Switch
                   id="require-assessment"
-                  disabled={isCreateJobPending}
+                  disabled={isUpdateJobPending}
                   checked={requiresAssessment}
                   onCheckedChange={setRequiresAssessment}
                 />
@@ -264,7 +321,7 @@ const CreateJobForm = () => {
                   id="is-publish"
                   checked={isPublished}
                   onCheckedChange={setIsPublished}
-                  disabled={requiresAssessment || isCreateJobPending}
+                  disabled={requiresAssessment || isUpdateJobPending}
                 />
                 <Label
                   htmlFor="is-publish"
@@ -276,10 +333,10 @@ const CreateJobForm = () => {
             </div>
             <Button
               type="submit"
-              disabled={isCreateJobPending}
+              disabled={isUpdateJobPending}
               className="w-full bg-blue-600 hover:bg-blue-700 sm:w-fit"
             >
-              {isCreateJobPending ? "Creating Job..." : "Create Job"}
+              {isUpdateJobPending ? "Updating Job..." : "Edit Job"}
             </Button>
           </div>
         </div>
@@ -288,4 +345,4 @@ const CreateJobForm = () => {
   );
 };
 
-export default CreateJobForm;
+export default EditJobForm;
