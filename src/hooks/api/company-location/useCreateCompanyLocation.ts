@@ -26,7 +26,7 @@ const useCreateCompanyLocation = () => {
       return response.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["companyLocations"] });
+      queryClient.invalidateQueries({ queryKey: ["company-locations"] });
       toast.success("Location added successfully");
     },
     onError: (error: any) => {

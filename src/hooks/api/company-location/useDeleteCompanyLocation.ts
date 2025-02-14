@@ -19,7 +19,7 @@ export const useDeleteCompanyLocation = () => {
     },
     onSuccess: () => {
       toast.success("company location deleted");
-      queryClient.invalidateQueries({ queryKey: ["companyLocations"] });
+      queryClient.invalidateQueries({ queryKey: ["company-locations"] });
     },
     onError: () => {
       toast.error("Failed to delete company location");

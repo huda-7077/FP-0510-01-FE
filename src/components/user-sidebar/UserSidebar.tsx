@@ -27,7 +27,7 @@ const UserSidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
 
       <div
         className={cn(
-          "fixed inset-y-0 left-0 top-16 z-30 h-[calc(100vh-65px)] w-64 transform border-r border-gray-200 bg-white ps-4 transition-transform duration-200 ease-in-out lg:sticky lg:translate-x-0",
+          "fixed inset-y-0 left-0 top-32 z-30 h-[calc(100vh-65px)] w-64 transform border-r border-gray-200 bg-white ps-4 transition-transform duration-200 ease-in-out lg:sticky lg:translate-x-0",
           !isOpen && "-translate-x-full",
         )}
       >

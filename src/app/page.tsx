@@ -1,11 +1,11 @@
-import { Navbar } from "@/components/Navbar";
-import Image from "next/image";
+import Navbar from "@/components/Navbar";
+import HomePage from "@/features/home";
 
 export default function Home() {
   return (
     <div>
       <Navbar />
-      <div className="flex h-screen flex-col items-center justify-center">
+      {/* <div className="flex h-screen flex-col items-center justify-center">
         <Image
           src="/logo.svg"
           alt="logo"
@@ -19,7 +19,8 @@ export default function Home() {
         <h1 className="text-center text-3xl font-bold">
           This Site is Under Construction
         </h1>
-      </div>
+      </div> */}
+      <HomePage />
     </div>
   );
 }
