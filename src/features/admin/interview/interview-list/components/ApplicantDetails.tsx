@@ -1,12 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { JobApplication } from "@/types/jobApplication";
 import {
@@ -36,7 +30,7 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
     <Dialog>
       {/* Trigger Button */}
       <DialogTrigger asChild onClick={(e) => e.stopPropagation()}>
-        <Button className="flex w-full justify-start border-none bg-transparent p-0 text-start text-black shadow-none hover:bg-transparent hover:text-black">
+        <Button className="flex h-full w-full justify-start border-none bg-transparent p-0 text-start text-black shadow-none hover:bg-transparent hover:text-black">
           <Eye className="h-4 w-4" />
           View Applicant Details
         </Button>

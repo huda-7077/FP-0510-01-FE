@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import React, { FC } from "react";
+import { FC } from "react";
 import CreateInterviewForm from "./components/CreateInterviewForm";
 
 interface CreateInterviewComponentProps {

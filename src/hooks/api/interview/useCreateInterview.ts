@@ -4,7 +4,7 @@ import { AxiosError } from "axios";
 
 export interface CreateInterviewPayload {
   jobApplicationId: number;
-  scheduledDate: Date;
+  scheduledDate: string;
   interviewerName: string;
   location: string;
   meetingLink?: string;

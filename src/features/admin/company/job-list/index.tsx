@@ -111,10 +111,10 @@ export const JobListComponent = () => {
             ))}
             {jobs?.data && jobs.data.length <= 0 && !isJobsPending && (
               <DataNotFound
-                message="Go to Job List and check on job appliaction list to create a new interview schedule"
-                title="No Scheduled Interview Found"
-                actionLabel="Go to Job List"
-                onAction={() => router.push("/dashboard/admin/jobs")}
+                message="Please create a job by pressing button below."
+                title="No Job Found"
+                actionLabel="Post A Job"
+                onAction={() => router.push("/dashboard/admin/jobs/create")}
               />
             )}
           </div>

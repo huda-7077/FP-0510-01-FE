@@ -3,32 +3,34 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
-export interface UpdateAssessmentPayload {
+export interface UpdateIntervewPayload {
   id: number;
-  title?: string;
-  description?: string;
-  passingScore?: number;
-  status?: string;
+  isDeleted: boolean;
+  jobApplicationId: number;
+  scheduledDate: string;
+  interviewerName: string;
+  location: string;
+  meetingLink?: string | null;
+  notes?: string | null;
 }
 
-const useUpdateAssessment = () => {
+const useUpdateInterview = () => {
   const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
 
   return useMutation({
-    mutationFn: async (payload: UpdateAssessmentPayload) => {
+    mutationFn: async (payload: UpdateIntervewPayload) => {
       const { id, ...dataToUpdate } = payload;
       const { data } = await axiosInstance.patch(
-        `/assessments/${id}`,
+        `/interviews/${id}`,
         dataToUpdate,
       );
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["assessments"] });
-      console.log("Assessments Updated Successfullly");
+      queryClient.invalidateQueries({ queryKey: ["interviews"] });
+      console.log("Interview Updated Successfullly");
     },
-
     onError: (error: AxiosError<any>) => {
       const errorMessage =
         error.response?.data?.message ||
@@ -39,4 +41,4 @@ const useUpdateAssessment = () => {
   });
 };
 
-export default useUpdateAssessment;
+export default useUpdateInterview;

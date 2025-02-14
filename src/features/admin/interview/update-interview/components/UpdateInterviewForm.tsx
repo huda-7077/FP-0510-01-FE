@@ -1,63 +1,72 @@
 "use client";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
+import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
-import useCreateInterview, {
-  CreateInterviewPayload,
-} from "@/hooks/api/interview/useCreateInterview";
+import useGetInterview from "@/hooks/api/interview/useGetInterview";
+import useUpdateInterview, {
+  UpdateIntervewPayload,
+} from "@/hooks/api/interview/useUpdateInterview";
+import useFormatDateForDateTimeLocal from "@/hooks/useFormatDateForDateTimeLocal";
 import { formatISO } from "date-fns";
 import { useFormik } from "formik";
 import { Calendar, Clipboard, Link, MapPin, User2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { createInterviewSchema } from "../schemas";
-import CreateInterviewFormHeader from "./CreateInterviewFormHeader";
-import CreateInterviewFormInput from "./CreateInterviewFormInput";
+import { updateInterviewSchema } from "../schemas";
+import UpdateInterviewFormHeader from "./UpdateInterviewFormHeader";
+import UpdateInterviewFormInput from "./UpdateInterviewFormInput";
 
-interface CreateInterviewFormProps {
-  jobApplicationId: number;
+interface UpdateInterviewFormProps {
+  id: number;
 }
 
-const CreateInterviewForm: FC<CreateInterviewFormProps> = ({
-  jobApplicationId,
-}) => {
+const UpdateInterviewForm: FC<UpdateInterviewFormProps> = ({ id }) => {
   const router = useRouter();
   const [isOnline, setIsOnline] = useState<boolean>(false);
-
-  const { mutateAsync: createInterview, isPending: isCreateInterviewPending } =
-    useCreateInterview();
+  const [isInitialized, setIsInitialized] = useState<boolean>(false); // Track initialization
+  const { formatDateForDateTimeLocal } = useFormatDateForDateTimeLocal();
+  const { data: interview, isPending: isInterviewPending } = useGetInterview({
+    id,
+  });
+  const { mutateAsync: updateInterview, isPending: isUpdateInterviewPending } =
+    useUpdateInterview();
 
   const getValidationSchema = () => {
     return isOnline
-      ? createInterviewSchema.omit(["location"])
-      : createInterviewSchema;
+      ? updateInterviewSchema.omit(["location"])
+      : updateInterviewSchema;
   };
 
   const formik = useFormik({
     initialValues: {
-      jobApplicationId,
+      jobApplicationId: 0,
       scheduledDate: "",
       interviewerName: "",
       location: "",
       meetingLink: "",
       notes: "",
+      isDeleted: false,
     },
     validationSchema: getValidationSchema(),
     onSubmit: async (values) => {
       try {
-        const payload: CreateInterviewPayload = {
-          jobApplicationId,
+        const payload: UpdateIntervewPayload = {
+          id,
+          jobApplicationId: interview?.jobApplicationId || 0,
           scheduledDate: formatISO(new Date(values.scheduledDate)),
           interviewerName: values.interviewerName,
           location: isOnline ? "Online" : values.location,
-          meetingLink: isOnline ? values.meetingLink : undefined,
+          meetingLink: isOnline ? values.meetingLink : "", // Explicitly set to null if not online
           notes: values.notes ?? undefined,
+          isDeleted: false,
         };
-        await createInterview(payload);
+        await updateInterview(payload);
         router.push(`/dashboard/admin/interviews`);
-        toast.success("Interview Created Successfully");
+        toast.success("Interview Updated Successfully");
       } catch (error) {
         console.log(error);
         toast.error((error as Error).toString());
@@ -66,56 +75,90 @@ const CreateInterviewForm: FC<CreateInterviewFormProps> = ({
   });
 
   useEffect(() => {
+    if (!isInterviewPending && interview && !isInitialized) {
+      if (interview.location === "Online") {
+        setIsOnline(true);
+      }
+      setIsInitialized(true); // Mark as initialized
+    }
+  }, [interview, isInterviewPending, isInitialized]);
+
+  useEffect(() => {
+    if (!isInterviewPending && interview) {
+      formik.resetForm({
+        values: {
+          jobApplicationId: interview.jobApplicationId || 0,
+          scheduledDate: formatDateForDateTimeLocal(interview.scheduledDate),
+          interviewerName: interview.interviewerName,
+          location: isOnline ? "Online" : interview.location,
+          meetingLink:
+            isOnline && interview.meetingLink ? interview.meetingLink : "",
+          notes: interview.notes || "",
+          isDeleted: false,
+        },
+      });
+    }
+  }, [interview, isInterviewPending, id, isOnline]);
+
+  useEffect(() => {
     formik.validateForm();
   }, [isOnline]);
 
+  if (isInterviewPending) {
+    return <LoadingScreen />;
+  }
+
+  if (!interview) {
+    return <DataNotFound />;
+  }
+
   return (
     <div className="p-4 md:p-8">
-      <CreateInterviewFormHeader />
+      <UpdateInterviewFormHeader />
       <form onSubmit={formik.handleSubmit}>
         <div className="space-y-8">
           <div className="grid grid-cols-4 gap-2">
-            <CreateInterviewFormInput
+            <UpdateInterviewFormInput
               name="scheduledDate"
               label="Schedule Date"
               type="datetime-local"
               formik={formik}
               icon={<Calendar size={18} />}
               isNotEmpty={true}
-              isDisabled={isCreateInterviewPending}
+              isDisabled={isUpdateInterviewPending}
             />
             <div className="col-span-3">
-              <CreateInterviewFormInput
+              <UpdateInterviewFormInput
                 name="interviewerName"
                 label="Interviewer Name"
                 placeholder="Ex. John Doe"
                 formik={formik}
                 icon={<User2 size={18} />}
                 isNotEmpty={true}
-                isDisabled={isCreateInterviewPending}
+                isDisabled={isUpdateInterviewPending}
               />
             </div>
           </div>
           <div className="col-span-3 space-y-4">
             {isOnline ? (
-              <CreateInterviewFormInput
+              <UpdateInterviewFormInput
                 name="meetingLink"
                 label="Meeting Link"
                 placeholder="Ex. https://us05web.zoom.us/j/..."
                 formik={formik}
                 icon={<Link size={18} />}
                 isNotEmpty={true}
-                isDisabled={!isOnline || isCreateInterviewPending}
+                isDisabled={!isOnline || isUpdateInterviewPending}
               />
             ) : (
-              <CreateInterviewFormInput
+              <UpdateInterviewFormInput
                 name="location"
                 label="Location"
                 placeholder="Ex. Pacific Building 4th Floor, Yogyakarta"
                 formik={formik}
                 icon={<MapPin size={18} />}
                 isNotEmpty={true}
-                isDisabled={isOnline || isCreateInterviewPending}
+                isDisabled={isOnline || isUpdateInterviewPending}
               />
             )}
             <div className="flex items-center gap-2">
@@ -129,6 +172,7 @@ const CreateInterviewForm: FC<CreateInterviewFormProps> = ({
                     formik.setFieldValue("location", "Online");
                   } else {
                     formik.setFieldValue("location", "");
+                    formik.setFieldValue("meetingLink", ""); // Clear meetingLink when isOnline is false
                   }
                 }}
               />
@@ -146,7 +190,7 @@ const CreateInterviewForm: FC<CreateInterviewFormProps> = ({
             <Textarea
               id="notes"
               placeholder="ex. Applicant must arrive at the interview location 1 hour before scheduled time."
-              disabled={isCreateInterviewPending}
+              disabled={isUpdateInterviewPending}
               value={formik.values.notes}
               rows={4}
               onChange={formik.handleChange}
@@ -156,12 +200,12 @@ const CreateInterviewForm: FC<CreateInterviewFormProps> = ({
           <div className="flex flex-col justify-end gap-4 sm:flex-row">
             <Button
               type="submit"
-              disabled={isCreateInterviewPending}
+              disabled={isUpdateInterviewPending}
               className="w-full bg-blue-600 hover:bg-blue-700 sm:w-fit"
             >
-              {isCreateInterviewPending
-                ? "Creating Schedule..."
-                : "Create Schedule"}
+              {isUpdateInterviewPending
+                ? "Updating Schedule..."
+                : "Update Schedule"}
             </Button>
           </div>
         </div>
@@ -170,4 +214,4 @@ const CreateInterviewForm: FC<CreateInterviewFormProps> = ({
   );
 };
 
-export default CreateInterviewForm;
+export default UpdateInterviewForm;

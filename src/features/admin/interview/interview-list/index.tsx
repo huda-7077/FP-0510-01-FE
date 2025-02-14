@@ -16,7 +16,7 @@ const InterviewListComponent = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [sortOrder, setSortOrder] = useQueryState("sortOrder", {
-    defaultValue: "asc",
+    defaultValue: "desc",
   });
 
   const [debouncedSearch] = useDebounce(search, 500);

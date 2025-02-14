@@ -33,7 +33,7 @@ export const InterviewListHeader = ({
 
   const handleResetSort = () => {
     setSelectedSortOrder("");
-    onSortOrderChange("asc");
+    onSortOrderChange("desc");
   };
 
   const handleSearchReset = () => {
