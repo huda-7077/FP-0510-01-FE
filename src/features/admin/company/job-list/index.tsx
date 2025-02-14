@@ -1,24 +1,28 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 import PaginationSection from "@/components/PaginationSection";
 import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 import useGetJobCategories from "@/hooks/api/job/useGetJobCategories";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
+import { useSession } from "next-auth/react";
 import { parseAsInteger, useQueryState } from "nuqs";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
-import { useSession } from "next-auth/react";
-import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
+import { useRouter } from "next/navigation";
 
 export const JobListComponent = () => {
+  const router = useRouter();
   const session = useSession();
   const user = session.data && session.data.user;
 
   // Query states
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
-  const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "id" });
+  const [sortBy, setSortBy] = useQueryState("sortBy", {
+    defaultValue: "createdAt",
+  });
   const [category, setCategory] = useQueryState("category", {
     defaultValue: "",
   });
@@ -34,7 +38,7 @@ export const JobListComponent = () => {
     refetch: refetchJobs,
   } = useGetJobs({
     page,
-    sortOrder: "asc",
+    sortOrder: "desc",
     sortBy,
     take: 10,
     category,
@@ -105,6 +109,14 @@ export const JobListComponent = () => {
                 notifyDatabaseChange={notifyDatabaseChange}
               />
             ))}
+            {jobs?.data && jobs.data.length <= 0 && !isJobsPending && (
+              <DataNotFound
+                message="Go to Job List and check on job appliaction list to create a new interview schedule"
+                title="No Scheduled Interview Found"
+                actionLabel="Go to Job List"
+                onAction={() => router.push("/dashboard/admin/jobs")}
+              />
+            )}
           </div>
         </div>
         {jobs && jobs.data.length > 0 && jobs.meta.total > jobs.meta.take && (
