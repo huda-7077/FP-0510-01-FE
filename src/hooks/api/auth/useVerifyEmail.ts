@@ -1,5 +1,5 @@
-import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { axiosInstance } from "@/lib/axios";
 
 interface VerificationResponse {
   isVerified: boolean;
@@ -8,7 +8,6 @@ interface VerificationResponse {
 
 export const useVerifyEmail = () => {
   const queryClient = useQueryClient();
-  const { axiosInstance } = useAxios();
 
   return useMutation<VerificationResponse, Error, string>({
     retry: 0,
@@ -16,6 +15,7 @@ export const useVerifyEmail = () => {
       const response = await axiosInstance.get<VerificationResponse>(
         "/auth/verify-email",
         {
+          headers: { Authorization: `Bearer ${token}` },
           timeout: 15000,
         },
       );
