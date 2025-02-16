@@ -9,5 +9,5 @@ export interface CompanyLocation {
   latitude: string;
   longitude: string;
   createdAt: Date;
-  regency: Regency
+  regency: Regency;
 }

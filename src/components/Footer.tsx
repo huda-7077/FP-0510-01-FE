@@ -16,11 +16,11 @@ export default function Footer() {
             <Image src="/logo-white.svg" alt="logo" width={112} height={26} />
             <p className="mt-2">
               Call now:{" "}
-              <span className="font-semibold text-white">(319) 555-0115</span>
+              <span className="font-semibold text-white"><a href="tel:3195550115">(319) 555-0115</a></span>
             </p>
             <p className="mt-2 text-xs">
-              6391 Elgin St. Celina, Delaware 10299, New York, United States of
-              America
+              Jl. Anggajaya 2, Sanggrahan, Condongcatur, Kec. Depok, Kabupaten
+              Sleman, Daerah Istimewa Yogyakarta, Indonesia
             </p>
           </div>
 
@@ -122,31 +122,35 @@ export default function Footer() {
         </div>
         <div className="mt-8 flex flex-col items-center justify-between border-t border-gray-700 pt-6 md:flex-row">
           <p className="text-sm">
-            © 2025 Supajob - Job Portal. All rights reserved.
+            © 2025 Supajob. All rights reserved.
           </p>
           <div className="mt-4 flex space-x-4 md:mt-0">
             <Link
-              href="faebook.com"
+              href="https://www.facebook.com"
               target="_blank"
               className="hover:text-white"
             >
               <FaFacebookF size={20} />
             </Link>
             <Link
-              href="youtube.com"
+              href="https://www.youtube.com"
               target="_blank"
               className="hover:text-white"
             >
               <FaYoutube size={20} />
             </Link>
             <Link
-              href="instagram.com"
+              href="https://www.instagram.com"
               target="_blank"
               className="hover:text-white"
             >
               <FaInstagram size={20} />
             </Link>
-            <Link href="x.com" target="_blank" className="hover:text-white">
+            <Link
+              href="https://x.com"
+              target="_blank"
+              className="hover:text-white"
+            >
               <FaXTwitter size={20} />
             </Link>
           </div>

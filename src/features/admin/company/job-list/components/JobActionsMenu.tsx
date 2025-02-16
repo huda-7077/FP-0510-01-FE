@@ -1,3 +1,14 @@
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -6,47 +17,92 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
-import useGetAssessmentPath from "@/hooks/assessment/useGetAssessmentPath";
-import { MoreVertical, Pencil, SquarePen } from "lucide-react";
+import useUpdateJobStatus from "@/hooks/api/job/useUpdateJobStatus";
+import {
+  Loader2,
+  MoreVertical,
+  Pencil,
+  Save,
+  SquarePen,
+  Upload,
+} from "lucide-react";
 import Link from "next/link";
+import { toast } from "react-toastify";
+import { useState } from "react";
+import useGetAssessmentQuestionCount from "@/hooks/api/assessment-question/useGetAssessmentQuestionCount";
+import useGetAssessmentPath from "@/hooks/useGetAssessmentPath";
 
 interface JobActionsMenuProps {
   jobId: number;
   isRequireAssessment: boolean;
   isPublished: boolean;
-  onEditJobDetails?: (id: number) => void;
+  notifyDatabaseChange: () => void;
 }
 
 export const JobActionsMenu = ({
   jobId,
   isRequireAssessment,
   isPublished,
-  onEditJobDetails,
+  notifyDatabaseChange,
 }: JobActionsMenuProps) => {
-  const { data: assessment } = useGetAssessments({
-    jobId,
-  });
+  const { mutateAsync: updateJobStatus, isPending: isUpdateJobStatusPending } =
+    useUpdateJobStatus();
+
+  const { data: assessment, isPending: isAssessmentPending } =
+    isRequireAssessment
+      ? useGetAssessments({
+          jobId,
+        })
+      : { data: undefined, isPending: false };
 
   const { getAssessmentPath } = useGetAssessmentPath(
     (assessment && assessment?.data.length) || 0,
     jobId.toString(),
   );
 
+  const [isDialogOpen, setIsDialogOpen] = useState(false); // State to control dialog visibility
+
   const getPublishStatusStyle = () => {
-    if (
-      (!isPublished && assessment && assessment.data.length < 1) ||
-      isPublished
-    ) {
+    if (isPublished) {
       return "text-red-500";
     }
     return "text-green-500";
   };
 
   const getPublishStatusText = () => {
-    if (!isPublished && assessment && assessment.data.length < 1) {
-      return "Save to Draft";
+    return isPublished ? (
+      <>
+        <Save />
+        Save to Draft
+      </>
+    ) : (
+      <>
+        <Upload />
+        Publish
+      </>
+    );
+  };
+
+  const getPublishStatusAlertMessage = () => {
+    return isPublished
+      ? "This action will put your job to draft. Anyone but you cannot see this job vacancy."
+      : "This action will make your job vacancy visible to users.";
+  };
+
+  const handleJobStatus = async (status: boolean, event: React.MouseEvent) => {
+    event.preventDefault(); // Prevent default behavior of closing the dialog
+    try {
+      await updateJobStatus({
+        id: jobId,
+        isPublished: !status,
+      });
+      toast.success("Job Updated Successfully");
+      setIsDialogOpen(false);
+      notifyDatabaseChange();
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed Updating Job");
     }
-    return isPublished ? "Save to Draft" : "Publish";
   };
 
   return (
@@ -60,30 +116,66 @@ export const JobActionsMenu = ({
           <MoreVertical className="h-4 w-4 sm:h-5 sm:w-5" />
         </Button>
       </DropdownMenuTrigger>
-
       <DropdownMenuContent align="end" className="w-48 sm:w-56 md:w-64">
-        <DropdownMenuItem
-          onClick={() => onEditJobDetails?.(jobId)}
-          className="cursor-pointer text-sm"
-        >
-          <SquarePen />
-          Edit Job Details
-        </DropdownMenuItem>
-
+        <Link href={`/dashboard/admin/jobs/edit/${jobId}`}>
+          <DropdownMenuItem className="cursor-pointer py-2 text-sm">
+            <SquarePen />
+            Edit Job Details
+          </DropdownMenuItem>
+        </Link>
         {isRequireAssessment && (
           <Link href={getAssessmentPath}>
-            <DropdownMenuItem className="cursor-pointer text-sm">
+            <DropdownMenuItem className="cursor-pointer py-2 text-sm">
               <Pencil />
               {assessment && assessment.data.length > 0 ? "Edit " : "Create "}
               Assessment
             </DropdownMenuItem>
           </Link>
         )}
-
         <DropdownMenuItem
-          className={`cursor-pointer text-sm ${getPublishStatusStyle()}`}
+          disabled={
+            isUpdateJobStatusPending ||
+            (isRequireAssessment && assessment && assessment.data.length <= 0)
+          }
+          onSelect={(e) => e.preventDefault()}
+          className="m-0 p-0"
         >
-          {getPublishStatusText()}
+          <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="outline"
+                className={`m-0 flex w-full cursor-pointer items-center justify-start border-none bg-transparent px-2 py-0 text-sm shadow-none ${getPublishStatusStyle()}`}
+              >
+                {getPublishStatusText()}
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  {getPublishStatusAlertMessage()}
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={isUpdateJobStatusPending}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction
+                  disabled={isUpdateJobStatusPending}
+                  onClick={(e) => handleJobStatus(isPublished, e)} // Pass the event to prevent default
+                >
+                  {isUpdateJobStatusPending ? (
+                    <span className="flex items-center gap-2">
+                      <Loader2 className="animate-spin" />
+                      Loading...
+                    </span>
+                  ) : (
+                    "Continue"
+                  )}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

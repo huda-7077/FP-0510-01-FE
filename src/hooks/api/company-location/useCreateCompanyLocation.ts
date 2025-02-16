@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
@@ -15,14 +15,11 @@ const useCreateCompanyLocation = () => {
   const queryClient = useQueryClient();
   const { data } = useSession();
   const token = data?.user.token;
+  const { axiosInstance } = useAxios();
 
   return useMutation({
     mutationFn: async (data: CreateCompanyLocationData) => {
-      const response = await axiosInstance.post("/company-locations", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axiosInstance.post("/company-locations", data);
       return response.data;
     },
     onSuccess: () => {

@@ -1,77 +1,88 @@
+import DiscoverySkeleton from "@/components/skeletons/DiscoverySkeleton";
 import { Button } from "@/components/ui/button";
-import {
-  Bookmark,
-  MapPin,
-  DollarSign,
-  ArrowRight,
-  MapPinCheck,
-} from "lucide-react";
+import useGetJobs from "@/hooks/api/job/useGetJobs";
+import { ArrowRight, Bookmark, MapPin, Wallet } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-// Sample jobs data
-const jobs = [
-  {
-    id: 1,
-    title: "Senior UX Designer",
-    company: "Upwork",
-    logo: "/logos/upwork.png",
-    location: "Australia",
-    salary: "$30K-$35K",
-    type: "Contract Base",
-    daysRemaining: 4,
-  },
-  {
-    id: 2,
-    title: "Software Engineer",
-    company: "Apple",
-    logo: "/logos/apple.png",
-    location: "China",
-    salary: "$50K-$60K",
-    type: "Full Time",
-    daysRemaining: 4,
-  },
-  {
-    id: 3,
-    title: "Junior Graphic Designer",
-    company: "Figma",
-    logo: "/logos/figma.png",
-    location: "Canada",
-    salary: "$50K-$70K",
-    type: "Full Time",
-    daysRemaining: 4,
-  },
-  {
-    id: 4,
-    title: "Software Engineer",
-    company: "Apple",
-    logo: "/logos/apple.png",
-    location: "China",
-    salary: "$50K-$60K",
-    type: "Full Time",
-    daysRemaining: 4,
-  },
-  {
-    id: 5,
-    title: "Junior Graphic Designer",
-    company: "Figma",
-    logo: "/logos/figma.png",
-    location: "Canada",
-    salary: "$50K-$70K",
-    type: "Full Time",
-    daysRemaining: 4,
-  },
-];
+const formatSalary = (amount: number | null | undefined): string | null => {
+  if (!amount) return null;
+  return `Rp${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
+};
+
+const EmptyState = () => (
+  <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12">
+    <Image
+      src="/empty-jobs.svg"
+      alt="No jobs found"
+      width={200}
+      height={200}
+      className="mb-4"
+    />
+    <h3 className="text-lg font-medium text-gray-900">No Jobs Found</h3>
+    <p className="mt-1 text-sm text-gray-500">
+      We couldn't find any jobs matching your criteria.
+    </p>
+    <Button
+      variant="default"
+      className="mt-4 bg-blue-600 hover:bg-blue-700"
+      asChild
+    >
+      <Link href="/jobs">Browse All Jobs</Link>
+    </Button>
+  </div>
+);
 
 export default function DiscoverySection() {
+  const { data: jobsData, isLoading } = useGetJobs({
+    page: 1,
+    take: 5,
+    isPublished: "true",
+    isDeleted: "false",
+  });
+
+  if (isLoading) {
+    return (
+      <section className="container mx-auto px-4 py-20 md:px-6 space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <h2 className="text-xl font-semibold sm:text-2xl">Jobs Near You</h2>
+          <div className="flex items-center gap-2 text-[#0A65CC]">
+            <MapPin className="h-5 sm:h-6" />
+            Indonesia
+          </div>
+        </div>
+        <div className="space-y-4">
+          {[...Array(5)].map((_, index) => (
+            <DiscoverySkeleton key={index} />
+          ))}
+        </div>
+      </section>
+    );
+  }
+
+  if (!jobsData?.data.length) {
+    return (
+      <section className="container mx-auto px-4 py-20 md:px-6 space-y-4">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <h2 className="text-xl font-semibold sm:text-2xl">Jobs Near You</h2>
+          <div className="flex items-center gap-2 text-[#0A65CC]">
+            <MapPin className="h-5 sm:h-6" />
+            Indonesia
+          </div>
+        </div>
+        <EmptyState />
+      </section>
+    );
+  }
+
   return (
-    <section className="container mx-auto px-4 md:px-6 py-20">
+    <section className="container mx-auto px-4 py-20 md:px-6">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <h2 className="text-xl font-semibold sm:text-2xl">Jobs Near You</h2>
           <div className="flex items-center gap-2 text-[#0A65CC]">
             <MapPin className="h-5 sm:h-6" />
-            Your Location
+            Indonesia
           </div>
         </div>
         <Button
@@ -84,18 +95,18 @@ export default function DiscoverySection() {
       </div>
 
       <div className="space-y-4">
-        {jobs.map((job) => (
+        {jobsData?.data.map((job) => (
           <div
             key={job.id}
             className="flex flex-col gap-4 rounded-lg border p-4 transition-all hover:border-blue-400 hover:shadow-lg sm:flex-row sm:items-center sm:justify-between"
           >
             <div className="flex items-center gap-4">
               <Image
-                src={job.logo}
-                alt={job.company}
+                src={job.company.logo}
+                alt={job.company.name}
                 width={40}
                 height={40}
-                className="rounded"
+                className="rounded object-cover"
               />
               <div>
                 <h3 className="text-lg font-medium text-blue-600">
@@ -104,13 +115,15 @@ export default function DiscoverySection() {
                 <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-500">
                   <div className="flex items-center gap-1">
                     <MapPin size={16} />
-                    <span>{job.location}</span>
+                    <span>{job.companyLocation.regency.regency}</span>
                   </div>
-                  <div className="flex items-center gap-1">
-                    <DollarSign size={16} />
-                    <span>{job.salary}</span>
-                  </div>
-                  <span>{job.daysRemaining} Days Remaining</span>
+                  {formatSalary(job.salary) && (
+                    <div className="flex items-center gap-1">
+                      <Wallet size={16} />
+                      <span>{formatSalary(job.salary)}/month</span>
+                    </div>
+                  )}
+                  <span>{job.category}</span>
                 </div>
               </div>
             </div>
@@ -120,7 +133,7 @@ export default function DiscoverySection() {
                 asChild
                 className="rounded-sm bg-blue-50 px-6 text-blue-600 shadow-none hover:bg-blue-600 hover:text-blue-50"
               >
-                <Link href="#">Apply Now</Link>
+                <Link href={`/jobs/${job.id}`}>Apply Now</Link>
               </Button>
             </div>
           </div>

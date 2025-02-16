@@ -10,8 +10,11 @@ export const useGetCompanyLocations = () => {
     queryFn: async () => {
       const { data } = await axiosInstance.get("/company-locations");
 
-      return (data as CompanyLocation[]) || [];
+      if (!Array.isArray(data)) {
+        throw new Error("Invalid data format received from the server");
+      }
+
+      return data as CompanyLocation[];
     },
-    staleTime: 60000,
   });
 };

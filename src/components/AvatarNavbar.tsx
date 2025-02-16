@@ -37,7 +37,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
   const adminNavLinks = [
     { href: "/dashboard/admin/overview", label: "Dashboard" },
     { href: "/dashboard/admin/jobs", label: "Manage Jobs" },
-    { href: "/dasboard/admin/jobs/create", label: "Post a Job" },
+    { href: "/dashboard/admin/jobs/create", label: "Post a Job" },
     { href: "/analytics", label: "Analytics" },
     { href: "/dashboard/admin/settings", label: "Settings" },
   ];
@@ -109,10 +109,6 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
                   href={link.href}
                   className="transform text-base text-gray-600 transition-all hover:translate-x-2 hover:text-blue-600"
                   onClick={() => setIsOpen(false)}
-                  style={{
-                    animationDelay: `${index * 100}ms`,
-                    animation: "slideIn 0.3s ease-out forwards",
-                  }}
                 >
                   {link.label}
                 </Link>
