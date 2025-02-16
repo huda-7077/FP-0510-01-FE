@@ -1,12 +1,12 @@
 "use client";
 
+import { Plus } from "lucide-react";
+import Link from "next/link";
 import React, { useState } from "react";
 import { adminSidebarLinks } from "../consts";
-import Adminbar from "../Adminbar";
+import Navbar from "../Navbar";
 import Sidebar from "../sidebar/Sidebar";
-import Link from "next/link";
 import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -28,7 +28,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   return (
     <>
-      <Adminbar />
+      <Navbar />
       <div className="min-w-screen h-full">
         <div className="container relative mx-auto flex">
           <Sidebar
