@@ -20,6 +20,14 @@ const InterviewListComponent = () => {
     defaultValue: "desc",
   });
 
+  const [startDate, setStartDate] = useQueryState("startDate", {
+    defaultValue: "",
+  });
+
+  const [endDate, setEndDate] = useQueryState("endDate", {
+    defaultValue: "",
+  });
+
   const [debouncedSearch] = useDebounce(search, 500);
 
   const { data: interviews, isPending: isInterviewsPending } = useGetInterviews(
@@ -28,6 +36,8 @@ const InterviewListComponent = () => {
       sortOrder,
       take: 10,
       search: debouncedSearch,
+      startDate,
+      endDate,
     },
   );
 
@@ -48,6 +58,11 @@ const InterviewListComponent = () => {
     setSortOrder(sortOrder);
   };
 
+  const handleStartEndDate = (startDate: string, endDate: string) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+  };
+
   return (
     <DashboardLayout>
       <div className="px-4 py-4">
@@ -56,6 +71,7 @@ const InterviewListComponent = () => {
             totalInterview={interviews?.meta.total || 0}
             onSortOrderChange={handleSortChange}
             onSearch={handleSearch}
+            onStartEndDateChange={handleStartEndDate}
             isDisabled={isInterviewsPending}
           />
           <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-2 md:mt-8">

@@ -22,6 +22,9 @@ export const JobListComponent = () => {
   const [sortBy, setSortBy] = useQueryState("sortBy", {
     defaultValue: "createdAt",
   });
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", {
+    defaultValue: "desc",
+  });
   const [category, setCategory] = useQueryState("category", {
     defaultValue: "",
   });
@@ -37,11 +40,10 @@ export const JobListComponent = () => {
     refetch: refetchJobs,
   } = useGetJobs({
     page,
-    sortOrder: "desc",
+    sortOrder,
     sortBy,
     take: 10,
     category,
-    companyId: user?.companyId,
     search: debouncedSearch,
   });
 
@@ -77,6 +79,10 @@ export const JobListComponent = () => {
     setPage(1);
   };
 
+  const handleSortOrderChange = (sortOrder: string) => {
+    setSortOrder(sortOrder);
+  };
+
   const handleSortChange = (sort: string) => {
     setSortBy(sort);
   };
@@ -97,6 +103,7 @@ export const JobListComponent = () => {
             jobCategories={validCategories}
             onCategoryChange={onCategoryChange}
             onSortChange={handleSortChange}
+            onSortOrderChange={handleSortOrderChange}
             onSearch={handleSearch}
             isDisabled={isJobCategoriesPending}
           />

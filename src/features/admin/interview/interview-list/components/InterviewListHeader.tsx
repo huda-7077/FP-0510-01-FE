@@ -1,19 +1,24 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Search, X } from "lucide-react";
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Search, Sliders, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 interface JobListHeaderProps {
   totalInterview: number;
   isDisabled: boolean;
   onSortOrderChange: (sortOrder: string) => void;
+  onStartEndDateChange: (startDate: string, endDate: string) => void;
   onSearch: (searchQuery: string) => void;
 }
 
@@ -21,18 +26,25 @@ export const InterviewListHeader = ({
   isDisabled,
   totalInterview,
   onSortOrderChange,
+  onStartEndDateChange,
   onSearch,
 }: JobListHeaderProps) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const [selectedSortOrder, setSelectedSortOrder] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>("");
+  const [sortOrder, setSortOrder] = useState<string>("desc");
 
-  const handleSortChange = (sort: string) => {
-    setSelectedSortOrder(sort);
-    onSortOrderChange(sort);
+  const hasFiltersApplied = !!startDate || !!endDate || sortOrder !== "desc";
+
+  const handleStartEndDateChange = () => {
+    onStartEndDateChange(startDate, endDate);
   };
 
-  const handleResetSort = () => {
-    setSelectedSortOrder("");
+  const handleResetAll = () => {
+    setStartDate("");
+    setEndDate("");
+    setSortOrder("desc");
+    onStartEndDateChange("", "");
     onSortOrderChange("desc");
   };
 
@@ -59,7 +71,7 @@ export const InterviewListHeader = ({
         </div>
       </div>
       <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-        <div className="relative w-full sm:max-w-xs">
+        <div className="relative w-full sm:max-w-md">
           <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
             <Search className="h-4 w-4 text-gray-400" />
           </div>
@@ -67,7 +79,7 @@ export const InterviewListHeader = ({
             ref={searchInputRef}
             type="text"
             disabled={isDisabled}
-            placeholder="Search applicant name or job title..."
+            placeholder="Search applicant name, job title, or interviewer name"
             onChange={(e) => onSearch(e.target.value)}
             className="h-9 w-full rounded-md border border-gray-200 bg-white pl-10 pr-8 text-sm outline-none placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
           />
@@ -80,33 +92,92 @@ export const InterviewListHeader = ({
             </button>
           )}
         </div>
-        <div className="flex w-full flex-col items-center gap-3 sm:flex-row">
-          <div className="flex w-full items-center gap-2">
-            <Select
-              onValueChange={handleSortChange}
-              value={selectedSortOrder}
-              disabled={isDisabled}
-            >
-              <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[160px]">
-                <SelectValue placeholder="Sort Order" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="asc">Oldest to Newest</SelectItem>
-                <SelectItem value="desc">Newest to Oldest</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {selectedSortOrder && (
-              <Button
-                onClick={handleResetSort}
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9 shrink-0 rounded-md border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700"
-              >
-                <X className="h-4 w-4" />
+        <div className="flex items-center gap-2">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline">
+                <Sliders />
               </Button>
-            )}
-          </div>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Advanced Filter</SheetTitle>
+              </SheetHeader>
+              <div className="grid gap-4 py-4">
+                <div className="flex justify-between gap-2">
+                  <div className="w-full">
+                    <Label htmlFor="start-date">Start Date</Label>
+                    <Input
+                      id="start-date"
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                  <div className="w-full">
+                    <Label htmlFor="end-date">End Date</Label>
+                    <Input
+                      id="end-date"
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className="w-full"
+                    />
+                  </div>
+                </div>
+                <Button
+                  type="submit"
+                  onClick={handleStartEndDateChange}
+                  disabled={!startDate || !endDate}
+                >
+                  Set Date Range
+                </Button>
+                <div className="grid gap-2">
+                  <h3 className="font-semibold">Sort By</h3>
+                  <div>
+                    <Label>Scheduled Date</Label>
+                    <div className="mt-2 flex gap-2">
+                      <Button
+                        variant={sortOrder === "asc" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => {
+                          setSortOrder("asc");
+                          onSortOrderChange("asc");
+                        }}
+                      >
+                        Ascending
+                      </Button>
+                      <Button
+                        variant={sortOrder === "desc" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => {
+                          setSortOrder("desc");
+                          onSortOrderChange("desc");
+                        }}
+                      >
+                        Descending
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <SheetFooter>
+                <SheetClose asChild>
+                  {hasFiltersApplied && (
+                    <Button
+                      variant="destructive"
+                      className="ml-2"
+                      onClick={handleResetAll}
+                    >
+                      <X className="mr-2 h-4 w-4" />
+                      Reset
+                    </Button>
+                  )}
+                </SheetClose>
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </div>

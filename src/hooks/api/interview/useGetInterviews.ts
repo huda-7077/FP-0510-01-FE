@@ -5,6 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 
 interface GetInterviewQuery extends PaginationQueries {
   search?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 const useGetInterviews = (queries: GetInterviewQuery) => {
