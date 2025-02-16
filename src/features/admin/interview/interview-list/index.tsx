@@ -10,6 +10,7 @@ import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
 import { InterviewCard } from "./components/InterviewCard";
 import { InterviewListHeader } from "./components/InterviewListHeader";
+import { useEffect } from "react";
 
 const InterviewListComponent = () => {
   const router = useRouter();
@@ -29,6 +30,10 @@ const InterviewListComponent = () => {
       search: debouncedSearch,
     },
   );
+
+  useEffect(() => {
+    document.body.style.pointerEvents = "";
+  }, [interviews]);
 
   const onChangePage = (page: number) => {
     setPage(page);

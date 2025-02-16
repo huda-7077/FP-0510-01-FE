@@ -60,7 +60,7 @@ const UpdateInterviewForm: FC<UpdateInterviewFormProps> = ({ id }) => {
           scheduledDate: formatISO(new Date(values.scheduledDate)),
           interviewerName: values.interviewerName,
           location: isOnline ? "Online" : values.location,
-          meetingLink: isOnline ? values.meetingLink : "", // Explicitly set to null if not online
+          meetingLink: isOnline ? values.meetingLink : "",
           notes: values.notes ?? undefined,
           isDeleted: false,
         };
@@ -79,7 +79,7 @@ const UpdateInterviewForm: FC<UpdateInterviewFormProps> = ({ id }) => {
       if (interview.location === "Online") {
         setIsOnline(true);
       }
-      setIsInitialized(true); // Mark as initialized
+      setIsInitialized(true);
     }
   }, [interview, isInterviewPending, isInitialized]);
 
@@ -172,7 +172,7 @@ const UpdateInterviewForm: FC<UpdateInterviewFormProps> = ({ id }) => {
                     formik.setFieldValue("location", "Online");
                   } else {
                     formik.setFieldValue("location", "");
-                    formik.setFieldValue("meetingLink", ""); // Clear meetingLink when isOnline is false
+                    formik.setFieldValue("meetingLink", "");
                   }
                 }}
               />

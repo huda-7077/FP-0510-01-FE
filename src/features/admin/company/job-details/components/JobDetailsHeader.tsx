@@ -65,21 +65,22 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleJobDelete = async (event: React.MouseEvent) => {
+    event.preventDefault();
     try {
       await deleteJob(job.id);
       setIsDialogOpen(false);
-      document.body.style.pointerEvents = "auto";
-      router.push("/dashboard/admin/jobs");
       toast.success("Job Deleted Successfully");
     } catch (error) {
       console.log(error);
       toast.error("Failed Updating Job");
+    } finally {
+      document.body.style.pointerEvents = "";
+      router.push("/dashboard/admin/jobs");
     }
   };
 
-  if (isDeleteJobPending) {
-    return <DeleteLoadingScreen message="Deleting Job..." />;
-  }
+  if (isDeleteJobPending)
+    return <DeleteLoadingScreen message="Deleting Job Data" />;
 
   return (
     <div className="space-y-4 rounded-lg bg-white">
@@ -132,9 +133,9 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
                       Are you absolutely sure?
                     </AlertDialogTitle>
                     <AlertDialogDescription>
-                      This action will delete your job vacancy and remove your
-                      data from the list. if you accidentaly delete your data,
-                      you can contact the developer to recover it.
+                      This action will delete this job and remove your data from
+                      the list. if you accidentaly delete your data, you can
+                      contact the developer to recover it.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
@@ -142,7 +143,7 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
                       Cancel
                     </AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={handleJobDelete}
+                      onClick={(e) => handleJobDelete(e)}
                       disabled={isDeleteJobPending}
                     >
                       {isDeleteJobPending ? "Deleting..." : "Continue"}

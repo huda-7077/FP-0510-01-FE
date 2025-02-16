@@ -28,7 +28,6 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
 
   return (
     <Dialog>
-      {/* Trigger Button */}
       <DialogTrigger asChild onClick={(e) => e.stopPropagation()}>
         <Button className="flex h-full w-full justify-start border-none bg-transparent p-0 text-start text-black shadow-none hover:bg-transparent hover:text-black">
           <Eye className="h-4 w-4" />
@@ -36,10 +35,8 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
         </Button>
       </DialogTrigger>
 
-      {/* Dialog Content */}
       <DialogContent className="max-w-5xl overflow-y-auto border-none p-0 md:max-h-[90vh] md:rounded-2xl">
         <div className="flex flex-col">
-          {/* Header Section */}
           <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-8 sm:px-20">
             <div className="flex flex-col items-center gap-6 sm:flex-row md:justify-between">
               <div className="flex flex-col items-center gap-8 sm:flex-row">
@@ -79,10 +76,8 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
             </div>
           </div>
 
-          {/* Main Content Section */}
           <div className="bg-gray-50/70 p-8 sm:px-20">
             <div className="grid gap-6 md:grid-cols-2">
-              {/* Personal Information Card */}
               <Card className="border border-gray-200 shadow-none">
                 <CardContent className="p-6">
                   <CardTitle className="mb-6 text-lg font-semibold text-gray-900">
@@ -108,7 +103,6 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
                 </CardContent>
               </Card>
 
-              {/* Contact Information Card */}
               <Card className="border border-gray-200 shadow-none">
                 <CardContent className="p-6">
                   <CardTitle className="mb-6 text-lg font-semibold text-gray-900">
@@ -152,7 +146,6 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
                               : ""
                           } md:grid-cols-3`}
                         >
-                          {/* Timeline and Company Info */}
                           <div className="md:col-span-1">
                             <div className="flex items-center gap-2 text-sm text-gray-600">
                               <Clock className="h-4 w-4 text-blue-600" />
@@ -171,7 +164,6 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
                             </div>
                           </div>
 
-                          {/* Role and Description */}
                           <div className="md:col-span-2">
                             <h4 className="text-base font-semibold text-gray-900">
                               {experience.jobTitle}

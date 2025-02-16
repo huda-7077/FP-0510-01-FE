@@ -1,5 +1,5 @@
 import useGetJobApplicationTotal from "@/hooks/api/job-applications/useGetJobApplicationTotal";
-import { Loader2, Users } from "lucide-react";
+import { Users } from "lucide-react";
 
 export const ApplicantCount = ({ jobId }: { jobId: number }) => {
   const { data: count, isPending: isJobApplicationTotalPending } =

@@ -55,13 +55,8 @@ export const InterviewCard = ({ interview }: InterviewCardProps) => {
             </div>
           </div>
         </div>
-
-        {/* Divider */}
         <div className="h-px w-full bg-gray-100" />
-
-        {/* Bottom Section */}
         <div className="grid gap-3 sm:grid-cols-2 sm:gap-4">
-          {/* Applicant Info */}
           <div className="flex items-center gap-2">
             <User className="h-4 w-4 text-blue-600" />
             <div>
@@ -71,8 +66,6 @@ export const InterviewCard = ({ interview }: InterviewCardProps) => {
               </p>
             </div>
           </div>
-
-          {/* Interviewer Info */}
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4 text-blue-600" />
             <div>

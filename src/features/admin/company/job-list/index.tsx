@@ -17,7 +17,6 @@ export const JobListComponent = () => {
   const session = useSession();
   const user = session.data && session.data.user;
 
-  // Query states
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [sortBy, setSortBy] = useQueryState("sortBy", {
@@ -54,6 +53,10 @@ export const JobListComponent = () => {
       setTriggerRefetch(false);
     }
   }, [triggerRefetch, refetchJobs]);
+
+  useEffect(() => {
+    document.body.style.pointerEvents = "";
+  }, [jobs]);
 
   const onChangePage = (page: number) => {
     setPage(page);

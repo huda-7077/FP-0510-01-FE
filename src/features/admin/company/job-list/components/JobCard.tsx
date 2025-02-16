@@ -2,13 +2,12 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Job } from "@/types/job";
 import { formatDaysRemaining } from "@/utils/formatDaysRemaining";
+import { Eye } from "lucide-react";
 import Link from "next/link";
 import { ApplicantCount } from "./ApplicantCount";
 import { AssessmentStatusBadge } from "./AssessmentStatusBadge";
 import { JobActionsMenu } from "./JobActionsMenu";
 import { JobStatusBadge } from "./JobStatusBadge";
-import { Eye } from "lucide-react";
-import { useEffect } from "react";
 
 interface JobCardProps {
   job: Job;
