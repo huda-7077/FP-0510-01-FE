@@ -1,11 +1,8 @@
 import useAxios from "@/hooks/useAxios";
+import { CreateWorkExperienceDTO } from "@/types/workExperience";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
-import {
-  CreateWorkExperienceDTO,
-  WorkExperience,
-} from "@/types/workExperience";
+import { toast } from "react-toastify";
 
 export const useCreateWorkExperience = () => {
   const { data: session } = useSession();
@@ -14,11 +11,7 @@ export const useCreateWorkExperience = () => {
 
   return useMutation({
     mutationFn: async (values: CreateWorkExperienceDTO) => {
-      const { data } = await axiosInstance.post("/work-experiences", values, {
-        headers: {
-          Authorization: `Bearer ${session?.user.token}`,
-        },
-      });
+      const { data } = await axiosInstance.post("/work-experiences", values);
       return data;
     },
     onSuccess: () => {

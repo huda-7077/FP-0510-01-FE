@@ -1,7 +1,5 @@
 import useAxios from "@/hooks/useAxios";
-import { WorkExperience } from "@/types/workExperience";
 import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 
 export const useGetWorkExperiences = () => {
   const { axiosInstance } = useAxios();

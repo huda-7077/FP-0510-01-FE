@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
@@ -21,6 +21,7 @@ const useUpdateProfile = () => {
   const { data } = useSession();
   const token = data?.user.token;
   const queryClient = useQueryClient();
+  const { axiosInstance } = useAxios();
 
   return useMutation({
     mutationFn: async (data: UpdateProfileData) => {
@@ -44,7 +45,6 @@ const useUpdateProfile = () => {
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
           },
         },
       );

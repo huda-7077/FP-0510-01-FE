@@ -1,4 +1,5 @@
-import { Navbar } from "@/components/Navbar";
+import Navbar from "@/components/Navbar";
+import HomePage from "@/features/home";
 import Image from "next/image";
 
 export default function Home() {
@@ -20,6 +21,7 @@ export default function Home() {
           This Site is Under Construction
         </h1>
       </div>
+      {/* <HomePage /> */}
     </div>
   );
 }

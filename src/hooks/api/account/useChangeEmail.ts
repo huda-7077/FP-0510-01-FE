@@ -12,18 +12,12 @@ interface ChangeEmailPayload {
 }
 
 const useChangeEmail = () => {
-  const { data } = useSession();
-  const token = data?.user.token;
   const router = useRouter();
   const { axiosInstance } = useAxios();
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (payload: ChangeEmailPayload) => {
-      const { data } = await axiosInstance.patch("/accounts/email", payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const { data } = await axiosInstance.patch("/accounts/email", payload);
       return data;
     },
     onSuccess: async () => {

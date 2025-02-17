@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { adminSidebarLinks, userSidebarLinks } from "../consts";
+import { userSidebarLinks } from "../consts";
+import Navbar from "../Navbar";
 import UserSidebar from "../user-sidebar/UserSidebar";
-import Userbar from "../Userbar";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ export const UserDashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   return (
     <>
-      <Userbar />
+      <Navbar />
       <div className="min-w-screen h-full">
         <div className="container relative mx-auto flex">
           <UserSidebar

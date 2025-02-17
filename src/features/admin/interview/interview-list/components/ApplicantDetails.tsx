@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { JobApplication } from "@/types/jobApplication";
 import {
@@ -34,7 +40,10 @@ const ApplicantDetails = ({ applicant }: ApplicantDetailsProps) => {
           View Applicant Details
         </Button>
       </DialogTrigger>
-
+      <DialogTitle className="hidden">Applicant Details</DialogTitle>
+      <DialogDescription className="hidden">
+        applicant details
+      </DialogDescription>
       <DialogContent className="max-w-5xl overflow-y-auto border-none p-0 md:max-h-[90vh] md:rounded-2xl">
         <div className="flex flex-col">
           <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-8 sm:px-20">
