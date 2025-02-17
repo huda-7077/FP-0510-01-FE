@@ -112,7 +112,7 @@ export const JobListHeader = ({
         <div className="flex items-center gap-2">
           {hasFiltersApplied && (
             <Button variant="destructive" size="sm" onClick={handleResetAll}>
-              <X className="mr-2 h-4 w-4" />
+              <X className="h-4 w-4" />
               Reset Filter
             </Button>
           )}
@@ -126,8 +126,8 @@ export const JobListHeader = ({
               <SheetHeader>
                 <SheetTitle>Advanced Filter</SheetTitle>
               </SheetHeader>
-              <div className="grid gap-4 py-4">
-                <div>
+              <div className="grid gap-6 py-4">
+                <div className="grid gap-2">
                   <h3 className="font-semibold">Select Category</h3>
                   <Select
                     value={selectedCategory}
@@ -156,9 +156,9 @@ export const JobListHeader = ({
                     </SelectContent>
                   </Select>
                 </div>
-                <div>
+                <div className="grid gap-2">
                   <h3 className="font-semibold">Sort By</h3>
-                  <div className="mt-2 flex w-full items-center gap-2">
+                  <div className="flex w-full items-center gap-2">
                     <Button
                       variant={
                         selectedSort === "applicationDeadline"
@@ -188,7 +188,7 @@ export const JobListHeader = ({
                 <div className="grid gap-2">
                   <h3 className="font-semibold">Sort Order</h3>
                   <div>
-                    <div className="mt-2 flex gap-2">
+                    <div className="flex gap-2">
                       <Button
                         variant={sortOrder === "asc" ? "default" : "outline"}
                         size="sm"
@@ -197,7 +197,7 @@ export const JobListHeader = ({
                           onSortOrderChange("asc");
                         }}
                       >
-                        Ascending
+                        Earliest to Latest
                       </Button>
                       <Button
                         variant={sortOrder === "desc" ? "default" : "outline"}
@@ -207,7 +207,7 @@ export const JobListHeader = ({
                           onSortOrderChange("desc");
                         }}
                       >
-                        Descending
+                        Latest to Earliest
                       </Button>
                     </div>
                   </div>
@@ -221,8 +221,8 @@ export const JobListHeader = ({
                       size="sm"
                       onClick={handleResetAll}
                     >
-                      <X className="mr-2 h-4 w-4" />
-                      Reset All
+                      <X className="h-4 w-4" />
+                      Reset Filter
                     </Button>
                   </SheetClose>
                 )}

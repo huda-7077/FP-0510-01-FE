@@ -32,6 +32,7 @@ export const InterviewListHeader = ({
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
+  const [selectedSort, setSelectedSort] = useState<string>("scheduledDate");
   const [sortOrder, setSortOrder] = useState<string>("desc");
 
   const hasFiltersApplied = !!startDate || !!endDate || sortOrder !== "desc";
@@ -93,6 +94,12 @@ export const InterviewListHeader = ({
           )}
         </div>
         <div className="flex items-center gap-2">
+          {hasFiltersApplied && (
+            <Button variant="destructive" size="sm" onClick={handleResetAll}>
+              <X className="h-4 w-4" />
+              Reset Filter
+            </Button>
+          )}
           <Sheet>
             <SheetTrigger asChild>
               <Button variant="outline">
@@ -103,27 +110,40 @@ export const InterviewListHeader = ({
               <SheetHeader>
                 <SheetTitle>Advanced Filter</SheetTitle>
               </SheetHeader>
-              <div className="grid gap-4 py-4">
-                <div className="flex justify-between gap-2">
-                  <div className="w-full">
-                    <Label htmlFor="start-date">Start Date</Label>
-                    <Input
-                      id="start-date"
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => setStartDate(e.target.value)}
-                      className="w-full"
-                    />
-                  </div>
-                  <div className="w-full">
-                    <Label htmlFor="end-date">End Date</Label>
-                    <Input
-                      id="end-date"
-                      type="date"
-                      value={endDate}
-                      onChange={(e) => setEndDate(e.target.value)}
-                      className="w-full"
-                    />
+              <div className="grid gap-6 py-4">
+                <div className="grid gap-2">
+                  <h3 className="font-semibold">Date Range</h3>
+                  <div className="flex justify-between gap-2">
+                    <div className="w-full">
+                      <Label
+                        htmlFor="start-date"
+                        className="text-xs font-semibold"
+                      >
+                        Start Date
+                      </Label>
+                      <Input
+                        id="start-date"
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="w-full">
+                      <Label
+                        htmlFor="end-date"
+                        className="text-xs font-semibold"
+                      >
+                        End Date
+                      </Label>
+                      <Input
+                        id="end-date"
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
+                        className="w-full"
+                      />
+                    </div>
                   </div>
                 </div>
                 <Button
@@ -135,9 +155,23 @@ export const InterviewListHeader = ({
                 </Button>
                 <div className="grid gap-2">
                   <h3 className="font-semibold">Sort By</h3>
+                  <div className="flex w-full items-center gap-2">
+                    <Button
+                      variant={
+                        selectedSort === "scheduledDate" ? "default" : "outline"
+                      }
+                      size="sm"
+                      className="w-1/2"
+                      disabled={isDisabled}
+                    >
+                      Application Deadline
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <h3 className="font-semibold">Sort Order</h3>
                   <div>
-                    <Label>Scheduled Date</Label>
-                    <div className="mt-2 flex gap-2">
+                    <div className="flex gap-2">
                       <Button
                         variant={sortOrder === "asc" ? "default" : "outline"}
                         size="sm"
@@ -146,7 +180,7 @@ export const InterviewListHeader = ({
                           onSortOrderChange("asc");
                         }}
                       >
-                        Ascending
+                        Earliest to Latest
                       </Button>
                       <Button
                         variant={sortOrder === "desc" ? "default" : "outline"}
@@ -156,7 +190,7 @@ export const InterviewListHeader = ({
                           onSortOrderChange("desc");
                         }}
                       >
-                        Descending
+                        Latest to Earliest
                       </Button>
                     </div>
                   </div>
@@ -165,13 +199,9 @@ export const InterviewListHeader = ({
               <SheetFooter>
                 <SheetClose asChild>
                   {hasFiltersApplied && (
-                    <Button
-                      variant="destructive"
-                      className="ml-2"
-                      onClick={handleResetAll}
-                    >
-                      <X className="mr-2 h-4 w-4" />
-                      Reset
+                    <Button variant="destructive" onClick={handleResetAll}>
+                      <X className="h-4 w-4" />
+                      Reset Filter
                     </Button>
                   )}
                 </SheetClose>
