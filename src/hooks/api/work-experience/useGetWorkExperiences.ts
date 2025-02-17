@@ -1,5 +1,4 @@
 import useAxios from "@/hooks/useAxios";
-import { WorkExperience } from "@/types/workExperience";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetWorkExperiences = () => {
@@ -9,7 +8,7 @@ export const useGetWorkExperiences = () => {
     queryKey: ["workExperiences"],
     queryFn: async () => {
       const { data } = await axiosInstance.get("/work-experiences");
-      return data.data as WorkExperience[];
+      return data;
     },
   });
 };

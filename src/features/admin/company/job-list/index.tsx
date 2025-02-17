@@ -1,24 +1,30 @@
 "use client";
-import { useEffect, useRef, useState } from "react";
 import PaginationSection from "@/components/PaginationSection";
 import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 import useGetJobCategories from "@/hooks/api/job/useGetJobCategories";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
+import { useSession } from "next-auth/react";
 import { parseAsInteger, useQueryState } from "nuqs";
+import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
-import { useSession } from "next-auth/react";
-import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
+import { useRouter } from "next/navigation";
 
 export const JobListComponent = () => {
+  const router = useRouter();
   const session = useSession();
   const user = session.data && session.data.user;
 
-  // Query states
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
-  const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "id" });
+  const [sortBy, setSortBy] = useQueryState("sortBy", {
+    defaultValue: "createdAt",
+  });
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", {
+    defaultValue: "desc",
+  });
   const [category, setCategory] = useQueryState("category", {
     defaultValue: "",
   });
@@ -34,11 +40,10 @@ export const JobListComponent = () => {
     refetch: refetchJobs,
   } = useGetJobs({
     page,
-    sortOrder: "asc",
+    sortOrder,
     sortBy,
     take: 10,
     category,
-    companyId: user?.companyId,
     search: debouncedSearch,
   });
 
@@ -50,6 +55,10 @@ export const JobListComponent = () => {
       setTriggerRefetch(false);
     }
   }, [triggerRefetch, refetchJobs]);
+
+  useEffect(() => {
+    document.body.style.pointerEvents = "";
+  }, [jobs]);
 
   const onChangePage = (page: number) => {
     setPage(page);
@@ -68,6 +77,10 @@ export const JobListComponent = () => {
     }
     setCategory(category);
     setPage(1);
+  };
+
+  const handleSortOrderChange = (sortOrder: string) => {
+    setSortOrder(sortOrder);
   };
 
   const handleSortChange = (sort: string) => {
@@ -90,6 +103,7 @@ export const JobListComponent = () => {
             jobCategories={validCategories}
             onCategoryChange={onCategoryChange}
             onSortChange={handleSortChange}
+            onSortOrderChange={handleSortOrderChange}
             onSearch={handleSearch}
             isDisabled={isJobCategoriesPending}
           />
@@ -105,6 +119,14 @@ export const JobListComponent = () => {
                 notifyDatabaseChange={notifyDatabaseChange}
               />
             ))}
+            {jobs?.data && jobs.data.length <= 0 && !isJobsPending && (
+              <DataNotFound
+                message="Please create a job by pressing button below."
+                title="No Job Found"
+                actionLabel="Post A Job"
+                onAction={() => router.push("/dashboard/admin/jobs/create")}
+              />
+            )}
           </div>
         </div>
         {jobs && jobs.data.length > 0 && jobs.meta.total > jobs.meta.take && (

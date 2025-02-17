@@ -84,7 +84,7 @@ export default function CompaniesSection() {
                 <div className="mb-4 flex items-start gap-3">
                   <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
                     <Image
-                      src={company.logo || "/placeholder-logo.png"}
+                      src={company.logo || "/anonymous.svg"}
                       alt={company.name}
                       fill
                       className="object-cover"

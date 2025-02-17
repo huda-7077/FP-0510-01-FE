@@ -1,22 +1,10 @@
 "use client";
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateAssessment";
-import { CheckCircle, Clock, LoaderCircle, XCircle } from "lucide-react";
+import { CheckCircle, Clock, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FC, useState } from "react";
+import { FC } from "react";
 import { toast } from "react-toastify";
 import ApplicationAcceptanceAlert from "./ApplicationAcceptanceAlert";
 
@@ -66,7 +54,11 @@ const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
       {(userAssessmentStatus === "DONE" && status === "IN_REVIEW") ||
       (!isRequireAssessment && status === "IN_REVIEW") ? (
         <Button
-          onClick={() => router.push(`/schedule-interview/${jobApplicationId}`)}
+          onClick={() =>
+            router.push(
+              `/dashboard/admin/interviews/create/${jobApplicationId}`,
+            )
+          }
         >
           <Clock />
           Schedule Interview

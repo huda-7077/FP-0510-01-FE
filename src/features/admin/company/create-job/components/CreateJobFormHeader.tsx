@@ -1,5 +1,3 @@
-import React from "react";
-
 const CreateJobFormHeader = () => {
   return (
     <div className="mb-8">

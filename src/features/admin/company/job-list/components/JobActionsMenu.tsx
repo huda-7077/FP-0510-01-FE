@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
 import useUpdateJobStatus from "@/hooks/api/job/useUpdateJobStatus";
+import useGetAssessmentPath from "@/hooks/useGetAssessmentPath";
 import {
   Loader2,
   MoreVertical,
@@ -27,10 +28,8 @@ import {
   Upload,
 } from "lucide-react";
 import Link from "next/link";
-import { toast } from "react-toastify";
 import { useState } from "react";
-import useGetAssessmentQuestionCount from "@/hooks/api/assessment-question/useGetAssessmentQuestionCount";
-import useGetAssessmentPath from "@/hooks/useGetAssessmentPath";
+import { toast } from "react-toastify";
 
 interface JobActionsMenuProps {
   jobId: number;
@@ -60,7 +59,7 @@ export const JobActionsMenu = ({
     jobId.toString(),
   );
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false); // State to control dialog visibility
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const getPublishStatusStyle = () => {
     if (isPublished) {
@@ -90,7 +89,7 @@ export const JobActionsMenu = ({
   };
 
   const handleJobStatus = async (status: boolean, event: React.MouseEvent) => {
-    event.preventDefault(); // Prevent default behavior of closing the dialog
+    event.preventDefault();
     try {
       await updateJobStatus({
         id: jobId,
@@ -162,7 +161,7 @@ export const JobActionsMenu = ({
                 </AlertDialogCancel>
                 <AlertDialogAction
                   disabled={isUpdateJobStatusPending}
-                  onClick={(e) => handleJobStatus(isPublished, e)} // Pass the event to prevent default
+                  onClick={(e) => handleJobStatus(isPublished, e)}
                 >
                   {isUpdateJobStatusPending ? (
                     <span className="flex items-center gap-2">
