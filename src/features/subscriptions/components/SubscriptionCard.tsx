@@ -70,7 +70,7 @@ const SubscriptionCard = () => {
               <div className="mb-8">
                 <div className="flex items-baseline">
                   <span className="text-4xl font-bold text-blue-600">
-                    Rp {category.price.toLocaleString("id-ID")}
+                    Rp{category.price.toLocaleString("id-ID")}
                   </span>
                   <span className="ml-2 text-gray-500">/Monthly</span>
                 </div>

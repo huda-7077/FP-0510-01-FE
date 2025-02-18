@@ -1,4 +1,5 @@
 import {
+  Award,
   BellRing,
   Bookmark,
   BriefcaseBusiness,
@@ -90,5 +91,10 @@ export const developerSidebarLinks = [
     name: "Subscription Categories",
     url: "/dashboard/developer/subscription-categories",
     icon: CircleDollarSign,
+  },
+  {
+    name: "Skill Assessments",
+    url: "/dashboard/developer/skill-assessments",
+    icon: Award,
   },
 ];

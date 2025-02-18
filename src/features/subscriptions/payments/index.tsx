@@ -186,7 +186,7 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
                     Total Amount
                   </span>
                   <span className="font-bold text-blue-600">
-                    Rp {data?.total.toLocaleString("id-ID")}
+                    Rp{data?.total.toLocaleString("id-ID")}
                   </span>
                 </div>
               </div>
