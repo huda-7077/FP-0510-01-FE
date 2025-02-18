@@ -195,7 +195,7 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
           <div className="space-y-3 rounded-lg border border-dashed border-blue-200 bg-blue-50/50 p-6">
             <Label className="flex items-center gap-2 text-lg font-semibold text-blue-700">
               <Upload size={20} />
-              Event Thumbnail
+              Job Banner
             </Label>
             <div className="flex items-center gap-3">
               <Input

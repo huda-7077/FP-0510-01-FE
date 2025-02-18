@@ -32,7 +32,7 @@ export const adminSidebarLinks = [
   },
   {
     name: "Interview Schedules",
-    url: "/dashboard/admin/interview-schedules",
+    url: "/dashboard/admin/interviews",
     icon: Clock,
   },
   {

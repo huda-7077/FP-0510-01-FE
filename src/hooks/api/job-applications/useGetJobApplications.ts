@@ -18,7 +18,6 @@ const useGetJobApplications = (queries: GetJobApplicationsQuery) => {
       >("/job-applications", {
         params: queries,
       });
-      console.log("Sorting by:", queries.sortBy, "Order:", queries.sortOrder);
       return data;
     },
   });

@@ -1,4 +1,5 @@
 import { Job } from "./job";
+import { WorkExperience } from "./workExperience";
 
 export type JobApplicationStatus =
   | "PENDING"
@@ -29,6 +30,7 @@ export interface JobApplication {
     regency: {
       regency: string;
     };
+    experience: WorkExperience[];
   };
   job: Pick<Job, "title" | "requiresAssessment">;
 }

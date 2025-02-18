@@ -7,7 +7,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Search, X } from "lucide-react";
+import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Search, Sliders, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 interface JobListHeaderProps {
@@ -16,6 +25,7 @@ interface JobListHeaderProps {
   isDisabled: boolean;
   onCategoryChange: (category: string) => void;
   onSortChange: (sort: string) => void;
+  onSortOrderChange: (sortOrder: string) => void;
   onSearch: (searchQuery: string) => void;
 }
 
@@ -25,19 +35,36 @@ export const JobListHeader = ({
   jobCategories,
   onCategoryChange,
   onSortChange,
+  onSortOrderChange,
   onSearch,
 }: JobListHeaderProps) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const [selectedSort, setSelectedSort] = useState<string>("");
+  const [selectedSort, setSelectedSort] = useState<string>("createdAt");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [sortOrder, setSortOrder] = useState<string>("desc");
+
+  const hasFiltersApplied =
+    selectedSort !== "createdAt" ||
+    selectedCategory !== "all" ||
+    sortOrder !== "desc";
 
   const handleSortChange = (sort: string) => {
     setSelectedSort(sort);
     onSortChange(sort);
   };
 
-  const handleResetSort = () => {
-    setSelectedSort("");
-    onSortChange("id");
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+    onCategoryChange(category);
+  };
+
+  const handleResetAll = () => {
+    setSelectedSort("createdAt");
+    onSortChange("createdAt");
+    setSelectedCategory("all");
+    onCategoryChange("all");
+    setSortOrder("desc");
+    onSortOrderChange("desc");
   };
 
   const handleSearchReset = () => {
@@ -82,48 +109,126 @@ export const JobListHeader = ({
             </button>
           )}
         </div>
-        <div className="flex w-full flex-col items-center gap-3 sm:flex-row">
-          <Select onValueChange={onCategoryChange} disabled={isDisabled}>
-            <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[180px]">
-              <SelectValue placeholder="All Categories" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              {jobCategories.map((category) => (
-                <SelectItem key={category} value={category}>
-                  {category}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <div className="flex w-full items-center gap-2">
-            <Select
-              onValueChange={handleSortChange}
-              value={selectedSort}
-              disabled={isDisabled}
-            >
-              <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[160px]">
-                <SelectValue placeholder="Sort By" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="applicationDeadline">
-                  Application Deadline
-                </SelectItem>
-                <SelectItem value="createdAt">Created Date</SelectItem>
-              </SelectContent>
-            </Select>
-
-            {selectedSort && (
-              <Button
-                onClick={handleResetSort}
-                variant="ghost"
-                size="icon"
-                className="h-9 w-9 shrink-0 rounded-md border border-red-200 bg-red-50 text-red-600 hover:bg-red-100 hover:text-red-700"
-              >
-                <X className="h-4 w-4" />
+        <div className="flex items-center gap-2">
+          {hasFiltersApplied && (
+            <Button variant="destructive" size="sm" onClick={handleResetAll}>
+              <X className="h-4 w-4" />
+              Reset Filter
+            </Button>
+          )}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline">
+                <Sliders />
               </Button>
-            )}
-          </div>
+            </SheetTrigger>
+            <SheetContent>
+              <SheetHeader>
+                <SheetTitle>Advanced Filter</SheetTitle>
+              </SheetHeader>
+              <div className="grid gap-6 py-4">
+                <div className="grid gap-2">
+                  <h3 className="font-semibold">Select Category</h3>
+                  <Select
+                    value={selectedCategory}
+                    onValueChange={handleCategoryChange}
+                    disabled={isDisabled}
+                  >
+                    <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium">
+                      <SelectValue placeholder="All Categories" />
+                    </SelectTrigger>
+                    <SelectContent className="w-full">
+                      <SelectItem
+                        value="all"
+                        className="cursor-pointer hover:bg-gray-100"
+                      >
+                        All Categories
+                      </SelectItem>
+                      {jobCategories.map((category) => (
+                        <SelectItem
+                          key={category}
+                          value={category}
+                          className="cursor-pointer hover:bg-gray-100"
+                        >
+                          {category}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div className="grid gap-2">
+                  <h3 className="font-semibold">Sort By</h3>
+                  <div className="flex w-full items-center gap-2">
+                    <Button
+                      variant={
+                        selectedSort === "applicationDeadline"
+                          ? "default"
+                          : "outline"
+                      }
+                      size="sm"
+                      className="w-full"
+                      onClick={() => handleSortChange("applicationDeadline")}
+                      disabled={isDisabled}
+                    >
+                      Application Deadline
+                    </Button>
+                    <Button
+                      variant={
+                        selectedSort === "createdAt" ? "default" : "outline"
+                      }
+                      size="sm"
+                      className="w-full"
+                      onClick={() => handleSortChange("createdAt")}
+                      disabled={isDisabled}
+                    >
+                      Created Date
+                    </Button>
+                  </div>
+                </div>
+                <div className="grid gap-2">
+                  <h3 className="font-semibold">Sort Order</h3>
+                  <div>
+                    <div className="flex gap-2">
+                      <Button
+                        variant={sortOrder === "asc" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => {
+                          setSortOrder("asc");
+                          onSortOrderChange("asc");
+                        }}
+                      >
+                        Earliest to Latest
+                      </Button>
+                      <Button
+                        variant={sortOrder === "desc" ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => {
+                          setSortOrder("desc");
+                          onSortOrderChange("desc");
+                        }}
+                      >
+                        Latest to Earliest
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <SheetFooter>
+                {hasFiltersApplied && (
+                  <SheetClose asChild>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      onClick={handleResetAll}
+                    >
+                      <X className="h-4 w-4" />
+                      Reset Filter
+                    </Button>
+                  </SheetClose>
+                )}
+              </SheetFooter>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
     </div>

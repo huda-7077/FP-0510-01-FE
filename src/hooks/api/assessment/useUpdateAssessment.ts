@@ -19,7 +19,7 @@ const useUpdateAssessment = () => {
     mutationFn: async (payload: UpdateAssessmentPayload) => {
       const { id, ...dataToUpdate } = payload;
       const { data } = await axiosInstance.patch(
-        `/assessments/${payload.id}`,
+        `/assessments/${id}`,
         dataToUpdate,
       );
       return data;
