@@ -1,7 +1,5 @@
 import Image from "next/image";
-
 import HeroSearchBar from "./HeroSearchBar";
-import HeroStats from "./HeroStats";
 import JobStats from "./HeroStats";
 
 const HeroSection = () => {
