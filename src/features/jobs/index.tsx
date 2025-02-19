@@ -51,7 +51,6 @@ const JobsPage = () => {
       </div>
       <div className="container relative mx-auto flex flex-col bg-background p-4 md:flex-row md:gap-7">
         <JobSearchSidebar />
-        {/* Main Content */}
         <main className="flex-1">
           <div className="container mx-auto p-4">
             {isPending ? (

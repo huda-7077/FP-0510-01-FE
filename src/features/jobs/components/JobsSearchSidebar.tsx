@@ -87,7 +87,6 @@ export function JobSearchSidebar() {
   return (
     <div className="p-4 md:p-0">
       <div className="flex w-full flex-col gap-4 rounded-md border-[1px] p-5 shadow-lg md:w-72">
-        {/* Search Bar */}
         <div>
           <Label
             htmlFor="search"
@@ -105,7 +104,6 @@ export function JobSearchSidebar() {
           />
         </div>
 
-        {/* Mobile Toggle Button */}
         <div className="md:hidden">
           <Button
             onClick={() => setIsFiltersOpen(!isFiltersOpen)}
@@ -115,14 +113,12 @@ export function JobSearchSidebar() {
           </Button>
         </div>
 
-        {/* Filters Section */}
         <div
           className={cn(
             "flex flex-col gap-4 space-y-0 transition-all duration-300 md:space-y-5",
             isFiltersOpen || "hidden md:block",
           )}
         >
-          {/* Location Filter */}
           <div>
             <Label className="flex items-center gap-2 pb-2 text-base">
               <MapPinned className="h-4 w-4 text-blue-600" /> Location
@@ -130,7 +126,6 @@ export function JobSearchSidebar() {
             <LocationFilter />
           </div>
 
-          {/* Category Filter */}
           <div>
             <Label className="flex items-center gap-2 pb-2 text-base">
               <Shapes className="h-4 w-4 text-blue-600" /> Category
@@ -150,7 +145,6 @@ export function JobSearchSidebar() {
             </Select>
           </div>
 
-          {/* Time Range Filter */}
           <div>
             <Label className="flex items-center gap-2 pb-2 text-base">
               <Hourglass className="h-4 w-4 text-blue-600" /> Time Range
@@ -170,7 +164,6 @@ export function JobSearchSidebar() {
               </div>
             </RadioGroup>
 
-            {/* Custom Date Range */}
             {timeRange === "custom" && (
               <div className="mt-2 flex flex-col gap-2 py-4 md:space-y-1 space-y-0">
                 <Label className="flex items-center gap-2">
@@ -193,7 +186,6 @@ export function JobSearchSidebar() {
             )}
           </div>
 
-          {/* Sort Order Filter */}
           <div>
             <Label className="flex items-center gap-2 pb-2 text-base">
               <ArrowUpDown className="h-4 w-4 text-blue-600" /> Sort Order
@@ -212,7 +204,6 @@ export function JobSearchSidebar() {
             </Select>
           </div>
 
-          {/* Reset Button */}
           <Button onClick={handleReset} variant="outline" className="gap-2">
             <RotateCcw className="h-4 w-4 text-blue-600" /> Reset Filters
           </Button>
