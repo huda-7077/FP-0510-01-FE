@@ -1,7 +1,5 @@
 import Image from "next/image";
-
 import HeroSearchBar from "./HeroSearchBar";
-import HeroStats from "./HeroStats";
 import JobStats from "./HeroStats";
 
 const HeroSection = () => {
@@ -38,7 +36,7 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8 md:mt-10">{/* <JobStats /> */}</div>
+        <div className="mt-8 md:mt-10"><JobStats /></div>
       </div>
     </section>
   );

@@ -13,7 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import useUpdateSubscriptionCategory from "@/hooks/api/subscription-categories/useUpdateSubscriptionCategories";
 import { SubscriptionCategory } from "@/types/subscription";
 import { useFormik } from "formik";
-import { Trash2 } from "lucide-react";
+import { Trash2, DollarSign, FileText, List, PlusCircle } from "lucide-react";
 import { useState } from "react";
 import * as Yup from "yup";
 
@@ -84,7 +84,10 @@ export function SubscriptionCategoryDetailsDialog({
               htmlFor="price"
               className="text-sm font-semibold text-gray-900 dark:text-gray-100"
             >
-              Price (Rp)
+              <div className="flex items-center">
+                <DollarSign className="mr-2 h-4 w-4" />
+                Price (Rp)
+              </div>
             </Label>
             <Input
               id="price"
@@ -105,7 +108,10 @@ export function SubscriptionCategoryDetailsDialog({
               htmlFor="description"
               className="text-sm font-semibold text-gray-900 dark:text-gray-100"
             >
-              Description
+              <div className="flex items-center">
+                <FileText className="mr-2 h-4 w-4" />
+                Description
+              </div>
             </Label>
             <Textarea
               id="description"
@@ -124,7 +130,10 @@ export function SubscriptionCategoryDetailsDialog({
 
           <div>
             <Label className="text-sm font-semibold text-gray-900 dark:text-gray-100">
-              Features
+              <div className="flex items-center">
+                <List className="mr-2 h-4 w-4" />
+                Features
+              </div>
             </Label>
             <div className="space-y-2">
               {features.map((feature, index) => (
@@ -152,7 +161,10 @@ export function SubscriptionCategoryDetailsDialog({
               className="mt-2 w-full text-blue-600"
               onClick={addFeature}
             >
-              + Add Feature
+              <div className="flex items-center">
+                <PlusCircle className="mr-2 h-4 w-4" />
+                Add Feature
+              </div>
             </Button>
           </div>
 

@@ -31,7 +31,7 @@ export const SubscriptionCategoryCard = ({
                 <>
                   <span className="hidden h-1 w-1 rounded-full bg-gray-400 sm:inline-block" />
                   <span className="font-semibold text-gray-700">
-                    Rp {subscriptionCategory?.price.toLocaleString("id-ID")}
+                    Rp{subscriptionCategory?.price.toLocaleString("id-ID")}
                   </span>
                 </>
               )}

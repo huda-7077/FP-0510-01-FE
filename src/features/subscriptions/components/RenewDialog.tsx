@@ -156,7 +156,7 @@ export function RenewSubscriptionDialog({
                 Total Amount
               </span>
               <span className="text-lg font-bold text-blue-600">
-                Rp {totalAmount.toLocaleString("id-ID")}
+                Rp{totalAmount.toLocaleString("id-ID")}
               </span>
             </div>
           </div>

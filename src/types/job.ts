@@ -1,5 +1,6 @@
 import { AssessmentData } from "./assessment";
 import { Company } from "./company";
+import { CompanyLocation } from "./companyLocation";
 
 export type JobStatus = "published" | "draft";
 
@@ -19,12 +20,7 @@ export interface Job {
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-  companyLocation: {
-    address: string;
-    regency: {
-      regency: string;
-    };
-  };
+  companyLocation: CompanyLocation;
   assessments: Pick<AssessmentData, "id" | "passingScore">[];
   company: Pick<Company, "name" | "logo" | "industry">;
 }

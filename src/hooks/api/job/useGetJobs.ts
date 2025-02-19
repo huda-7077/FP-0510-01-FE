@@ -1,19 +1,22 @@
 import useAxios from "@/hooks/useAxios";
+import { axiosInstance } from "@/lib/axios";
 import { Job } from "@/types/job";
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 
+// Define the query parameters for fetching jobs
 interface GetJobsQuery extends PaginationQueries {
   search?: string;
   category?: string;
   timeRange?: string;
-  isPublished?: string;
+  startDate?: string;
+  endDate?: string;
+  regencyIds?: number[];
+  location?: string;
   isDeleted?: string;
 }
 
 const useGetJobs = (queries: GetJobsQuery) => {
-  const { axiosInstance } = useAxios();
-
   return useQuery({
     queryKey: ["jobs", queries],
     queryFn: async () => {

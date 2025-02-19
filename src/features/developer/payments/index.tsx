@@ -7,6 +7,7 @@ import { useDebounce } from "use-debounce";
 import { PaymentCard } from "./components/PaymentCard";
 import { PaymentCardSkeleton } from "./components/PaymentCardSkeleton";
 import { PaymentHeader } from "./components/PaymentHeader";
+import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
 
 export const PaymentListComponent = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -67,42 +68,45 @@ export const PaymentListComponent = () => {
   };
 
   return (
-    <div className="px-4 py-4">
-      <div className="container mx-auto w-full">
-        <div>
-          <PaymentHeader
-            totalPayments={payments?.data.length || 0}
-            onStatusChange={onStatusChange}
-            onSortChange={handleSortChange}
-            onSearch={handleSearch}
-            onPaymentMethodChange={onPaymentMethodChange}
-          />
-          <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-2 md:mt-8">
-            {isLoading && (
-              <>
-                <PaymentCardSkeleton />
-                <PaymentCardSkeleton />
-                <PaymentCardSkeleton />
-                <PaymentCardSkeleton />
-                <PaymentCardSkeleton />
-              </>
-            )}
-            {payments?.data.map((payment, index) => (
-              <PaymentCard payment={payment} key={index} />
-            ))}
-          </div>
-        </div>
-        {payments &&
-          payments.data.length > 0 &&
-          payments.meta.total > payments.meta.take && (
-            <PaginationSection
-              onChangePage={onChangePage}
-              page={Number(page)}
-              take={payments.meta.take || 4}
-              total={payments.meta.total}
+    <>
+      <DashboardBreadcrumb route="developer" lastCrumb="Payments" />
+      <div className="my-1 md:my-2">
+        <div className="container mx-auto w-full">
+          <div>
+            <PaymentHeader
+              totalPayments={payments?.data.length || 0}
+              onStatusChange={onStatusChange}
+              onSortChange={handleSortChange}
+              onSearch={handleSearch}
+              onPaymentMethodChange={onPaymentMethodChange}
             />
-          )}
+            <div className="mt-4 grid gap-2 sm:space-y-2">
+              {isLoading && (
+                <>
+                  <PaymentCardSkeleton />
+                  <PaymentCardSkeleton />
+                  <PaymentCardSkeleton />
+                  <PaymentCardSkeleton />
+                  <PaymentCardSkeleton />
+                </>
+              )}
+              {payments?.data.map((payment, index) => (
+                <PaymentCard payment={payment} key={index} />
+              ))}
+            </div>
+          </div>
+          {payments &&
+            payments.data.length > 0 &&
+            payments.meta.total > payments.meta.take && (
+              <PaginationSection
+                onChangePage={onChangePage}
+                page={Number(page)}
+                take={payments.meta.take || 4}
+                total={payments.meta.total}
+              />
+            )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };

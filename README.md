@@ -123,3 +123,5 @@ Each commit message should include a **type**, an optional **scope**, and a **de
 ## License
 
 This template is open-source and available under the [MIT License](LICENSE).
+
+Test

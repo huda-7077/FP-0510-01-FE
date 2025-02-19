@@ -27,7 +27,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
   const userNavLinks = [
     { href: "/", label: "Home" },
     { href: "/dashboard/user", label: "Dashboard" },
-    { href: "/find-job", label: "Find Job" },
+    { href: "/jobs", label: "Find Job" },
     { href: "/find-employers", label: "Find Employers" },
     { href: "/job-alerts", label: "Job Alerts" },
     { href: "/customer-supports", label: "Customer Supports" },

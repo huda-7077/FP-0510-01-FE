@@ -74,9 +74,9 @@ export const PaymentHeader = ({
             </button>
           )}
         </div>
-        <div className="flex w-full flex-col items-center gap-3 sm:flex-row">
+        <div className="flex flex-col items-center gap-3 sm:flex-row">
           <Select onValueChange={onPaymentMethodChange}>
-            <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[180px]">
+            <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:max-w-[180px]">
               <SelectValue placeholder="All Method" />
             </SelectTrigger>
             <SelectContent>
@@ -89,7 +89,7 @@ export const PaymentHeader = ({
             </SelectContent>
           </Select>
           <Select onValueChange={onStatusChange}>
-            <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[180px]">
+            <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:max-w-[180px]">
               <SelectValue placeholder="All Status" />
             </SelectTrigger>
             <SelectContent>
@@ -101,17 +101,16 @@ export const PaymentHeader = ({
               ))}
             </SelectContent>
           </Select>
-          <div className="flex w-full items-center gap-2">
-            <Select onValueChange={handleSortChange} value={selectedSort}>
-              <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:w-[160px]">
-                <SelectValue placeholder="Sort By" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="createdAt">Default (CreatedAt)</SelectItem>
-                <SelectItem value="expiredDate">Expired Date</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+
+          <Select onValueChange={handleSortChange} value={selectedSort}>
+            <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:max-w-[160px]">
+              <SelectValue placeholder="Sort By" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="createdAt">Default (CreatedAt)</SelectItem>
+              <SelectItem value="expiredDate">Expired Date</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
     </div>

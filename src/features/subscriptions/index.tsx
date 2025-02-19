@@ -115,7 +115,7 @@ const SubscriptionPage = () => {
                     <div className="rounded-lg bg-white p-4 shadow-sm">
                       <p className="text-sm font-medium text-gray-500">Price</p>
                       <p className="mt-2 text-lg font-semibold text-blue-600">
-                        Rp.{subscription.category.price.toLocaleString("id-ID")}
+                        Rp{subscription.category.price.toLocaleString("id-ID")}
                       </p>
                     </div>
                     <div className="rounded-lg bg-white p-4 shadow-sm">
