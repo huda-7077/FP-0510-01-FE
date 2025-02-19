@@ -9,17 +9,17 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { SkillAssessmentQuestion } from "@/types/skillAssessments";
 import { Pencil, Trash2 } from "lucide-react";
 
 interface Question {
   id: number;
   question: string;
-  options: string[];
-  correctAnswer: string;
+  options: { option: string; isCorrect: boolean }[];
 }
 
 interface QuestionListTableProps {
-  questions: Question[];
+  questions: SkillAssessmentQuestion[];
   onDelete: (id: number) => void;
   onEdit: (id: number, question: Omit<Question, "id">) => void;
 }
@@ -29,7 +29,7 @@ export function QuestionListTable({
   onDelete,
   onEdit,
 }: QuestionListTableProps) {
-  if (questions.length <= 0)
+  if (!Array.isArray(questions) || questions.length <= 0)
     return (
       <DataNotFound
         title="No Questions Found"
@@ -72,12 +72,12 @@ export function QuestionListTable({
               </TableCell>
               <TableCell className="py-4">
                 <div className="flex flex-wrap gap-2">
-                  {question.options.map((option, optIndex) => (
+                  {question.skillAssessmentOptions.map((option, optIndex) => (
                     <span
-                      key={optIndex}
+                      key={option.id}
                       className={cn(
                         "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
-                        option === question.correctAnswer
+                        option.isCorrect
                           ? "bg-green-50 text-green-700"
                           : "bg-gray-50 text-gray-600",
                       )}
@@ -94,10 +94,19 @@ export function QuestionListTable({
                     variant="outline"
                     size="icon"
                     className="h-8 w-8 border-gray-200 text-gray-600 transition-colors hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600"
-                    onClick={() => onEdit(question.id, question)}
+                    onClick={() =>
+                      onEdit(question.id, {
+                        question: question.question,
+                        options: question.skillAssessmentOptions.map((opt) => ({
+                          option: opt.option,
+                          isCorrect: opt.isCorrect,
+                        })),
+                      })
+                    }
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
+
                   <Button
                     type="button"
                     variant="destructive"

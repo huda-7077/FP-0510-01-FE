@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { UpdateSkillAssessmentDetails } from "./form/CreatePreAssessmentTestForm";
+import { SkillAssessmentDetailsComponent } from "./form/SkillAssessmentDetailsComponent";
 
 interface SkillAssessmentDetailsProps {
   slug: string;
@@ -8,7 +8,7 @@ interface SkillAssessmentDetailsProps {
 const SkillAssessmentDetailsPage: FC<SkillAssessmentDetailsProps> = ({
   slug,
 }) => {
-  return <UpdateSkillAssessmentDetails slug={slug} />;
+  return <SkillAssessmentDetailsComponent slug={slug} />;
 };
 
 export default SkillAssessmentDetailsPage;

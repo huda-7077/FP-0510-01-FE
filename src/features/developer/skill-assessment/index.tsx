@@ -8,6 +8,7 @@ import { SkillAssessmentHeader } from "./components/SkillAssessmentHeader";
 import useGetSkillAssessments from "@/hooks/api/skill-assessment/useGetSkillAssessments";
 import { SkillAssessmentCard } from "./components/SkillAssessmentCard";
 import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
+import SkillAssessmentCardSkeleton from "./components/SkillAssessmentCardSkeleton";
 
 export const SkillAssessmentListComponent = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -31,8 +32,6 @@ export const SkillAssessmentListComponent = () => {
     search: debouncedSearch,
     status,
   });
-
-  console.log(skillAssessments);
 
   const onChangePage = (page: number) => {
     setPage(page);
@@ -76,11 +75,11 @@ export const SkillAssessmentListComponent = () => {
             <div className="mt-4 grid gap-2 sm:space-y-2">
               {isLoading && (
                 <>
-                  {/* <PaymentCardSkeleton />
-                <PaymentCardSkeleton />
-                <PaymentCardSkeleton />
-                <PaymentCardSkeleton />
-                <PaymentCardSkeleton /> */}
+                  <SkillAssessmentCardSkeleton />
+                  <SkillAssessmentCardSkeleton />
+                  <SkillAssessmentCardSkeleton />
+                  <SkillAssessmentCardSkeleton />
+                  <SkillAssessmentCardSkeleton />
                 </>
               )}
               {skillAssessments?.data.map((skillAssessment, index) => (

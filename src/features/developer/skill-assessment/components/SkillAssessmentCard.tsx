@@ -1,4 +1,3 @@
-"use client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
@@ -7,9 +6,8 @@ import {
 } from "@/types/skillAssessments";
 import { Eye } from "lucide-react";
 import Image from "next/image";
-import { useState } from "react";
-import { SkillAssessmentStatusBadge } from "./SkillAssessmentStatusBadge";
 import Link from "next/link";
+import { SkillAssessmentStatusBadge } from "./SkillAssessmentStatusBadge";
 
 interface SkillAssessmentCardProps {
   skillAssessment?: SkillAssessment;
@@ -18,7 +16,6 @@ interface SkillAssessmentCardProps {
 export const SkillAssessmentCard = ({
   skillAssessment,
 }: SkillAssessmentCardProps) => {
-  const [openDetails, setOpenDetails] = useState(false);
   return (
     <div>
       <Card className="group rounded-2xl border-2 border-gray-200 p-3 px-6 py-4 shadow-none transition-all duration-200 hover:border-blue-600">
@@ -68,7 +65,6 @@ export const SkillAssessmentCard = ({
                 <Button
                   variant="outline"
                   className="h-8 flex-1 bg-blue-600 text-xs text-white hover:bg-blue-800 hover:text-white sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
-                  onClick={() => setOpenDetails(true)}
                 >
                   <Eye />
                   View Details
@@ -78,13 +74,6 @@ export const SkillAssessmentCard = ({
           </div>
         </div>
       </Card>
-      {/* {payment && (
-        <PaymentDetailsDialog
-          isOpen={openDetails}
-          onClose={() => setOpenDetails(false)}
-          payment={payment}
-        />
-      )} */}
     </div>
   );
 };

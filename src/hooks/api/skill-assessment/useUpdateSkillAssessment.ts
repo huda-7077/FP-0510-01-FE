@@ -1,5 +1,4 @@
 import useAxios from "@/hooks/useAxios";
-import { SkillAssessmentStatus } from "@/types/skillAssessments";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
@@ -11,7 +10,6 @@ interface UpdateSkillAssessmentPayload {
   passingScore: number;
   badgeImage: File | null;
   generateSlug: boolean;
-  status: SkillAssessmentStatus;
 }
 
 const useUpdateSkillAssessment = () => {
