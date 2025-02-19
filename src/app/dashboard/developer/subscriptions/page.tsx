@@ -1,7 +1,8 @@
 import { SubscriptionListComponent } from "@/features/developer/subscriptions";
+import DeveloperAuthGuard from "@/hoc/DeveloperAuthGuard";
 
 const SubscriptionList = () => {
   return <SubscriptionListComponent />;
 };
 
-export default SubscriptionList;
+export default DeveloperAuthGuard(SubscriptionList);
