@@ -37,8 +37,6 @@ export default function DiscoverySection() {
   const { data: jobsData, isLoading } = useGetJobs({
     page: 1,
     take: 5,
-    isPublished: "true",
-    isDeleted: "false",
   });
 
   if (isLoading) {
@@ -93,7 +91,6 @@ export default function DiscoverySection() {
           <ArrowRight className="ml-2 h-4 w-4 stroke-[3] transition-transform group-hover:translate-x-1" />
         </Button>
       </div>
-
       <div className="space-y-4">
         {jobsData?.data.map((job) => (
           <div
@@ -113,10 +110,14 @@ export default function DiscoverySection() {
                   {job.title}
                 </h3>
                 <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-500">
+                  {/* Handle missing companyLocation */}
                   <div className="flex items-center gap-1">
                     <MapPin size={16} />
-                    <span>{job.companyLocation.regency.regency}</span>
+                    <span>
+                      {job.companyLocation?.regency?.regency || "Unknown Location"}
+                    </span>
                   </div>
+                  {/* Format salary with fallback */}
                   {formatSalary(job.salary) && (
                     <div className="flex items-center gap-1">
                       <Wallet size={16} />

@@ -1,16 +1,16 @@
 "use client";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import PaginationSection from "@/components/PaginationSection";
 import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
+import useGetCompanyJobs from "@/hooks/api/job/useGetCompanyJobs";
 import useGetJobCategories from "@/hooks/api/job/useGetJobCategories";
-import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
-import { DataNotFound } from "@/components/data-not-found/DataNotFound";
-import { useRouter } from "next/navigation";
 
 export const JobListComponent = () => {
   const router = useRouter();
@@ -38,7 +38,7 @@ export const JobListComponent = () => {
     data: jobs,
     isPending: isJobsPending,
     refetch: refetchJobs,
-  } = useGetJobs({
+  } = useGetCompanyJobs({
     page,
     sortOrder,
     sortBy,

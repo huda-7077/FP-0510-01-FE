@@ -1,10 +1,44 @@
+"use client";
 import { Badge } from "@/components/ui/badge";
-import FindJobsBreadCrumb from "./components/FindJobsBreadcrumb";
-import { JobSearchSidebar } from "./components/JobsSearchSidebar";
+import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { Bookmark, MapPin } from "lucide-react";
-import { Avatar } from "@/components/ui/avatar";
+import Image from "next/image";
+import FindJobsBreadCrumb from "./components/FindJobsBreadcrumb";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { useDebounceValue } from "usehooks-ts";
+import { JobSearchSidebar } from "./components/JobsSearchSidebar";
+import PaginationSection from "@/components/PaginationSection";
+import Link from "next/link"; // Import Link from Next.js
+import { JobCardSkeleton } from "./components/JobCardSkeleton";
 
 const JobsPage = () => {
+  const [search] = useQueryState("search", { defaultValue: "" });
+  const [category] = useQueryState("category", { defaultValue: "" });
+  const [location] = useQueryState("location", { defaultValue: "" });
+  const [timeRange] = useQueryState("timeRange", { defaultValue: "" });
+  const [startDate] = useQueryState("startDate", { defaultValue: "" });
+  const [endDate] = useQueryState("endDate", { defaultValue: "" });
+  const [sortOrder] = useQueryState("sortOrder", { defaultValue: "desc" });
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1)); // Add page state
+  const [debouncedValue] = useDebounceValue(search, 500);
+
+  const { data: jobs, isPending } = useGetJobs({
+    search: debouncedValue,
+    category,
+    location,
+    timeRange,
+    startDate,
+    endDate,
+    sortBy: "createdAt",
+    sortOrder,
+    take: 10,
+    page, 
+  });
+
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
     <div className="min-h-screen">
       <div className="bg-[#f7f7f8]">
@@ -15,61 +49,91 @@ const JobsPage = () => {
           <FindJobsBreadCrumb />
         </div>
       </div>
-
       <div className="container relative mx-auto flex flex-col bg-background p-4 md:flex-row md:gap-7">
         <JobSearchSidebar />
-
+        {/* Main Content */}
         <main className="flex-1">
           <div className="container mx-auto p-4">
-            <h1 className="mb-4 text-2xl font-bold">Results</h1>
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {/* Example job listings - replace with your actual job data */}
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12].map((job) => (
-                <div
-                  key={job}
-                  className="rounded-md border-[1px] bg-card p-4 shadow-sm duration-150 hover:border-blue-500 hover:shadow-lg"
-                >
-                  <div className="flex flex-col gap-4">
-                    <h2 className="text-base font-semibold">Job Title {job}</h2>
-                    <div className="flex items-center gap-3">
-                      <Badge
-                        variant="secondary"
-                        className="rounded-sm bg-green-100 text-green-600 hover:bg-green-600 hover:text-green-100"
-                      >
-                        Category
-                      </Badge>
-                      <p className="text-xs text-gray-500">Salary: Rp20000</p>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="flex gap-2">
-                        <Avatar />
-                        <div className="space-y-1">
-                          <h3 className="text-sm">Company Name</h3>
-                          <p className="flex items-center gap-1 text-xs text-gray-500">
-                            <MapPin className="h-4" />
-                            Regency, Province
-                          </p>
-                        </div>
-                      </div>
-                      <Bookmark className="h-6 text-gray-400" />
-                    </div>
-                  </div>
-                </div>
+            {isPending ? (
+              <div className="grid gap-4 md:grid-cols-2">
+              {[...Array(6)].map((_, index) => (
+                <JobCardSkeleton key={index} />
               ))}
             </div>
-          </div>
-          {/* <div className="mt-6 flex justify-center gap-2 border-t border-gray-100 pt-6">
-          {jobApplications &&
-            jobApplications.data.length > 0 &&
-            jobApplications.meta.total > jobApplications.meta.take && (
-              <PaginationSection
-                onChangePage={onChangePage}
-                page={Number(page)}
-                take={jobApplications.meta.take || 4}
-                total={jobApplications.meta.total}
-              />
+            ) : !jobs?.data || jobs?.data.length === 0 ? (
+              <>
+              <h1 className="mb-4 text-2xl font-bold">No Results</h1>
+              <div className="flex h-96 w-full flex-col items-center justify-center text-center font-semibold text-[#afaeae]">
+                <Image
+                  src="/empty-jobs.svg" 
+                  alt="No Jobs Found"
+                  width={200}
+                  height={200}
+                  className="mb-4"
+                />
+                <h1>No Jobs Found</h1>
+              </div>
+              </>
+            ) : (
+              <>
+              <h1 className="mb-4 text-2xl font-bold">{jobs.data.length} Results</h1>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {jobs.data.map((job) => (
+                    <Link
+                      key={job.id}
+                      href={`/jobs/${job.id}`} 
+                      className="rounded-md border-[1px] bg-card p-4 shadow-sm duration-150 hover:border-blue-500 hover:shadow-lg block"
+                    >
+                      <div className="flex flex-col gap-4">
+                        <h2 className="text-base font-semibold">{job.title}</h2>
+                        <div className="flex items-center gap-3">
+                          <Badge
+                            variant="secondary"
+                            className="rounded-sm bg-green-100 text-green-600 hover:bg-green-600 hover:text-green-100"
+                          >
+                            {job.category}
+                          </Badge>
+                          <p className="text-xs text-gray-500">
+                            Salary: Rp{job.salary || "N/A"}
+                          </p>
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="flex gap-2">
+                            <Image
+                              src={job.company.logo}
+                              alt={job.company.name}
+                              width={40}
+                              height={40}
+                              className="rounded object-cover"
+                            />
+                            <div className="space-y-1">
+                              <h3 className="text-sm">{job.company.name}</h3>
+                              <p className="flex items-center gap-1 text-xs text-gray-500">
+                                <MapPin className="h-4" />
+                                {job.companyLocation.regency.regency},{" "}
+                                {job.companyLocation.regency.province.province || ""}
+                              </p>
+                            </div>
+                          </div>
+                          <Bookmark className="h-6 text-gray-400" />
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+                <div className="mt-6 flex justify-center gap-2 border-t border-gray-100 pt-6">
+                  {jobs && jobs.meta.total > jobs.meta.take && (
+                    <PaginationSection
+                      onChangePage={onChangePage}
+                      page={Number(page)}
+                      take={jobs.meta.take || 10}
+                      total={jobs.meta.total}
+                    />
+                  )}
+                </div>
+              </>
             )}
-        </div> */}
+          </div>
         </main>
       </div>
     </div>

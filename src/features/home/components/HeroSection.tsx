@@ -36,7 +36,7 @@ const HeroSection = () => {
             </div>
           </div>
         </div>
-        <div className="mt-8 md:mt-10">{/* <JobStats /> */}</div>
+        <div className="mt-8 md:mt-10"><JobStats /></div>
       </div>
     </section>
   );
