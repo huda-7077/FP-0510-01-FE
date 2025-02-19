@@ -7,18 +7,20 @@ interface GetRegenciesQuery {
   search?: string;
 }
 
-const useGetRegencies = (queries: GetRegenciesQuery) => {
+const useGetRegencies = ({ provinceId, search }: GetRegenciesQuery = {}) => {
   return useQuery({
-    queryKey: ["regencies", queries],
+    queryKey: ["regencies", { provinceId, search }],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<Regency[]>(
-        "/locations/regencies",
-        {
-          params: queries,
+      const { data } = await axiosInstance.get<Regency[]>("/locations/regencies", {
+        params: {
+          provinceId,
+          search: search?.trim(),
         },
-      );
+      });
       return data;
     },
+    enabled: !search || search.length >= 2, 
+    staleTime: 5 * 60 * 1000,
   });
 };
 
