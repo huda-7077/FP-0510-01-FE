@@ -125,8 +125,8 @@ const Navbar = () => {
   const renderMainContent = () => {
     if (isAdmin || isDeveloper) {
       return (
-        <nav className="border-b">
-          <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
+        <nav className="w-full border-b">
+          <div className="h-18 container mx-auto flex items-center px-4 md:px-6">
             <div className="flex items-center p-4">
               <Link href="/">
                 <Image

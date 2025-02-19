@@ -1,4 +1,4 @@
-import CreateJobComponent from "@/features/admin/company/create-job";
+import CreateJobComponent from "@/features/admin/job/create-job";
 import AdminAuthGuard from "@/hoc/AdminAuthGuard";
 
 const CreateJob = () => {
