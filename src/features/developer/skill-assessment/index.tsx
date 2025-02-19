@@ -4,34 +4,33 @@ import PaginationSection from "@/components/PaginationSection";
 import useGetPayments from "@/hooks/api/payment/useGetPayments";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
-import { PaymentCard } from "./components/PaymentCard";
-import { PaymentCardSkeleton } from "./components/PaymentCardSkeleton";
-import { PaymentHeader } from "./components/PaymentHeader";
+import { SkillAssessmentHeader } from "./components/SkillAssessmentHeader";
+import useGetSkillAssessments from "@/hooks/api/skill-assessment/useGetSkillAssessments";
+import { SkillAssessmentCard } from "./components/SkillAssessmentCard";
 import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
+import SkillAssessmentCardSkeleton from "./components/SkillAssessmentCardSkeleton";
 
-export const PaymentListComponent = () => {
+export const SkillAssessmentListComponent = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [sortBy, setSortBy] = useQueryState("sortBy", {
     defaultValue: "createdAt",
+  });
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", {
+    defaultValue: "desc",
   });
   const [debouncedSearch] = useDebounce(search, 500);
   const [status, setStatus] = useQueryState("status", {
     defaultValue: "",
   });
 
-  const [paymentMethod, setPaymentMethod] = useQueryState("paymentMethod", {
-    defaultValue: "",
-  });
-
-  const { data: payments, isLoading } = useGetPayments({
+  const { data: skillAssessments, isLoading } = useGetSkillAssessments({
     page,
-    sortOrder: "desc",
+    sortOrder,
     sortBy,
     take: 10,
     search: debouncedSearch,
     status,
-    paymentMethod,
   });
 
   const onChangePage = (page: number) => {
@@ -53,56 +52,52 @@ export const PaymentListComponent = () => {
     setPage(1);
   };
 
-  const onPaymentMethodChange = (paymentMethod: string) => {
-    if (paymentMethod === "ALL") {
-      setPaymentMethod("");
-      setPage(1);
-      return;
-    }
-    setPaymentMethod(paymentMethod);
-    setPage(1);
-  };
-
   const handleSortChange = (sort: string) => {
     setSortBy(sort);
+  };
+  const handleSortOrderChange = (sortOrder: string) => {
+    setSortOrder(sortOrder);
   };
 
   return (
     <>
-      <DashboardBreadcrumb route="developer" lastCrumb="Payments" />
+      <DashboardBreadcrumb route="developer" lastCrumb="Skill Assessments" />
       <div className="my-1 md:my-2">
         <div className="container mx-auto w-full">
           <div>
-            <PaymentHeader
-              totalPayments={payments?.data.length || 0}
+            <SkillAssessmentHeader
+              totalSkillAssessments={skillAssessments?.data.length || 0}
+              onSortOrderChange={handleSortOrderChange}
               onStatusChange={onStatusChange}
               onSortChange={handleSortChange}
               onSearch={handleSearch}
-              onPaymentMethodChange={onPaymentMethodChange}
             />
             <div className="mt-4 grid gap-2 sm:space-y-2">
               {isLoading && (
                 <>
-                  <PaymentCardSkeleton />
-                  <PaymentCardSkeleton />
-                  <PaymentCardSkeleton />
-                  <PaymentCardSkeleton />
-                  <PaymentCardSkeleton />
+                  <SkillAssessmentCardSkeleton />
+                  <SkillAssessmentCardSkeleton />
+                  <SkillAssessmentCardSkeleton />
+                  <SkillAssessmentCardSkeleton />
+                  <SkillAssessmentCardSkeleton />
                 </>
               )}
-              {payments?.data.map((payment, index) => (
-                <PaymentCard payment={payment} key={index} />
+              {skillAssessments?.data.map((skillAssessment, index) => (
+                <SkillAssessmentCard
+                  skillAssessment={skillAssessment}
+                  key={index}
+                />
               ))}
             </div>
           </div>
-          {payments &&
-            payments.data.length > 0 &&
-            payments.meta.total > payments.meta.take && (
+          {skillAssessments &&
+            skillAssessments.data.length > 0 &&
+            skillAssessments.meta.total > skillAssessments.meta.take && (
               <PaginationSection
                 onChangePage={onChangePage}
                 page={Number(page)}
-                take={payments.meta.take || 4}
-                total={payments.meta.total}
+                take={skillAssessments.meta.take || 4}
+                total={skillAssessments.meta.total}
               />
             )}
         </div>
