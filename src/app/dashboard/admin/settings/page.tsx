@@ -1,5 +1,6 @@
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
 import CompanySettingsPage from "@/features/admin/company/settings";
+import AdminAuthGuard from "@/hoc/AdminAuthGuard";
 
 const CompanySettings = () => {
   return (
@@ -9,4 +10,4 @@ const CompanySettings = () => {
   );
 };
 
-export default CompanySettings;
+export default AdminAuthGuard(CompanySettings);

@@ -1,5 +1,6 @@
 import { UserDashboardLayout } from "@/components/layouts/UserDashboardLayout";
 import UserDashboardPage from "@/features/user/dashboard";
+import UserAuthGuard from "@/hoc/UserAuthGuard";
 
 const UserDashboard = () => {
   return (
@@ -9,4 +10,4 @@ const UserDashboard = () => {
   );
 };
 
-export default UserDashboard;
+export default UserAuthGuard(UserDashboard);

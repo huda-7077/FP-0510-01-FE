@@ -1,12 +1,20 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { JobApplication } from "@/types/jobApplication";
 import {
+  Building2,
   Calendar,
+  Clock,
   Eye,
   Globe,
   GraduationCap,
@@ -42,6 +50,10 @@ const ApplicantDetails = ({
           View Details
         </Button>
       </DialogTrigger>
+      <DialogTitle className="hidden">Applicant Details</DialogTitle>
+      <DialogDescription className="hidden">
+        applicant details
+      </DialogDescription>
       <DialogContent className="h-screen max-w-5xl overflow-y-auto border-none p-0 md:h-fit md:max-h-[90vh] md:rounded-2xl">
         <div className="flex flex-col">
           <div className="bg-gradient-to-r from-blue-900 to-blue-700 p-8 sm:px-20">
@@ -171,6 +183,62 @@ const ApplicantDetails = ({
                         </p>
                       </div>
                     </div>
+                  </div>
+                </CardContent>
+              </Card>
+              <Card className="col-span-2 border border-gray-200 shadow-none">
+                <CardContent className="p-6">
+                  <CardTitle className="mb-6 text-lg font-semibold text-gray-900">
+                    Work Experiences
+                  </CardTitle>
+                  <div className="divide-y divide-gray-100">
+                    {applicant.user.experience?.length > 0 ? (
+                      applicant.user.experience?.map((experience, index) => (
+                        <div
+                          key={index}
+                          className={`grid grid-cols-1 gap-4 ${
+                            index > 0 ? "pt-6" : ""
+                          } ${
+                            index < applicant.user.experience.length - 1
+                              ? "pb-6"
+                              : ""
+                          } md:grid-cols-3`}
+                        >
+                          {/* Timeline and Company Info */}
+                          <div className="md:col-span-1">
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <Clock className="h-4 w-4 text-blue-600" />
+                              <span>
+                                {formatLongDate(experience.startDate)} -{" "}
+                                {experience.endDate
+                                  ? formatLongDate(experience.endDate)
+                                  : "Present"}
+                              </span>
+                            </div>
+                            <div className="mt-2 flex items-center gap-2">
+                              <Building2 className="h-4 w-4 text-blue-600" />
+                              <span className="text-sm font-medium text-gray-700">
+                                {experience.companyName}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Role and Description */}
+                          <div className="md:col-span-2">
+                            <h4 className="text-base font-semibold text-gray-900">
+                              {experience.jobTitle}
+                            </h4>
+                            <p className="mt-2 text-sm leading-relaxed text-gray-600">
+                              {experience.description}
+                            </p>
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <div className="flex items-center justify-center py-8 text-gray-500">
+                        <p>No work experience available.</p>
+                      </div>
+                    )}
                   </div>
                 </CardContent>
               </Card>

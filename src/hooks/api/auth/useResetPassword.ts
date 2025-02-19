@@ -1,11 +1,10 @@
 "use client";
 
-import { axiosInstance } from "@/lib/axios";
+import useAxios from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
-import { useSearchParams } from "next/navigation";
 
 interface ResetPasswordPayload {
   password: string;
@@ -20,6 +19,7 @@ const useResetPassword = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
+  const { axiosInstance } = useAxios();
 
   return useMutation<
     ResetPasswordResponse,
@@ -31,15 +31,9 @@ const useResetPassword = () => {
         throw new Error("Reset token is missing");
       }
 
-      const { data } = await axiosInstance.patch(
-        "/auth/reset-password",
-        { password: payload.password },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      );
+      const { data } = await axiosInstance.patch("/auth/reset-password", {
+        password: payload.password,
+      });
       return data;
     },
     onSuccess: (data) => {

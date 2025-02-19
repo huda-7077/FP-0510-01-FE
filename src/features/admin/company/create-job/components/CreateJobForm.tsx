@@ -1,9 +1,11 @@
 "use client";
+import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import useCreateJob, { CreateJobPayload } from "@/hooks/api/job/useCreateJob";
+import useFormatTitleCase from "@/hooks/useFormatTitleCase";
 import { formatISO } from "date-fns";
 import { useFormik } from "formik";
 import {
@@ -21,13 +23,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { createJobSchema } from "../schemas";
 import CreateJobFormHeader from "./CreateJobFormHeader";
 import CreateJobFormInput from "./CreateJobFormInput";
 import CreateJobFormSelectInput from "./CreateJobFormSelectInput";
 import TagsInput from "./CreateJobFormTagInput";
-import LoadingScreen from "@/components/loading-screen/LoadingScreen";
-import { createJobSchema } from "../schemas";
-import useFormatTitleCase from "@/hooks/useFormatTitleCase";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -139,7 +139,7 @@ const CreateJobForm = () => {
           <div className="space-y-3 rounded-lg border border-dashed border-blue-200 bg-blue-50/50 p-6">
             <Label className="flex items-center gap-2 text-lg font-semibold text-blue-700">
               <Upload size={20} />
-              Event Thumbnail
+              Job Banner
             </Label>
             <div className="flex items-center gap-3">
               <Input

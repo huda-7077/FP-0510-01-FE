@@ -153,3 +153,13 @@ body {
   width: 24px;
   height: 24px;
 }
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}

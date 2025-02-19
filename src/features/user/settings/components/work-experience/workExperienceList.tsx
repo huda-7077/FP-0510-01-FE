@@ -107,7 +107,7 @@ export const WorkExperienceList = () => {
           </TableHeader>
           <TableBody>
             {workExperiences?.length ? (
-              workExperiences.map((experience) => (
+              workExperiences.map((experience: WorkExperience) => (
                 <TableRow key={experience.id}>
                   <TableCell>{experience.companyName}</TableCell>
                   <TableCell>{experience.jobTitle}</TableCell>
