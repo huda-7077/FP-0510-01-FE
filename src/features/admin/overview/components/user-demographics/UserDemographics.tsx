@@ -22,16 +22,26 @@ const UserDemographics = () => {
     isUserGenderCountLoading &&
     isGetUsersAgeRangesLoading &&
     isGetUserByProvinceLoading
-  )
+  ) {
     return <LoadingScreen />;
+  }
 
   return (
-    <div className="grid gap-4">
-      <div className="grid gap-4 sm:grid-cols-2">
-        <GenderCountCard data={userGenderCount?.data || []} />
-        <AgeRangesCard data={ageRanges?.data || []} />
+    <div className="mx-auto w-full max-w-[1920px]">
+      <div className="flex flex-col gap-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="min-w-0 overflow-hidden">
+            <GenderCountCard data={userGenderCount?.data || []} />
+          </div>
+          <div className="min-w-0 overflow-hidden">
+            <AgeRangesCard data={ageRanges?.data || []} />
+          </div>
+        </div>
+
+        <div className="min-w-0 overflow-hidden">
+          <UsersByProvinceCard data={userByProvince?.data || []} />
+        </div>
       </div>
-      <UsersByProvinceCard data={userByProvince?.data || []} />
     </div>
   );
 };

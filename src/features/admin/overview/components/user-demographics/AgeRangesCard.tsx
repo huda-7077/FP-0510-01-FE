@@ -47,7 +47,7 @@ const AgeRangesCard: FC<AgeRangesCardProps> = ({ data }) => {
       <CardContent className="h-full">
         <ChartContainer
           config={ageChartConfig}
-          className="mx-auto h-[224px] max-w-[272px] md:h-[260px] md:max-w-[292px] lg:h-[340px] lg:max-w-[320px] xl:h-[348px] xl:max-w-[400px] 2xl:h-[452px] 2xl:max-w-[500px] [&_.recharts-text]:fill-background"
+          className="mx-auto h-[224px] max-w-64 md:h-[260px] md:max-w-[292px] lg:h-[340px] lg:max-w-[320px] xl:h-[348px] xl:max-w-[400px] 2xl:h-[452px] 2xl:max-w-[500px] [&_.recharts-text]:fill-background"
         >
           <BarChart
             accessibilityLayer

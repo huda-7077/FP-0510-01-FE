@@ -34,7 +34,7 @@ interface UsersByProvinceCardProps {
 
 const UsersByProvinceCard: FC<UsersByProvinceCardProps> = ({ data }) => {
   const chartHeight = Math.max(272, data.length * 50);
-  const cardHeight = chartHeight + 150;
+  const cardHeight = chartHeight + 184;
 
   return (
     <Card
@@ -46,7 +46,8 @@ const UsersByProvinceCard: FC<UsersByProvinceCardProps> = ({ data }) => {
           Province Distribution
         </CardTitle>
         <CardDescription>
-          Distribution of users by province ranges
+          Distribution of users by province, showing the top 10 provinces with
+          the highest user counts.
         </CardDescription>
       </CardHeader>
       <CardContent style={{ height: `${chartHeight}px` }}>

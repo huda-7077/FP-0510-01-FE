@@ -53,7 +53,15 @@ const Navbar = () => {
     { href: "/", label: "Home" },
     { href: "/jobs", label: "Find Job" },
     { href: "/find-employers", label: "Find Employers" },
-    { href: "/dashboard", label: "Dashboard" },
+    {
+      href:
+        profile?.role === "ADMIN"
+          ? "/dashboard/admin"
+          : profile?.role === "USER"
+            ? "/dashboard/user"
+            : "/dashboard/developer",
+      label: "Dashboard",
+    },
     { href: "/job-alerts", label: "Job Alerts" },
     { href: "/customer-supports", label: "Customer Supports" },
   ];

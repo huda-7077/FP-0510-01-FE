@@ -41,7 +41,7 @@ export default function DiscoverySection() {
 
   if (isLoading) {
     return (
-      <section className="container mx-auto px-4 py-20 md:px-6 space-y-4">
+      <section className="container mx-auto space-y-4 px-4 py-20 md:px-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <h2 className="text-xl font-semibold sm:text-2xl">Jobs Near You</h2>
           <div className="flex items-center gap-2 text-[#0A65CC]">
@@ -60,7 +60,7 @@ export default function DiscoverySection() {
 
   if (!jobsData?.data.length) {
     return (
-      <section className="container mx-auto px-4 py-20 md:px-6 space-y-4">
+      <section className="container mx-auto space-y-4 px-4 py-20 md:px-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <h2 className="text-xl font-semibold sm:text-2xl">Jobs Near You</h2>
           <div className="flex items-center gap-2 text-[#0A65CC]">
@@ -99,7 +99,7 @@ export default function DiscoverySection() {
           >
             <div className="flex items-center gap-4">
               <Image
-                src={job.company.logo}
+                src={job.company.logo || "/logo.svg"}
                 alt={job.company.name}
                 width={40}
                 height={40}
@@ -114,7 +114,8 @@ export default function DiscoverySection() {
                   <div className="flex items-center gap-1">
                     <MapPin size={16} />
                     <span>
-                      {job.companyLocation?.regency?.regency || "Unknown Location"}
+                      {job.companyLocation?.regency?.regency ||
+                        "Unknown Location"}
                     </span>
                   </div>
                   {/* Format salary with fallback */}

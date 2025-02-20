@@ -29,14 +29,16 @@ const HeroSection = () => {
               <Image
                 src="/hero-illustration.png"
                 alt="HeroIllustration"
-                layout="fill"
-                objectFit="contain"
+                fill
+                style={{ objectFit: "contain" }}
                 priority
               />
             </div>
           </div>
         </div>
-        <div className="mt-8 md:mt-10"><JobStats /></div>
+        <div className="mt-8 md:mt-10">
+          <JobStats />
+        </div>
       </div>
     </section>
   );
