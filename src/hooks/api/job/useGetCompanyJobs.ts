@@ -6,8 +6,9 @@ import { useQuery } from "@tanstack/react-query";
 interface GetCompanyJobsQuery extends PaginationQueries {
   search?: string;
   category?: string;
-  timeRange?: string;
   isDeleted?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 const useGetCompanyJobs = (queries: GetCompanyJobsQuery) => {

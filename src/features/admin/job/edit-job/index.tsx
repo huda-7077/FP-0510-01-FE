@@ -1,7 +1,9 @@
+"use client";
+
+import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import React, { FC } from "react";
+import { FC } from "react";
 import EditJobForm from "./components/EditJobForm";
-import EditJobFormBreadCrumb from "./components/EditFormFormBreadCrumb";
 
 interface EditJobComponentProps {
   id: number;
@@ -10,7 +12,12 @@ interface EditJobComponentProps {
 const EditJobComponent: FC<EditJobComponentProps> = ({ id }) => {
   return (
     <DashboardLayout>
-      <EditJobFormBreadCrumb jobId={id} crumb="Edit" />
+      <DashboardBreadcrumb
+        route="admin"
+        crumb1={{ href: "jobs", label: "Jobs" }}
+        crumb2={{ href: `${id}`, label: "Jobs Details" }}
+        lastCrumb="Edit Job Details"
+      />
       <EditJobForm key={id} id={id} />
     </DashboardLayout>
   );

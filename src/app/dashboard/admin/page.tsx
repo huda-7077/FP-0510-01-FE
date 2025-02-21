@@ -1,5 +1,6 @@
 "use client";
 
+import AdminAuthGuard from "@/hoc/AdminAuthGuard";
 import { redirect } from "next/navigation";
 import { useEffect } from "react";
 
@@ -11,4 +12,4 @@ const DashboardAdmin = () => {
   return null;
 };
 
-export default DashboardAdmin;
+export default AdminAuthGuard(DashboardAdmin);

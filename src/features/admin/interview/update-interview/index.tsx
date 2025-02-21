@@ -1,7 +1,9 @@
+"use client";
+
+import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import React, { FC } from "react";
+import { FC } from "react";
 import UpdateInterviewForm from "./components/UpdateInterviewForm";
-import UpdateInterviewFormBreadCrumb from "./components/UpdateInterviewFormBreadCrumb";
 
 interface UpdateInterviewComponentProps {
   id: number;
@@ -12,7 +14,11 @@ const UpdateInterviewComponent: FC<UpdateInterviewComponentProps> = ({
 }) => {
   return (
     <DashboardLayout>
-      <UpdateInterviewFormBreadCrumb crumb="Edit Interview" />
+      <DashboardBreadcrumb
+        route="admin"
+        crumb1={{ href: "interviews", label: "Interviews" }}
+        lastCrumb="Edit Interview Schedule"
+      />
       <UpdateInterviewForm id={id} />
     </DashboardLayout>
   );

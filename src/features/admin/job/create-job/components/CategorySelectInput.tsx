@@ -9,37 +9,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
-import { MapPin } from "lucide-react";
+import { LayoutList, MapPin } from "lucide-react";
+import { JobCategory } from "../consts";
 import React from "react";
 
 interface FormikSelectProps {
   name: string;
   label: string;
   placeholder?: string;
-  formik: any; // Replace `any` with a proper Formik type if available
+  formik: any;
   className?: string;
   isDisabled: boolean;
 }
 
-const CreateJobFormSelectInput: React.FC<FormikSelectProps> = ({
+const CategorySelectInput: React.FC<FormikSelectProps> = ({
   name,
   label,
-  placeholder = "Select company locations",
+  placeholder = "Select category",
   formik,
   className = "",
   isDisabled = false,
 }) => {
-  const { data: companyLocations, isLoading: isCompanyLocationsLoading } =
-    useGetCompanyLocations();
-
   return (
     <div className={`space-y-2 ${className}`}>
       <Label
         htmlFor={name}
         className="flex items-center gap-2 text-base font-semibold text-gray-700"
       >
-        <MapPin />
+        <LayoutList />
         {label}
         <span className="text-red-600">*</span>
       </Label>
@@ -53,17 +50,11 @@ const CreateJobFormSelectInput: React.FC<FormikSelectProps> = ({
         </SelectTrigger>
         <SelectContent className="max-h-60 overflow-auto">
           <SelectGroup>
-            {isCompanyLocationsLoading ? (
-              <SelectItem value="Loading" disabled={true}>
-                Loading...
+            {JobCategory.map((category, idx) => (
+              <SelectItem key={idx} value={category}>
+                {category}
               </SelectItem>
-            ) : (
-              companyLocations?.map((location) => (
-                <SelectItem key={location.id} value={String(location.id)}>
-                  {location.address}, {location.regency.regency}
-                </SelectItem>
-              ))
-            )}
+            ))}
           </SelectGroup>
         </SelectContent>
       </Select>
@@ -74,4 +65,4 @@ const CreateJobFormSelectInput: React.FC<FormikSelectProps> = ({
   );
 };
 
-export default CreateJobFormSelectInput;
+export default CategorySelectInput;

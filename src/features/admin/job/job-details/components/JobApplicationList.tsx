@@ -6,6 +6,7 @@ import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
 import { ApplicationCard } from "./ApplicationCard";
 import { JobApplicationListHeader } from "./JobApplicationListHeader";
+import JobApplicationListSkeleton from "./skeletons/JobApplicationListSkeleton";
 
 interface JobApplicationsListProps {
   jobId: number;
@@ -14,7 +15,12 @@ interface JobApplicationsListProps {
 export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
-  const [sortBy, setSortBy] = useQueryState("sortBy", { defaultValue: "id" });
+  const [sortBy, setSortBy] = useQueryState("sortBy", {
+    defaultValue: "createdAt",
+  });
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", {
+    defaultValue: "asc",
+  });
   const [debouncedSearch] = useDebounce(search, 500);
   const [educationLevel, setEducationLevel] = useQueryState("educationLevel", {
     defaultValue: "",
@@ -23,7 +29,7 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
   const { data: jobApplications, isPending: isJobApplicationsPending } =
     useGetJobApplications({
       page,
-      sortOrder: "asc",
+      sortOrder,
       sortBy,
       take: 10,
       search: debouncedSearch,
@@ -60,6 +66,10 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
     setSortBy(sort);
   };
 
+  const handleSortOrderChange = (sortOrder: string) => {
+    setSortOrder(sortOrder);
+  };
+
   const onEducationLevelChange = (educationLevel: string) => {
     if (educationLevel === "all") {
       setEducationLevel("");
@@ -81,6 +91,7 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
               userEducationLevels={validEducationLevels}
               onSearch={handleSearch}
               onSortChange={handleSortChange}
+              onSortOrderChange={handleSortOrderChange}
               onEducationLevelChange={onEducationLevelChange}
               totalJobApplications={jobApplications?.meta.total || 0}
             />
@@ -88,6 +99,7 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
         </div>
 
         <div className="grid grid-cols-1 gap-2 md:gap-4">
+          {isJobApplicationsPending && <JobApplicationListSkeleton />}
           {jobApplications?.data.map((application) => (
             <ApplicationCard application={application} key={application.id} />
           ))}

@@ -1,4 +1,4 @@
-import { axiosInstance } from "@/lib/axios";
+import useAxios from "@/hooks/useAxios";
 import { JobApplication } from "@/types/jobApplication";
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
@@ -10,6 +10,8 @@ interface GetJobApplicationsQuery extends PaginationQueries {
 }
 
 const useGetJobApplications = (queries: GetJobApplicationsQuery) => {
+  const { axiosInstance } = useAxios();
+
   return useQuery({
     queryKey: ["job-applications", queries],
     queryFn: async () => {

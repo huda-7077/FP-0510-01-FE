@@ -26,8 +26,9 @@ import { toast } from "react-toastify";
 import { createJobSchema } from "../schemas";
 import CreateJobFormHeader from "./CreateJobFormHeader";
 import CreateJobFormInput from "./CreateJobFormInput";
-import CreateJobFormSelectInput from "./CreateJobFormSelectInput";
 import TagsInput from "./CreateJobFormTagInput";
+import CompanyLocationSelectInput from "./CompanyLocationSelectInput";
+import CategorySelectInput from "./CategorySelectInput";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -121,7 +122,6 @@ const CreateJobForm = () => {
       <CreateJobFormHeader />
       <form onSubmit={formik.handleSubmit}>
         <div className="space-y-8">
-          {/* Banner Image Preview */}
           {selectedImage && (
             <div className="w-full">
               <div className="relative h-[200px] overflow-hidden rounded-xl shadow-md sm:h-[300px] md:h-[480px]">
@@ -134,8 +134,6 @@ const CreateJobForm = () => {
               </div>
             </div>
           )}
-
-          {/* Image Upload Section */}
           <div className="space-y-3 rounded-lg border border-dashed border-blue-200 bg-blue-50/50 p-6">
             <Label className="flex items-center gap-2 text-lg font-semibold text-blue-700">
               <Upload size={20} />
@@ -199,13 +197,10 @@ const CreateJobForm = () => {
           </div>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <CreateJobFormInput
+            <CategorySelectInput
               name="category"
-              label="Job Category"
-              placeholder="Ex. Software Development"
+              label="Category"
               formik={formik}
-              icon={<LibraryBig size={18} />}
-              isNotEmpty={true}
               isDisabled={isCreateJobPending}
             />
             <CreateJobFormInput
@@ -240,7 +235,7 @@ const CreateJobForm = () => {
             isDisabled={isCreateJobPending}
           />
 
-          <CreateJobFormSelectInput
+          <CompanyLocationSelectInput
             name="companyLocationId"
             label="Company Location"
             placeholder="Select Company Location"

@@ -16,7 +16,7 @@ import { QuestionForm } from "./QuestionForm";
 import { QuestionListTable } from "./QuestionListTable";
 import { ValidationStatus } from "./ValidationStatues";
 import AssessmentFormBreadCrumb from "./AssessmentFormBreadCrumb";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 interface Question {
   id: number;
@@ -32,6 +32,7 @@ interface PreAssessmentTestFormProps {
 export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
   jobId,
 }) => {
+  const router = useRouter();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [submitType, setSubmitType] = useState("draft");
   const [isProcessing, setIsProcessing] = useState(false);
@@ -97,7 +98,7 @@ export const CreatePreAssessmentTestForm: FC<PreAssessmentTestFormProps> = ({
 
         formik.resetForm();
         setQuestions([]);
-        redirect(`/dashboard/admin/jobs/${jobId}`);
+        router.push(`/dashboard/admin/jobs/${jobId}`);
       } catch (error) {
         toast.error(`${error}`);
       }

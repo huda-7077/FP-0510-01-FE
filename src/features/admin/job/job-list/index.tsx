@@ -28,6 +28,13 @@ export const JobListComponent = () => {
   const [category, setCategory] = useQueryState("category", {
     defaultValue: "",
   });
+  const [startDate, setStartDate] = useQueryState("startDate", {
+    defaultValue: "",
+  });
+
+  const [endDate, setEndDate] = useQueryState("endDate", {
+    defaultValue: "",
+  });
 
   const [debouncedSearch] = useDebounce(search, 500);
 
@@ -45,6 +52,8 @@ export const JobListComponent = () => {
     take: 10,
     category,
     search: debouncedSearch,
+    startDate,
+    endDate,
   });
 
   const [triggerRefetch, setTriggerRefetch] = useState(false);
@@ -87,6 +96,11 @@ export const JobListComponent = () => {
     setSortBy(sort);
   };
 
+  const handleStartEndDate = (startDate: string, endDate: string) => {
+    setStartDate(startDate);
+    setEndDate(endDate);
+  };
+
   const validCategories = jobCategories?.data ?? [];
   const isLoadingData = isJobsPending && isJobCategoriesPending;
 
@@ -104,6 +118,7 @@ export const JobListComponent = () => {
             onCategoryChange={onCategoryChange}
             onSortChange={handleSortChange}
             onSortOrderChange={handleSortOrderChange}
+            onStartEndDateChange={handleStartEndDate}
             onSearch={handleSearch}
             isDisabled={isJobCategoriesPending}
           />
