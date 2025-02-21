@@ -53,7 +53,15 @@ const Navbar = () => {
     { href: "/", label: "Home" },
     { href: "/jobs", label: "Find Job" },
     { href: "/find-employers", label: "Find Employers" },
-    { href: "/dashboard", label: "Dashboard" },
+    {
+      href:
+        profile?.role === "ADMIN"
+          ? "/dashboard/admin"
+          : profile?.role === "USER"
+            ? "/dashboard/user"
+            : "/dashboard/developer",
+      label: "Dashboard",
+    },
     { href: "/job-alerts", label: "Job Alerts" },
     { href: "/customer-supports", label: "Customer Supports" },
   ];
@@ -125,8 +133,8 @@ const Navbar = () => {
   const renderMainContent = () => {
     if (isAdmin || isDeveloper) {
       return (
-        <nav className="border-b">
-          <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
+        <nav className="w-full border-b">
+          <div className="h-18 container mx-auto flex items-center px-4 md:px-6">
             <div className="flex items-center p-4">
               <Link href="/">
                 <Image

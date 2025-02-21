@@ -1,4 +1,4 @@
-import PreTestAssessmentComponent from "@/features/admin/company/pre-test-assessment";
+import PreTestAssessmentComponent from "@/features/admin/pre-test-assessment";
 import AdminAuthGuard from "@/hoc/AdminAuthGuard";
 
 const CreatePreTestAssessment = ({ params }: { params: { jobId: string } }) => {

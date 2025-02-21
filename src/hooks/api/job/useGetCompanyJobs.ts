@@ -6,9 +6,9 @@ import { useQuery } from "@tanstack/react-query";
 interface GetCompanyJobsQuery extends PaginationQueries {
   search?: string;
   category?: string;
-  timeRange?: string;
-  isPublished?: string;
   isDeleted?: string;
+  startDate?: string;
+  endDate?: string;
 }
 
 const useGetCompanyJobs = (queries: GetCompanyJobsQuery) => {
@@ -17,9 +17,12 @@ const useGetCompanyJobs = (queries: GetCompanyJobsQuery) => {
   return useQuery({
     queryKey: ["jobs", queries],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<PageableResponse<Job>>("/jobs/company", {
-        params: queries,
-      });
+      const { data } = await axiosInstance.get<PageableResponse<Job>>(
+        "/jobs/company",
+        {
+          params: queries,
+        },
+      );
       return data;
     },
   });
