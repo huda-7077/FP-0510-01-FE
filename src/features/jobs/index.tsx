@@ -8,7 +8,7 @@ import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
 import { JobSearchSidebar } from "./components/JobsSearchSidebar";
 import PaginationSection from "@/components/PaginationSection";
-import Link from "next/link"; // Import Link from Next.js
+import Link from "next/link";
 import { JobCardSkeleton } from "./components/JobCardSkeleton";
 
 const JobsPage = () => {
@@ -19,7 +19,7 @@ const JobsPage = () => {
   const [startDate] = useQueryState("startDate", { defaultValue: "" });
   const [endDate] = useQueryState("endDate", { defaultValue: "" });
   const [sortOrder] = useQueryState("sortOrder", { defaultValue: "desc" });
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1)); // Add page state
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [debouncedValue] = useDebounceValue(search, 500);
 
   const { data: jobs, isPending } = useGetJobs({
