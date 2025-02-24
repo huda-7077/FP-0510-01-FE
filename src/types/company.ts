@@ -1,3 +1,4 @@
+import { CompanyLocation } from "./companyLocation";
 import { User } from "./user";
 
 export interface Company {
@@ -13,7 +14,8 @@ export interface Company {
   isDeleted: boolean;
   createdAt: Date;
   updatedAt: Date;
-  user: User;
+  users: User[];
   phoneNumber: string;
   email: string;
+  companyLocations: CompanyLocation[];
 }

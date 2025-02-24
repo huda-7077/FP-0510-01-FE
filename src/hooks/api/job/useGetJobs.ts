@@ -4,13 +4,13 @@ import { Job } from "@/types/job";
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { useQuery } from "@tanstack/react-query";
 
-// Define the query parameters for fetching jobs
 interface GetJobsQuery extends PaginationQueries {
   search?: string;
   category?: string;
   timeRange?: string;
   startDate?: string;
   endDate?: string;
+  companyId?:number;
   regencyIds?: number[];
   location?: string;
   isDeleted?: string;

@@ -15,16 +15,6 @@ interface GetCompaniesQuery extends PaginationQueries {
 interface CompanyResponse extends Omit<Company, "user"> {
   averageRating: number;
   totalJobs: number;
-  companyLocations: Array<{
-    address: string;
-    postalCode: string;
-    regency: {
-      regency: string;
-      province: {
-        province: string;
-      };
-    };
-  }>;
 }
 
 const useGetCompanies = (queries: GetCompaniesQuery) => {

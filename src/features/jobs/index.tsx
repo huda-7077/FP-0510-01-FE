@@ -3,13 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { Bookmark, MapPin } from "lucide-react";
 import Image from "next/image";
-import FindJobsBreadCrumb from "./components/FindJobsBreadcrumb";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
 import { JobSearchSidebar } from "./components/JobsSearchSidebar";
 import PaginationSection from "@/components/PaginationSection";
 import Link from "next/link";
 import { JobCardSkeleton } from "./components/JobCardSkeleton";
+import HomeBreadcrumb from "@/components/HomeBreadcrumb";
 
 const JobsPage = () => {
   const [search] = useQueryState("search", { defaultValue: "" });
@@ -42,11 +42,11 @@ const JobsPage = () => {
   return (
     <div className="min-h-screen">
       <div className="bg-[#f7f7f8]">
-        <div className="container mx-auto flex justify-between px-6 py-5">
+        <div className="container mx-auto flex justify-between px-6 py-5 items-center">
           <h1 className="text-lg font-medium duration-150 hover:pl-3 hover:text-blue-600">
             Find Job
           </h1>
-          <FindJobsBreadCrumb />
+          <HomeBreadcrumb lastCrumb="Find Jobs"/>
         </div>
       </div>
       <div className="container relative mx-auto flex flex-col bg-background p-4 md:flex-row md:gap-7">

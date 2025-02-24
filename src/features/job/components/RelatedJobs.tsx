@@ -12,7 +12,7 @@ interface RelatedJobsProps {
 
 const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
   const { data: jobs, isPending } = useGetJobs({
-    category: categoryFilter || "Technology",
+    category: categoryFilter || "",
     sortBy: "createdAt",
     take: 6,
   });

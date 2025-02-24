@@ -8,9 +8,9 @@ import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
 import PaginationSection from "@/components/PaginationSection";
 import Link from "next/link";
-import FindEmployersBreadCrumb from "./components/FindEmployersBreadcrumb";
 import { EmployerSearchSidebar } from "./components/EmployerSearchSidebar";
 import { EmployerCardSkeleton } from "./components/EmployerCardSkeleton";
+import HomeBreadcrumb from "@/components/HomeBreadcrumb";
 
 const CompaniesPage = () => {
   const [search] = useQueryState("search", { defaultValue: "" });
@@ -49,11 +49,11 @@ const CompaniesPage = () => {
   return (
     <div className="min-h-screen">
       <div className="bg-[#f7f7f8]">
-        <div className="container mx-auto flex justify-between px-6 py-5">
+        <div className="container mx-auto flex justify-between px-6 py-5 items-center">
           <h1 className="text-lg font-medium duration-150 hover:pl-3 hover:text-blue-600">
             Find Employers
           </h1>
-          <FindEmployersBreadCrumb />
+          <HomeBreadcrumb lastCrumb="Find Employers"/>
         </div>
       </div>
       <div className="container relative mx-auto flex flex-col bg-background p-4 md:flex-row md:gap-7">

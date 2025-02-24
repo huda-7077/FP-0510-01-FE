@@ -1,12 +1,11 @@
 "use client";
-
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Bell, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import SearchBar from "./NavbarSearchbar";
 
 interface AvatarMenuProps {
   session: { user: { fullName: string; role: string } } | null;
@@ -28,7 +27,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
     { href: "/", label: "Home" },
     { href: "/dashboard/user", label: "Dashboard" },
     { href: "/jobs", label: "Find Job" },
-    { href: "/find-employers", label: "Find Employers" },
+    { href: "/companies", label: "Find Employers" },
     { href: "/job-alerts", label: "Job Alerts" },
     { href: "/customer-supports", label: "Customer Supports" },
     { href: "/dashboard/user/settings", label: "Settings" },
@@ -46,6 +45,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
 
   return (
     <>
+      {/* Avatar Button */}
       <Button
         variant="ghost"
         className="relative h-12 w-12 rounded-full transition-transform hover:scale-105 active:scale-95"
@@ -83,14 +83,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
       >
         <div className="flex h-full flex-col">
           <div className="flex items-center justify-between border-b p-4">
-            <div className="relative flex-1 pr-4">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Job title, keyword, company"
-                className="w-full pl-10"
-              />
-            </div>
+            <SearchBar />
             <Button
               variant="ghost"
               size="sm"
@@ -101,6 +94,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
             </Button>
           </div>
 
+          {/* Navigation Links */}
           <div className="flex-1 overflow-y-auto p-4">
             <nav className="flex flex-col space-y-4">
               {currentNavLinks.map((link, index) => (
@@ -116,6 +110,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
             </nav>
           </div>
 
+          {/* Logout Button */}
           <div className="border-t p-4">
             <button
               onClick={() => {
