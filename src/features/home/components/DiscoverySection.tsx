@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import DiscoverySkeleton from "@/components/skeletons/DiscoverySkeleton";
 import { Button } from "@/components/ui/button";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
@@ -34,19 +35,50 @@ const EmptyState = () => (
 );
 
 export default function DiscoverySection() {
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
+  const [isLocationDenied, setIsLocationDenied] = useState(false);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+          });
+        },
+        (error) => {
+          console.error("Error getting location:", error.message);
+          setIsLocationDenied(true);
+        },
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+      setIsLocationDenied(true);
+    }
+  }, []);
+
   const { data: jobsData, isLoading } = useGetJobs({
     page: 1,
     take: 5,
+    userLatitude: userLocation?.latitude,
+    userLongitude: userLocation?.longitude,
+    maxDistance: 50,
   });
 
   if (isLoading) {
     return (
-      <section className="container mx-auto px-4 py-20 md:px-6 space-y-4">
+      <section className="container mx-auto space-y-4 px-4 py-20 md:px-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <h2 className="text-xl font-semibold sm:text-2xl">Jobs Near You</h2>
+          <h2 className="text-xl font-semibold sm:text-2xl">
+            {isLocationDenied ? "Discover Jobs" : "Jobs Near You"}
+          </h2>
           <div className="flex items-center gap-2 text-[#0A65CC]">
             <MapPin className="h-5 sm:h-6" />
-            Indonesia
+            {isLocationDenied ? "Indonesia" : "Your Location"}
           </div>
         </div>
         <div className="space-y-4">
@@ -60,12 +92,14 @@ export default function DiscoverySection() {
 
   if (!jobsData?.data.length) {
     return (
-      <section className="container mx-auto px-4 py-20 md:px-6 space-y-4">
+      <section className="container mx-auto space-y-4 px-4 py-20 md:px-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <h2 className="text-xl font-semibold sm:text-2xl">Jobs Near You</h2>
+          <h2 className="text-xl font-semibold sm:text-2xl">
+            {isLocationDenied ? "Discover Jobs" : "Jobs Near You"}
+          </h2>
           <div className="flex items-center gap-2 text-[#0A65CC]">
             <MapPin className="h-5 sm:h-6" />
-            Indonesia
+            {isLocationDenied ? "Indonesia" : "Your Location"}
           </div>
         </div>
         <EmptyState />
@@ -77,19 +111,23 @@ export default function DiscoverySection() {
     <section className="container mx-auto px-4 py-20 md:px-6">
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <h2 className="text-xl font-semibold sm:text-2xl">Jobs Near You</h2>
+          <h2 className="text-xl font-semibold sm:text-2xl">
+            {isLocationDenied ? "Discover Jobs" : "Jobs Near You"}
+          </h2>
           <div className="flex items-center gap-2 text-[#0A65CC]">
             <MapPin className="h-5 sm:h-6" />
-            Indonesia
+            {isLocationDenied ? "Indonesia" : "Your Location"}
           </div>
         </div>
-        <Button
-          variant="outline"
-          className="group self-start rounded-sm font-semibold text-[#0A65CC] shadow-none transition-colors hover:border-blue-50 hover:bg-blue-50 hover:text-blue-600 sm:self-auto"
-        >
-          View All
-          <ArrowRight className="ml-2 h-4 w-4 stroke-[3] transition-transform group-hover:translate-x-1" />
-        </Button>
+        <Link href="/jobs">
+          <Button
+            variant="outline"
+            className="group self-start rounded-sm font-semibold text-[#0A65CC] shadow-none transition-colors hover:border-blue-50 hover:bg-blue-50 hover:text-blue-600 sm:self-auto"
+          >
+            View All
+            <ArrowRight className="ml-2 h-4 w-4 stroke-[3] transition-transform group-hover:translate-x-1" />
+          </Button>
+        </Link>
       </div>
       <div className="space-y-4">
         {jobsData?.data.map((job) => (
@@ -110,14 +148,13 @@ export default function DiscoverySection() {
                   {job.title}
                 </h3>
                 <div className="mt-1 flex flex-wrap items-center gap-2 text-sm text-gray-500">
-                  {/* Handle missing companyLocation */}
                   <div className="flex items-center gap-1">
                     <MapPin size={16} />
                     <span>
-                      {job.companyLocation?.regency?.regency || "Unknown Location"}
+                      {job.companyLocation?.regency?.regency ||
+                        "Unknown Location"}
                     </span>
                   </div>
-                  {/* Format salary with fallback */}
                   {formatSalary(job.salary) && (
                     <div className="flex items-center gap-1">
                       <Wallet size={16} />

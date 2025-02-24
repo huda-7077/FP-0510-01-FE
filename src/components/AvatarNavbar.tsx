@@ -45,7 +45,6 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
 
   return (
     <>
-      {/* Avatar Button */}
       <Button
         variant="ghost"
         className="relative h-12 w-12 rounded-full transition-transform hover:scale-105 active:scale-95"
@@ -55,6 +54,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
           <AvatarImage
             src={avatarSrc}
             alt={session?.user?.fullName || "User"}
+            className="object-cover"
           />
           <AvatarFallback>
             <Image
@@ -67,7 +67,6 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
         </Avatar>
       </Button>
 
-      {/* Overlay */}
       <div
         className={`fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "pointer-events-none opacity-0"
@@ -75,7 +74,6 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
         onClick={() => setIsOpen(false)}
       />
 
-      {/* Menu */}
       <div
         className={`fixed inset-y-0 right-0 z-50 w-full bg-white transition-transform duration-300 ease-out md:w-[400px] ${
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -94,7 +92,6 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
             </Button>
           </div>
 
-          {/* Navigation Links */}
           <div className="flex-1 overflow-y-auto p-4">
             <nav className="flex flex-col space-y-4">
               {currentNavLinks.map((link, index) => (
@@ -110,7 +107,6 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
             </nav>
           </div>
 
-          {/* Logout Button */}
           <div className="border-t p-4">
             <button
               onClick={() => {

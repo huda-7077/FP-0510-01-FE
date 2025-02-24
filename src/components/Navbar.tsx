@@ -62,6 +62,7 @@ const Navbar = () => {
             <AvatarImage
               src={avatarSrc}
               alt={session?.user?.fullName || "User"}
+              className="object-cover"
             />
             <AvatarFallback>
               <Image

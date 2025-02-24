@@ -10,10 +10,13 @@ interface GetJobsQuery extends PaginationQueries {
   timeRange?: string;
   startDate?: string;
   endDate?: string;
-  companyId?:number;
+  companyId?: number;
   regencyIds?: number[];
   location?: string;
   isDeleted?: string;
+  userLatitude?: number; 
+  userLongitude?: number; 
+  maxDistance?: number; 
 }
 
 const useGetJobs = (queries: GetJobsQuery) => {
