@@ -73,7 +73,7 @@ export const SkillAssessmentHeader = ({
             <input
               ref={searchInputRef}
               type="text"
-              placeholder="Search subscribers email or category"
+              placeholder="Search skill assessments"
               onChange={(e) => onSearch(e.target.value)}
               className="h-9 w-full rounded-md border border-gray-200 bg-white pl-10 pr-8 text-sm outline-none placeholder:text-gray-500 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />

@@ -39,7 +39,7 @@ export const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             addOn={postJobButton}
           />
 
-          <div className="flex-1 overflow-auto p-4 lg:p-6">
+          <div className="flex-1 p-4 lg:p-6">
             {sidebarOpen && (
               <div
                 className="fixed inset-0 z-20 bg-black/50 lg:hidden"

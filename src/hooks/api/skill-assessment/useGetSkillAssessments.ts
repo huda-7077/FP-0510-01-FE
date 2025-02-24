@@ -15,7 +15,7 @@ const useGetSkillAssessments = (queries: GetSkillAssessmentsQuery) => {
     queryFn: async () => {
       const { data } = await axiosInstance.get<
         PageableResponse<SkillAssessment>
-      >("/skill-assessments", {
+      >("/skill-assessments/developer/data", {
         params: queries,
       });
       return data;

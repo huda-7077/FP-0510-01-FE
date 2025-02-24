@@ -10,6 +10,7 @@ import useGetInitials from "@/hooks/useGetInitials";
 import { Plus } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Developerbar = () => {
   const { data: session } = useSession();
@@ -18,14 +19,14 @@ const Developerbar = () => {
     <nav className="sticky left-0 top-0 z-50 border-b bg-white">
       <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
         <div className="flex items-center p-4">
-          <div className="relative h-20 w-20">
+          <Link href="/">
             <Image
-              src="/supajobIcon.png"
-              alt="icon"
-              fill
-              className="object-contain"
+              src="/logo-developer.png"
+              alt="logo"
+              width={125}
+              height={50}
             />
-          </div>
+          </Link>
         </div>
 
         <div className="ml-auto flex items-center space-x-4">

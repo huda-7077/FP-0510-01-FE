@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import { AdminJobDetailsComponent } from "@/features/admin/company/job-details";
+import { AdminJobDetailsComponent } from "@/features/admin/job/job-details";
 import AdminAuthGuard from "@/hoc/AdminAuthGuard";
 import React from "react";
 

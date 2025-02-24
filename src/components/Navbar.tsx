@@ -49,7 +49,15 @@ const Navbar = () => {
     { href: "/", label: "Home" },
     { href: "/jobs", label: "Find Job" },
     { href: "/companies", label: "Find Employers" },
-    { href: "/dashboard", label: "Dashboard" },
+    {
+      href:
+        profile?.role === "ADMIN"
+          ? "/dashboard/admin"
+          : profile?.role === "USER"
+            ? "/dashboard/user"
+            : "/dashboard/developer",
+      label: "Dashboard",
+    },
     { href: "/job-alerts", label: "Job Alerts" },
     { href: "/customer-supports", label: "Customer Supports" },
   ];
@@ -122,8 +130,8 @@ const Navbar = () => {
   const renderMainContent = () => {
     if (isAdmin || isDeveloper) {
       return (
-        <nav className="border-b">
-          <div className="container mx-auto flex h-16 items-center px-4 md:px-6">
+        <nav className="w-full border-b">
+          <div className="h-18 container mx-auto flex items-center px-4 md:px-6">
             <div className="flex items-center p-4">
               <Link href="/">
                 <Image
@@ -149,7 +157,7 @@ const Navbar = () => {
               )}
               {isDeveloper && (
                 <>
-                  <Link href="/dashboard/developer/subscription-categories/create">
+                  {/* <Link href="/dashboard/developer/subscription-categories/create">
                     <Button
                       variant="default"
                       className="hidden bg-blue-600 hover:bg-blue-700 md:flex"
@@ -157,8 +165,8 @@ const Navbar = () => {
                       <Plus className="mr-2 h-4 w-4" /> Add Subscription
                       Category
                     </Button>
-                  </Link>
-                  <Link href="/dashboard/developer/settings">
+                  </Link> */}
+                  <Link href="/dashboard/developer">
                     <Button variant="ghost" className="hidden md:flex">
                       <Settings className="mr-2 h-4 w-4" /> Developer Settings
                     </Button>

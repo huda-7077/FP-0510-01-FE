@@ -34,13 +34,13 @@ const Sidebar = ({
 
       <div
         className={cn(
-          "fixed inset-y-0 left-0 top-28 z-30 h-[calc(100vh-65px)] w-64 transform border-r border-gray-200 bg-white ps-4 transition-transform duration-200 ease-in-out lg:sticky lg:translate-x-0",
+          "fixed inset-y-0 left-0 top-16 z-30 h-[calc(100vh-64px)] w-64 transform border-r border-gray-200 bg-white ps-4 transition-transform duration-200 ease-in-out lg:sticky lg:top-28 lg:h-[calc(100vh-112px)] lg:translate-x-0",
           !isOpen && "-translate-x-full",
         )}
       >
         <div className="flex h-full flex-col">
           <div className="flex-1 space-y-2 overflow-y-auto p-4">
-            <div className="mb-4">
+            <div className="my-4">
               <p className="px-3 text-xs font-medium uppercase text-gray-500">
                 {dashboardName}
               </p>
