@@ -1,12 +1,11 @@
 "use client";
-
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Bell, Search } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import SearchBar from "./NavbarSearchbar";
 
 interface AvatarMenuProps {
   session: { user: { fullName: string; role: string } } | null;
@@ -28,7 +27,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
     { href: "/", label: "Home" },
     { href: "/dashboard/user", label: "Dashboard" },
     { href: "/jobs", label: "Find Job" },
-    { href: "/find-employers", label: "Find Employers" },
+    { href: "/companies", label: "Find Employers" },
     { href: "/job-alerts", label: "Job Alerts" },
     { href: "/customer-supports", label: "Customer Supports" },
     { href: "/dashboard/user/settings", label: "Settings" },
@@ -55,6 +54,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
           <AvatarImage
             src={avatarSrc}
             alt={session?.user?.fullName || "User"}
+            className="object-cover"
           />
           <AvatarFallback>
             <Image
@@ -67,7 +67,6 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
         </Avatar>
       </Button>
 
-      {/* Overlay */}
       <div
         className={`fixed inset-0 z-50 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ${
           isOpen ? "opacity-100" : "pointer-events-none opacity-0"
@@ -75,7 +74,6 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
         onClick={() => setIsOpen(false)}
       />
 
-      {/* Menu */}
       <div
         className={`fixed inset-y-0 right-0 z-50 w-full bg-white transition-transform duration-300 ease-out md:w-[400px] ${
           isOpen ? "translate-x-0" : "translate-x-full"
@@ -83,14 +81,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
       >
         <div className="flex h-full flex-col">
           <div className="flex items-center justify-between border-b p-4">
-            <div className="relative flex-1 pr-4">
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <Input
-                type="text"
-                placeholder="Job title, keyword, company"
-                className="w-full pl-10"
-              />
-            </div>
+            <SearchBar />
             <Button
               variant="ghost"
               size="sm"

@@ -1,26 +1,76 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
-import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
-import { Bookmark, MapPin } from "lucide-react";
+import { Bookmark, MapPin, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { parseAsInteger, useQueryState } from "nuqs";
+import { useDebounceValue } from "usehooks-ts";
+import PaginationSection from "@/components/PaginationSection";
+import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
+import { useState } from "react";
 
-interface RelatedJobsProps {
-  categoryFilter?: string;
+interface OpenJobsProps {
+  companyId?: number;
 }
 
-const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
+const OpenJobs = ({ companyId }: OpenJobsProps) => {
+  const [search, setSearch] = useState("");
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [debouncedSearch] = useDebounceValue(search, 500);
+
+  if (!companyId) {
+    return (
+      <div className="container mx-auto mt-6 space-y-7 p-6">
+        <h1 className="text-2xl md:text-3xl">Open Jobs</h1>
+        <div className="flex h-96 w-full flex-col items-center justify-center text-center font-semibold text-[#afaeae]">
+          <Image
+            src="/empty-jobs.svg"
+            alt="No Jobs Found"
+            width={200}
+            height={200}
+            className="mb-4"
+          />
+          <h1>No Company Selected</h1>
+          <p>Please select a company to view its open jobs.</p>
+        </div>
+      </div>
+    );
+  }
+
   const { data: jobs, isPending } = useGetJobs({
-    category: categoryFilter || "",
+    search: debouncedSearch,
+    companyId: companyId,
     sortBy: "createdAt",
-    take: 6,
+    sortOrder: "desc",
+    take: 9,
+    page,
   });
 
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearch(e.target.value);
+  };
+
+  const onChangePage = (newPage: number) => {
+    setPage(newPage);
+  };
+
   return (
-    <div className="border-t-[1px]">
+    <div>
       <div className="container mx-auto mt-6 space-y-7 p-6">
-        <h1 className="text-2xl md:text-3xl">Related Jobs</h1>
+        <h1 className="text-2xl md:text-3xl">Open Jobs</h1>
+        <div className="mb-4 relative">
+          <input
+            type="search"
+            placeholder="Search jobs..."
+            value={search}
+            onChange={handleSearchChange}
+            className="md:w-1/2 w-full peer ps-9 pe-9 rounded-md border-[1px] border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:shadow-md"
+          />
+          <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
+          <SearchIcon size={16} />
+        </div>
+        </div>
         {isPending ? (
           <div className="grid gap-4 md:grid-cols-3">
             {[...Array(3)].map((_, index) => (
@@ -66,7 +116,7 @@ const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
                     <div className="flex items-center justify-between">
                       <div className="flex gap-2">
                         <Image
-                          src={job.company?.logo || "/anonymous.svg"}
+                          src={job.company?.logo || "/logos/default.png"}
                           alt={job.company?.name}
                           width={40}
                           height={40}
@@ -88,6 +138,16 @@ const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
                 </Link>
               ))}
             </div>
+            <div className="mt-6 flex justify-center gap-2 border-t border-gray-100 pt-6">
+              {jobs && jobs.meta.total > jobs.meta.take && (
+                <PaginationSection
+                  onChangePage={onChangePage}
+                  page={Number(page)}
+                  take={jobs.meta.take || 6}
+                  total={jobs.meta.total}
+                />
+              )}
+            </div>
           </>
         )}
       </div>
@@ -95,4 +155,4 @@ const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
   );
 };
 
-export default RelatedJobs;
+export default OpenJobs;

@@ -23,7 +23,6 @@ const JobOverview = ({ job }: { job: Job }) => {
   const shareTitle = `Check out this job: ${job.title} at ${job.company?.name}`;
   const shareDescription = `${job.title} at ${job.company?.name}. Location: ${job.companyLocation?.regency?.regency}, ${job.companyLocation?.regency?.province?.province}`;
 
-  // Format dates using date-fns
   const formatDate = (dateString: string | null | undefined): string => {
     if (!dateString) return "Not specified";
     
@@ -41,7 +40,6 @@ const JobOverview = ({ job }: { job: Job }) => {
       navigator.clipboard.writeText(shareUrl);
       setCopied(true);
       
-      // Reset copied state after 2 seconds
       setTimeout(() => {
         setCopied(false);
       }, 2000);

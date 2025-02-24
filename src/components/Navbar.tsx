@@ -1,9 +1,7 @@
 "use client";
-
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import useGetProfile from "@/hooks/api/account/useGetProfile";
-import { Bell, Menu, Plus, Search, Settings } from "lucide-react";
+import { Bell, Menu, Plus, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,6 +14,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import SearchBar from "./NavbarSearchbar";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -23,12 +22,10 @@ const Navbar = () => {
   const { data: session, status } = useSession();
   const { data: profile } = useGetProfile();
 
-  // Handle client-side mounting
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Don't render anything until the session is checked and component is mounted
   if (!mounted || status === "loading") {
     return null;
   }
@@ -36,7 +33,6 @@ const Navbar = () => {
   const userRole = session?.user?.role || "USER";
   const isAdmin = userRole === "ADMIN";
   const isDeveloper = userRole === "DEVELOPER";
-
   const avatarSrc = isAdmin
     ? profile?.company?.logo || "/anonymous.svg"
     : profile?.profilePicture ||
@@ -52,7 +48,7 @@ const Navbar = () => {
   const navLinks = [
     { href: "/", label: "Home" },
     { href: "/jobs", label: "Find Job" },
-    { href: "/find-employers", label: "Find Employers" },
+    { href: "/companies", label: "Find Employers" },
     {
       href:
         profile?.role === "ADMIN"
@@ -74,6 +70,7 @@ const Navbar = () => {
             <AvatarImage
               src={avatarSrc}
               alt={session?.user?.fullName || "User"}
+              className="object-cover"
             />
             <AvatarFallback>
               <Image
@@ -183,11 +180,10 @@ const Navbar = () => {
         </nav>
       );
     }
-
     return (
       <div className="container mx-auto px-4 py-3 md:px-6">
         <nav className="flex items-center justify-between gap-8">
-          <div className="flex items-center gap-8">
+          <div className="flex items-center gap-8 w-3/4">
             <Link href="/" className="flex items-center gap-2">
               <div className="relative h-14 w-28">
                 <Image
@@ -199,19 +195,10 @@ const Navbar = () => {
                 />
               </div>
             </Link>
-
             <div className="hidden lg:block lg:flex-1">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                <Input
-                  type="text"
-                  placeholder="Job title, keyword, company"
-                  className="w-full max-w-xl pl-10"
-                />
-              </div>
+              <SearchBar />
             </div>
           </div>
-
           <div className="flex items-center gap-4">
             {session ? (
               <>

@@ -35,7 +35,7 @@ const JobHeader: FC<{ job: Job }> = ({ job }) => {
       <div className="flex items-center justify-between md:flex-row flex-col gap-9">
         <div className="flex items-center gap-7 md:flex-row flex-col">
           <Avatar className="md:h-28 md:w-28 h-24 w-24">
-            <AvatarImage src={job.company?.logo || "/anonymous.svg"} alt={job.company?.name} />
+            <AvatarImage src={job.company?.logo || "/anonymous.svg"} alt={job.company?.name} className="object-cover"/>
             <AvatarFallback>{job.company?.name?.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col gap-3 md:items-start items-center">

@@ -68,14 +68,14 @@ const SubscriptionCard = () => {
 
   const getGridClassName = (categoriesCount: number) => {
     if (categoriesCount === 1)
-      return "grid-cols-1 md:grid-cols-3 place-items-center";
+      return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:place-items-center";
     if (categoriesCount === 2)
       return "grid-cols-1 md:grid-cols-2 md:gap-x-16 lg:gap-x-24";
     return "grid-cols-1 md:grid-cols-3";
   };
 
   return (
-    <section className="container mx-auto space-y-9 p-4 px-4 md:p-8 lg:p-10 xl:px-8 py-24">
+    <section className="container mx-auto space-y-9 p-4 px-4 py-24 md:p-8 lg:p-10 xl:px-8">
       <div className="space-y-5 text-center">
         <h1 className="text-2xl font-semibold md:text-3xl">
           Choose Your Perfect Plan!
@@ -97,7 +97,6 @@ const SubscriptionCard = () => {
           <div
             className={`grid gap-6 ${getGridClassName(subscriptionCategories.length)}`}
           >
-            {/* For single card, wrap in a div that spans middle columns */}
             {subscriptionCategories.length === 1 ? (
               <div className="col-span-1 w-full md:col-span-1 md:col-start-2">
                 {subscriptionCategories.map((category) => (
@@ -128,7 +127,7 @@ const SubscriptionCard = () => {
                       <div className="mb-8">
                         <div className="flex items-baseline">
                           <span className="text-4xl font-bold text-blue-600">
-                            Rp {category.price.toLocaleString("id-ID")}
+                            Rp{category.price.toLocaleString("id-ID")}
                           </span>
                           <span className="ml-2 text-gray-500">/Monthly</span>
                         </div>
@@ -143,7 +142,6 @@ const SubscriptionCard = () => {
                 ))}
               </div>
             ) : (
-              // Regular rendering for multiple cards
               subscriptionCategories.map((category) => (
                 <Card
                   key={category.id}
@@ -172,7 +170,7 @@ const SubscriptionCard = () => {
                     <div className="mb-8">
                       <div className="flex items-baseline">
                         <span className="text-4xl font-bold text-blue-600">
-                          Rp {category.price.toLocaleString("id-ID")}
+                          Rp{category.price.toLocaleString("id-ID")}
                         </span>
                         <span className="ml-2 text-gray-500">/Monthly</span>
                       </div>
