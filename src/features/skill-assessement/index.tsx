@@ -1,15 +1,14 @@
 "use client";
 
-import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
 import PaginationSection from "@/components/PaginationSection";
-import useGetSkillAssessments from "@/hooks/api/skill-assessment/useGetSkillAssessments";
+import useGetSkillAssessmentsPublic from "@/hooks/api/skill-assessment/useGetSkillAssessmentsPublic";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
 import { SkillAssessmentCard } from "./components/SkillAssessmentCard";
 import SkillAssessmentCardSkeleton from "./components/SkillAssessmentCardSkeleton";
 import { SkillAssessmentHeader } from "./components/SkillAssessmentHeader";
 
-export const SkillAssessmentListComponent = () => {
+export const SkillAssessmentListPage = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [sortBy, setSortBy] = useQueryState("sortBy", {
@@ -19,17 +18,13 @@ export const SkillAssessmentListComponent = () => {
     defaultValue: "desc",
   });
   const [debouncedSearch] = useDebounce(search, 500);
-  const [status, setStatus] = useQueryState("status", {
-    defaultValue: "",
-  });
 
-  const { data: skillAssessments, isLoading } = useGetSkillAssessments({
+  const { data: skillAssessments, isLoading } = useGetSkillAssessmentsPublic({
     page,
     sortOrder,
     sortBy,
-    take: 10,
+    take: 12,
     search: debouncedSearch,
-    status,
   });
 
   const onChangePage = (page: number) => {
@@ -38,16 +33,6 @@ export const SkillAssessmentListComponent = () => {
 
   const handleSearch = (query: string) => {
     setSearch(query);
-    setPage(1);
-  };
-
-  const onStatusChange = (status: string) => {
-    if (status === "ALL") {
-      setStatus("");
-      setPage(1);
-      return;
-    }
-    setStatus(status);
     setPage(1);
   };
 
@@ -60,22 +45,18 @@ export const SkillAssessmentListComponent = () => {
 
   return (
     <>
-      <DashboardBreadcrumb route="developer" lastCrumb="Skill Assessments" />
       <div className="my-1 md:my-2">
         <div className="container mx-auto w-full">
-          <div>
+          <div className="mx-3">
             <SkillAssessmentHeader
               totalSkillAssessments={skillAssessments?.data.length || 0}
               onSortOrderChange={handleSortOrderChange}
-              onStatusChange={onStatusChange}
               onSortChange={handleSortChange}
               onSearch={handleSearch}
             />
-            <div className="mt-4 grid gap-2 sm:space-y-2">
+            <div className="mb-5 mt-4 grid gap-2 md:grid-cols-2 lg:grid-cols-3">
               {isLoading && (
                 <>
-                  <SkillAssessmentCardSkeleton />
-                  <SkillAssessmentCardSkeleton />
                   <SkillAssessmentCardSkeleton />
                   <SkillAssessmentCardSkeleton />
                   <SkillAssessmentCardSkeleton />

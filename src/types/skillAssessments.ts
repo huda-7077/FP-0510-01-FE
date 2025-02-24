@@ -49,3 +49,21 @@ export enum SkillAssessmentStatus {
   DRAFT = "DRAFT",
   PUBLISHED = "PUBLISHED",
 }
+
+export interface SkillAssessmentUserAttempt {
+  id: number;
+  userId: number;
+  skillAssessmentId: number;
+  correctAnswer: number;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  userSkillAssessment: UserSkillAssessment;
+  user: User;
+  skillAssessment: SkillAssessment;
+}
+
+export enum SkillAssessmentUserAttemptStatus {
+  STARTED = "STARTED",
+  ENDED = "ENDED",
+}

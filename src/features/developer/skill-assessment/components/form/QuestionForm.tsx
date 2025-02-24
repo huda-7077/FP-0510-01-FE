@@ -132,7 +132,7 @@ export function QuestionForm({
           <Label className="text-base font-semibold text-gray-900">
             Answer Options
           </Label>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-4">
             {formik.values.options.map((option, index) => (
               <div key={index} className="flex items-center gap-3">
                 <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gray-50 font-semibold text-gray-700">

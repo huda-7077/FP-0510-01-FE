@@ -262,7 +262,7 @@ export function CreateSkillAssessmentDialog({
               </Button>
               <Button
                 type="button"
-                disabled={!formik.isValid || !formik.dirty}
+                disabled={!formik.isValid || !formik.dirty || isPending}
                 onClick={() => setIsAlertDialogOpen(true)}
                 className="w-24 bg-blue-600 hover:bg-blue-700"
               >

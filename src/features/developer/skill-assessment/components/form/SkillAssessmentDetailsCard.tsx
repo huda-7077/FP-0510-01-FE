@@ -88,6 +88,10 @@ const SkillAssessmentDetailsCard: FC<SkillAssessmentDetailsCardProps> = ({
         badgeImage: null,
       });
       setSelectedImage(skillAssessment.badgeImage || "");
+
+      if (badgeImageRef.current) {
+        badgeImageRef.current.value = "";
+      }
     }
   }, [skillAssessment]);
 
