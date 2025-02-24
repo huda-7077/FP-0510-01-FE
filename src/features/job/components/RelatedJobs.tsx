@@ -19,7 +19,7 @@ const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
 
   return (
     <div className="border-t-[1px]">
-      <div className="container mx-auto mt-6 p-6 space-y-7">
+      <div className="container mx-auto mt-6 space-y-7 p-6">
         <h1 className="text-2xl md:text-3xl">Related Jobs</h1>
         {isPending ? (
           <div className="grid gap-4 md:grid-cols-3">
@@ -42,7 +42,7 @@ const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
           </>
         ) : (
           <>
-            <div className="grid gap-4 md:grid-cols-3 grid-cols-1">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
               {jobs.data.map((job) => (
                 <Link
                   key={job.id}
@@ -59,13 +59,14 @@ const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
                         {job.category}
                       </Badge>
                       <p className="text-xs text-gray-500">
-                        Salary: Rp{job.salary ? job.salary.toLocaleString() : "N/A"}
+                        Salary: Rp
+                        {job.salary ? job.salary.toLocaleString() : "N/A"}
                       </p>
                     </div>
                     <div className="flex items-center justify-between">
                       <div className="flex gap-2">
                         <Image
-                          src={job.company?.logo || "/logos/default.png"}
+                          src={job.company?.logo || "/anonymous.svg"}
                           alt={job.company?.name}
                           width={40}
                           height={40}
@@ -76,7 +77,8 @@ const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
                           <p className="flex items-center gap-1 text-xs text-gray-500">
                             <MapPin className="h-4" />
                             {job.companyLocation?.regency?.regency},{" "}
-                            {job.companyLocation?.regency?.province?.province || ""}
+                            {job.companyLocation?.regency?.province?.province ||
+                              ""}
                           </p>
                         </div>
                       </div>

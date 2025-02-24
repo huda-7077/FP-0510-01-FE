@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import { JobListComponent } from "@/features/admin/company/job-list";
+import { JobListComponent } from "@/features/admin/job/job-list";
 import AdminAuthGuard from "@/hoc/AdminAuthGuard";
 
 const JobList = () => {

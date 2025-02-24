@@ -1,4 +1,4 @@
-import EditJobComponent from "@/features/admin/company/edit-job";
+import EditJobComponent from "@/features/admin/job/edit-job";
 import AdminAuthGuard from "@/hoc/AdminAuthGuard";
 import React from "react";
 

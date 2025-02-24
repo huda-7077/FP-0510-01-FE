@@ -37,13 +37,13 @@ const PreTestAssessmentComponent: FC<PreAssessmentTestProps> = ({
 
     if (userAssessment.status === "EXPIRED") {
       toast.error("Your assessment test has expired");
-      router.push("/"); // redirect to user dashboard
+      router.push("/");
     } else if (userAssessment.status !== "PENDING") {
       toast.error("You cannot redo an assessment");
-      router.push("/"); // redirect to user dashboard
+      router.push("/");
     } else if (!userAssessment.assessment) {
       toast.error("Assessment data not found");
-      router.push("/"); // redirect to user dashboard
+      router.push("/");
     }
   }, [userAssessments, isUserAssessmentLoading, router]);
 

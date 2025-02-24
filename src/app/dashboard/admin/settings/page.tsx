@@ -1,5 +1,5 @@
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
-import CompanySettingsPage from "@/features/admin/company/settings";
+import CompanySettingsPage from "@/features/admin/settings";
 import AdminAuthGuard from "@/hoc/AdminAuthGuard";
 
 const CompanySettings = () => {
