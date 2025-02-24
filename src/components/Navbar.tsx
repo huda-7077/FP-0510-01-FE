@@ -160,7 +160,7 @@ const Navbar = () => {
               )}
               {isDeveloper && (
                 <>
-                  <Link href="/dashboard/developer/subscription-categories/create">
+                  {/* <Link href="/dashboard/developer/subscription-categories/create">
                     <Button
                       variant="default"
                       className="hidden bg-blue-600 hover:bg-blue-700 md:flex"
@@ -168,8 +168,8 @@ const Navbar = () => {
                       <Plus className="mr-2 h-4 w-4" /> Add Subscription
                       Category
                     </Button>
-                  </Link>
-                  <Link href="/dashboard/developer/settings">
+                  </Link> */}
+                  <Link href="/dashboard/developer">
                     <Button variant="ghost" className="hidden md:flex">
                       <Settings className="mr-2 h-4 w-4" /> Developer Settings
                     </Button>

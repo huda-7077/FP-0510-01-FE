@@ -1,5 +1,4 @@
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import {
   Select,
   SelectContent,
@@ -7,15 +6,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SkillAssessmentStatus } from "@/types/skillAssessments";
-import { Plus, Search, X } from "lucide-react";
+import { Search, X } from "lucide-react";
 import { useRef, useState } from "react";
-import { CreateSkillAssessmentDialog } from "./CreateSkillAssessmentDialog";
 
 interface SkillAssessmentsHeaderProps {
   totalSkillAssessments: number;
   onSortOrderChange: (sortOrder: string) => void;
-  onStatusChange: (status: string) => void;
   onSortChange: (sort: string) => void;
   onSearch: (searchQuery: string) => void;
 }
@@ -23,14 +19,12 @@ interface SkillAssessmentsHeaderProps {
 export const SkillAssessmentHeader = ({
   totalSkillAssessments,
   onSortOrderChange,
-  onStatusChange,
   onSortChange,
   onSearch,
 }: SkillAssessmentsHeaderProps) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [selectedSort, setSelectedSort] = useState<string>("");
   const [selectedSortOrder, setSelectedSortOrder] = useState<string>("");
-  const [openDialog, setOpenDialog] = useState(false);
 
   const handleSortOrderChange = (sortOrder: string) => {
     setSelectedSortOrder(sortOrder);
@@ -87,19 +81,6 @@ export const SkillAssessmentHeader = ({
             )}
           </div>
           <div className="flex flex-col items-center gap-2 sm:flex-row">
-            <Select onValueChange={onStatusChange}>
-              <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:max-w-[180px]">
-                <SelectValue placeholder="All Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="ALL">All Status</SelectItem>
-                {Object.values(SkillAssessmentStatus).map((status) => (
-                  <SelectItem key={status} value={status}>
-                    {status}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
             <Select onValueChange={handleSortChange} value={selectedSort}>
               <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium sm:max-w-[170px]">
                 <SelectValue placeholder="Sort By" />
@@ -121,23 +102,9 @@ export const SkillAssessmentHeader = ({
                 <SelectItem value="asc">ASC</SelectItem>
               </SelectContent>
             </Select>
-            <Button
-              variant="outline"
-              className="flex w-full items-center justify-center gap-2 rounded-lg border border-blue-600 bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-all hover:border-blue-700 hover:bg-blue-700 hover:text-white sm:w-auto"
-              onClick={() => setOpenDialog(true)}
-            >
-              <Plus size={16} />
-              Create Skill Assessment
-            </Button>
           </div>
         </div>
       </div>
-      {openDialog && (
-        <CreateSkillAssessmentDialog
-          isOpen={openDialog}
-          onClose={() => setOpenDialog(false)}
-        />
-      )}
     </>
   );
 };

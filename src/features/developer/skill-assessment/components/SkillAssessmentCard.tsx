@@ -31,29 +31,29 @@ export const SkillAssessmentCard = ({
               />
             </div>
           )}
-          <div className="w-full space-y-2 sm:w-auto">
+          <div className="w-full space-y-2">
             <div className="w-full sm:w-auto">
               <h3 className="line-clamp-2 p-0 text-base font-semibold text-gray-900 group-hover:text-blue-600">
                 {skillAssessment?.title}
               </h3>
             </div>
 
-            <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-500">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-gray-500">
               <p className="line-clamp-3 font-semibold">
                 {skillAssessment?.description}
               </p>
-              <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-gray-500">
-                <span className="inline-flex items-center rounded-md border border-blue-200 bg-blue-50 px-1.5 py-0.5 text-xs font-bold text-blue-700 sm:px-2 sm:py-1">
-                  Passing score: {skillAssessment?.passingScore}
-                </span>
-                <SkillAssessmentStatusBadge
-                  status={
-                    skillAssessment?.status
-                      ? skillAssessment.status
-                      : SkillAssessmentStatus.DRAFT
-                  }
-                />
-              </div>
+            </div>
+            <div className="flex flex-wrap items-center justify-start gap-2 text-xs text-gray-500">
+              <span className="inline-flex items-center rounded-md border border-blue-200 bg-blue-50 px-1.5 py-0.5 text-xs font-bold text-blue-700 sm:px-2 sm:py-1">
+                Passing score: {skillAssessment?.passingScore}
+              </span>
+              <SkillAssessmentStatusBadge
+                status={
+                  skillAssessment?.status
+                    ? skillAssessment.status
+                    : SkillAssessmentStatus.DRAFT
+                }
+              />
             </div>
           </div>
 

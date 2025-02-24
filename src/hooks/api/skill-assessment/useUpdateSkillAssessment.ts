@@ -8,7 +8,7 @@ interface UpdateSkillAssessmentPayload {
   title: string;
   description: string;
   passingScore: number;
-  badgeImage: File | null;
+  badgeImage?: File | null;
   generateSlug: boolean;
 }
 

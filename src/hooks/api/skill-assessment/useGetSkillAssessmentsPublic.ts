@@ -1,21 +1,21 @@
-import useAxios from "@/hooks/useAxios";
+import { axiosInstance } from "@/lib/axios";
 import { PageableResponse, PaginationQueries } from "@/types/pagination";
 import { SkillAssessment } from "@/types/skillAssessments";
 import { useQuery } from "@tanstack/react-query";
 
-interface GetSkillAssessmentsQuery extends PaginationQueries {
+interface GetSkillAssessmentsPublicQuery extends PaginationQueries {
   search?: string;
-  status?: string;
 }
 
-const useGetSkillAssessments = (queries: GetSkillAssessmentsQuery) => {
-  const { axiosInstance } = useAxios();
+const useGetSkillAssessmentsPublic = (
+  queries: GetSkillAssessmentsPublicQuery,
+) => {
   return useQuery({
     queryKey: ["skill-assessments", queries],
     queryFn: async () => {
       const { data } = await axiosInstance.get<
         PageableResponse<SkillAssessment>
-      >("/skill-assessments/developer/data", {
+      >("/skill-assessments", {
         params: queries,
       });
       return data;
@@ -23,4 +23,4 @@ const useGetSkillAssessments = (queries: GetSkillAssessmentsQuery) => {
   });
 };
 
-export default useGetSkillAssessments;
+export default useGetSkillAssessmentsPublic;
