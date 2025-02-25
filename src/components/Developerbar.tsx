@@ -44,6 +44,7 @@ const Developerbar = () => {
                   <AvatarImage
                     src={session?.user.profilePicture}
                     alt={session?.user.fullName}
+                    className="object-cover"
                   />
                   <AvatarFallback>
                     {getInitials(session?.user.fullName || "")}
