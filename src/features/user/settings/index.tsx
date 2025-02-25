@@ -17,7 +17,7 @@ const UserSettingsPage = () => {
   }, []);
 
   return (
-    <div className="container relative mx-auto p-4 sm:p-6">
+    <div className="container relative mx-auto p-4 sm:px-5">
       <h1 className="mb-4 text-xl font-semibold sm:mb-6 sm:text-2xl">
         Settings
       </h1>
