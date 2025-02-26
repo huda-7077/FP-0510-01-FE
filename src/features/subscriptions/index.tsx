@@ -161,7 +161,6 @@ const SubscriptionPage = () => {
               onClose={() => setCheckoutOpen(false)}
               categoryName={subscription.category.name}
               basePrice={subscription.category.price}
-              duration={subscription.duration}
             />
           </div>
         ) : (
