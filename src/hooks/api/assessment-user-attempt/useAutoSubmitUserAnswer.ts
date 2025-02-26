@@ -3,32 +3,29 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
-export interface UpdateJobStatusPayload {
-  id: number;
-  isPublished: boolean;
-}
-
-const useUpdateJobStatus = () => {
+const useAutoSubmitUserAnswers = () => {
   const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
 
   return useMutation({
-    mutationFn: async (payload: UpdateJobStatusPayload) => {
-      const { id, ...dataToUpdate } = payload;
+    mutationFn: async (attemptId: number) => {
       const { data } = await axiosInstance.patch(
-        `/jobs/status/${id}`,
-        dataToUpdate,
+        `/assessment-user-attempts/${attemptId}/auto-submit`,
       );
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({
+        queryKey: ["assessment-user-attempts"],
+      });
+      toast.success("Time is up, you answer submitted automatically");
     },
-
     onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data.message || error.response?.data);
+      toast.error(
+        error.response?.data?.message || "Failed to auto submit user answers",
+      );
     },
   });
 };
 
-export default useUpdateJobStatus;
+export default useAutoSubmitUserAnswers;

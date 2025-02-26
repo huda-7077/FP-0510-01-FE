@@ -8,7 +8,9 @@ const useDeleteAssessmentQuestion = () => {
 
   return useMutation({
     mutationFn: async (id: number) => {
-      const { data } = await axiosInstance.delete(`/questions/${id}`);
+      const { data } = await axiosInstance.delete(
+        `/assessment-questions/${id}`,
+      );
       return data;
     },
     onSuccess: async () => {

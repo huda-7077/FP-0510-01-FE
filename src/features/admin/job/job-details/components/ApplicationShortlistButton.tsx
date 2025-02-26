@@ -13,14 +13,12 @@ interface ApplicationShortlistButtonProps {
   applicantName: string;
   jobApplicationId: number;
   status: string;
-  userAssessmentStatus: string;
 }
 
 const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
   isRequireAssessment,
   applicantName,
   jobApplicationId,
-  userAssessmentStatus,
   status,
 }) => {
   const router = useRouter();
@@ -51,8 +49,7 @@ const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
 
   return (
     <div className="flex gap-3">
-      {(userAssessmentStatus === "DONE" && status === "IN_REVIEW") ||
-      (!isRequireAssessment && status === "IN_REVIEW") ? (
+      {!isRequireAssessment && status === "IN_REVIEW" ? (
         <Button
           onClick={() =>
             router.push(

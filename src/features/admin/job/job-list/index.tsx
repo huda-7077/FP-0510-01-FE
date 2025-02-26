@@ -122,7 +122,12 @@ export const JobListComponent = () => {
             onSearch={handleSearch}
             isDisabled={isJobCategoriesPending}
           />
-          <div className="mt-4 grid gap-2 sm:mt-6 sm:space-y-2 md:mt-8">
+          <p className="my-6 text-start text-xs font-semibold italic text-gray-400 sm:text-end">
+            <span className="text-red-600">*</span> You cannot edit a job or
+            assessment after it has been published. Save it to draft to make
+            changes.
+          </p>
+          <div className="mt-4 grid gap-2 sm:space-y-2">
             {isLoadingData &&
               Array.from({ length: 3 }).map((_, index) => (
                 <JobCardSkeleton key={index} />

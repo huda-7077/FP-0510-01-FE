@@ -1,4 +1,4 @@
-import { AssessmentData } from "./assessment";
+import { Assessment } from "./assessment";
 import { Company } from "./company";
 import { CompanyLocation } from "./companyLocation";
 
@@ -21,6 +21,9 @@ export interface Job {
   createdAt: Date;
   updatedAt: Date;
   companyLocation: CompanyLocation;
-  assessments: Pick<AssessmentData, "id" | "passingScore">[];
+  preTestAssessments: Pick<
+    Assessment,
+    "id" | "slug" | "passingScore" | "status"
+  >[];
   company: Pick<Company, "name" | "logo" | "industry">;
 }

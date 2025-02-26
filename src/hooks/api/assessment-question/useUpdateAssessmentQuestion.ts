@@ -3,8 +3,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 export interface UpdateAssessmentQuestionPayload {
-  id: number;
-  question?: string;
+  preTestAssessmentQuestionId: number;
+  question: string;
+  options: { option: string; isCorrect: boolean }[];
 }
 
 const useUpdateAssessmentQuestion = () => {
@@ -13,23 +14,22 @@ const useUpdateAssessmentQuestion = () => {
 
   return useMutation({
     mutationFn: async (payload: UpdateAssessmentQuestionPayload) => {
-      const { id, ...dataToUpdate } = payload;
       const { data } = await axiosInstance.patch(
-        `/questions/${payload.id}`,
-        dataToUpdate,
+        `/assessment-questions/${payload.preTestAssessmentQuestionId}`,
+        payload,
       );
       return data;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["assessment-questions"] });
-      console.log("Assessment Question Updated Successfullly");
+      console.log("Question Updated Successfullly");
     },
 
     onError: (error: AxiosError<any>) => {
       const errorMessage =
         error.response?.data?.message ||
         error.response?.data ||
-        "An error occurred";
+        "Failed to update question";
       console.log(errorMessage);
     },
   });

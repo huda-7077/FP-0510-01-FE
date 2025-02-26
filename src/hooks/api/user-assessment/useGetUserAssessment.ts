@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/lib/axios";
-import { UserAssessmentData } from "@/types/userAssessment";
+import { UserAssessment } from "@/types/assessment";
 import { useQuery } from "@tanstack/react-query";
 
 interface GetUserAssessmentQuery {
@@ -10,7 +10,7 @@ const useGetUserAssessment = (query: GetUserAssessmentQuery) => {
   return useQuery({
     queryKey: ["user-assessments", query],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<UserAssessmentData>(
+      const { data } = await axiosInstance.get<UserAssessment>(
         `/user-assessments/${query.id}`,
       );
 

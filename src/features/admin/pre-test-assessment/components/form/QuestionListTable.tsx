@@ -9,27 +9,29 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { cn } from "@/lib/utils";
+import { AssessmentQuestion } from "@/types/assessment";
 import { Pencil, Trash2 } from "lucide-react";
 
 interface Question {
   id: number;
   question: string;
-  options: string[];
-  correctAnswer: string;
+  options: { option: string; isCorrect: boolean }[];
 }
 
 interface QuestionListTableProps {
-  questions: Question[];
+  questions: AssessmentQuestion[];
+  isProcessing: boolean;
   onDelete: (id: number) => void;
   onEdit: (id: number, question: Omit<Question, "id">) => void;
 }
 
 export function QuestionListTable({
   questions,
+  isProcessing,
   onDelete,
   onEdit,
 }: QuestionListTableProps) {
-  if (questions.length <= 0)
+  if (!Array.isArray(questions) || questions.length <= 0)
     return (
       <DataNotFound
         title="No Questions Found"
@@ -72,12 +74,12 @@ export function QuestionListTable({
               </TableCell>
               <TableCell className="py-4">
                 <div className="flex flex-wrap gap-2">
-                  {question.options.map((option, optIndex) => (
+                  {question.preTestAssessmentOptions.map((option, optIndex) => (
                     <span
-                      key={optIndex}
+                      key={option.id}
                       className={cn(
                         "inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium",
-                        option === question.correctAnswer
+                        option.isCorrect
                           ? "bg-green-50 text-green-700"
                           : "bg-gray-50 text-gray-600",
                       )}
@@ -94,16 +96,29 @@ export function QuestionListTable({
                     variant="outline"
                     size="icon"
                     className="h-8 w-8 border-gray-200 text-gray-600 transition-colors hover:border-blue-500 hover:bg-blue-50 hover:text-blue-600"
-                    onClick={() => onEdit(question.id, question)}
+                    onClick={() =>
+                      onEdit(question.id, {
+                        question: question.question,
+                        options: question.preTestAssessmentOptions.map(
+                          (opt) => ({
+                            option: opt.option,
+                            isCorrect: opt.isCorrect,
+                          }),
+                        ),
+                      })
+                    }
+                    disabled={isProcessing}
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
+
                   <Button
                     type="button"
                     variant="destructive"
                     size="icon"
                     className="h-8 w-8 bg-red-50 text-red-600 transition-colors hover:bg-red-100 hover:text-red-700"
                     onClick={() => onDelete(question.id)}
+                    disabled={isProcessing}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
