@@ -7,7 +7,7 @@ interface PageProps {
   };
 }
 const SkillAssessmentStart = ({ params }: PageProps) => {
-  return <SkillAssessmentStartPage slug={params.slug} />;
+  return <SkillAssessmentStartPage key={params.slug} slug={params.slug} />;
 };
 
 export default UserAuthGuard(SkillAssessmentStart);

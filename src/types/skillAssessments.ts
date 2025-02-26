@@ -56,6 +56,7 @@ export interface SkillAssessmentUserAttempt {
   skillAssessmentId: number;
   correctAnswer: number;
   status: string;
+  isPassed: boolean;
   createdAt: Date;
   updatedAt: Date;
   userSkillAssessment: UserSkillAssessment;

@@ -4,7 +4,7 @@ import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import useGetUserAttempt from "@/hooks/api/skill-assessment-user-attempt/useGetUserAttempt";
 import useStartSkillAssessment from "@/hooks/api/skill-assessment-user-attempt/useStartSkillAssessment";
 import useGetSkillAssessment from "@/hooks/api/skill-assessment/useGetSkillAssessment";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import ConfirmStartSkillAssessment from "./components/ConfirmStartSkillAssessment";
 import SkillAssessmentQuestionsComponent from "./components/SkillAssessmentQuestionsComponent";
 
@@ -13,7 +13,10 @@ interface SkillAssessmentStartProps {
 }
 
 const SkillAssessmentStartPage: FC<SkillAssessmentStartProps> = ({ slug }) => {
-  const { data: userAttempt } = useGetUserAttempt();
+  const [createdAt, setCreatedAt] = useState<number | null>(null);
+  const [isPassed, setIsPassed] = useState<boolean | null>(null);
+
+  const { data: userAttempt } = useGetUserAttempt(slug);
 
   const { data: skillAssessments, isLoading: isSkillAssessmentLoading } =
     useGetSkillAssessment(slug);
@@ -31,6 +34,13 @@ const SkillAssessmentStartPage: FC<SkillAssessmentStartProps> = ({ slug }) => {
     await startSkillAssessment(slug);
   };
 
+  useEffect(() => {
+    if (userAttempt && createdAt === null && isPassed === null) {
+      setCreatedAt(new Date(userAttempt.createdAt).getTime());
+      setIsPassed(userAttempt.isPassed);
+    }
+  }, [userAttempt, createdAt, isPassed]);
+
   const isLoading = isSkillAssessmentLoading;
 
   if (isLoading) return <LoadingScreen />;
@@ -43,10 +53,16 @@ const SkillAssessmentStartPage: FC<SkillAssessmentStartProps> = ({ slug }) => {
             skillAssessment={skillAssessments}
             onStart={handleStartAssessment}
             isPending={isStartSkillAssessmentPending}
+            createdAt={createdAt}
+            isPassed={isPassed}
           />
         )}
       {skillAssessments && userAttempt && userAttempt?.status === "STARTED" && (
-        <SkillAssessmentQuestionsComponent attempt={userAttempt} slug={slug} />
+        <SkillAssessmentQuestionsComponent
+          key={slug}
+          attempt={userAttempt}
+          slug={slug}
+        />
       )}
     </>
   );
