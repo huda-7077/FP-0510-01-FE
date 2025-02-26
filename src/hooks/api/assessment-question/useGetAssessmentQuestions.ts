@@ -11,6 +11,7 @@ const useGetAssessmentQuestions = (slug: string) => {
 
   return useQuery({
     queryKey: ["assessment-questions", slug],
+
     queryFn: async () => {
       const { data } = await axiosInstance.get<GetAssessmentQuestionsData>(
         `/assessment-questions/${slug}`,

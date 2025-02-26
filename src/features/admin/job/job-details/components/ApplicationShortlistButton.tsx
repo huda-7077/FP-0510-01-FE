@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateAssessment";
-import { CheckCircle, Clock, XCircle } from "lucide-react";
+import { CheckCircle, Clock, LoaderCircle, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { toast } from "react-toastify";
@@ -10,6 +10,7 @@ import ApplicationAcceptanceAlert from "./ApplicationAcceptanceAlert";
 
 interface ApplicationShortlistButtonProps {
   isRequireAssessment: boolean;
+  assessmentStatus: string;
   applicantName: string;
   jobApplicationId: number;
   status: string;
@@ -17,6 +18,7 @@ interface ApplicationShortlistButtonProps {
 
 const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
   isRequireAssessment,
+  assessmentStatus,
   applicantName,
   jobApplicationId,
   status,
@@ -47,9 +49,13 @@ const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
     }
   };
 
+  if (isUpdateJobApplicationPending)
+    return <LoaderCircle className="h-4 w-4 animate-spin" />;
+
   return (
     <div className="flex gap-3">
-      {!isRequireAssessment && status === "IN_REVIEW" ? (
+      {(assessmentStatus === "Passed" && status === "IN_REVIEW") ||
+      (!isRequireAssessment && status === "IN_REVIEW") ? (
         <Button
           onClick={() =>
             router.push(

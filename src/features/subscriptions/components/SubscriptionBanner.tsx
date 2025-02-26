@@ -1,4 +1,3 @@
-"use client";
 import SubscriptionCard from "./SubscriptionCard";
 
 const SubscriptionBanner = () => {
@@ -17,10 +16,6 @@ const SubscriptionBanner = () => {
         </div>
 
         <SubscriptionCard />
-
-        <footer className="mt-24 text-center text-sm text-gray-500">
-          © 2024 Job Board. All rights Reserved
-        </footer>
       </div>
     </div>
   );

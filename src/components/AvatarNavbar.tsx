@@ -9,14 +9,12 @@ import SearchBar from "./NavbarSearchbar";
 
 interface AvatarMenuProps {
   session: { user: { fullName: string; role: string } } | null;
-  navLinks: { href: string; label: string }[];
   avatarSrc: string;
   onSignOut: () => void;
 }
 
 const AvatarMenu: React.FC<AvatarMenuProps> = ({
   session,
-  navLinks,
   avatarSrc,
   onSignOut,
 }) => {
@@ -41,7 +39,30 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
     { href: "/dashboard/admin/settings", label: "Settings" },
   ];
 
-  const currentNavLinks = userRole === "ADMIN" ? adminNavLinks : userNavLinks;
+  const developerNavLinks = [
+    { href: "/", label: "Home" },
+    { href: "/dashboard/developer/", label: "Dashboard" },
+    { href: "/dashboard/developer/payments", label: "Manage Payments" },
+    {
+      href: "/dashboard/developer/subscriptions",
+      label: "Manage Subscriptions",
+    },
+    {
+      href: "/dashboard/developer/skill-assessments",
+      label: "Manage Skill Assessments",
+    },
+    {
+      href: "/dashboard/developer/subscription-categories",
+      label: "Manage Subscription Categories",
+    },
+  ];
+
+  const currentNavLinks =
+    userRole === "ADMIN"
+      ? adminNavLinks
+      : userRole === "DEVELOPER"
+        ? developerNavLinks
+        : userNavLinks;
 
   return (
     <>
@@ -80,8 +101,10 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
         }`}
       >
         <div className="flex h-full flex-col">
-          <div className="flex items-center justify-between border-b p-4">
-            <SearchBar />
+          <div
+            className={`flex items-center ${userRole === "DEVELOPER" ? "justify-end" : "justify-between"} border-b p-4`}
+          >
+            {userRole !== "DEVELOPER" && <SearchBar />}
             <Button
               variant="ghost"
               size="sm"

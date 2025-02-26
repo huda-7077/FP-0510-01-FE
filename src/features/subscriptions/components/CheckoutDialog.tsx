@@ -8,15 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import useCreatePayments from "@/hooks/api/payment/useCreatePayment";
 import { CreditCard, Upload } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -29,20 +21,12 @@ interface CheckoutDialogProps {
   basePrice: number;
 }
 
-const DURATION_OPTIONS = [
-  { months: 1, label: "1 Month" },
-  { months: 3, label: "3 Months" },
-  { months: 6, label: "6 Months" },
-  { months: 12, label: "12 Months" },
-];
-
 export function CheckoutDialog({
   isOpen,
   onClose,
   categoryName,
   basePrice,
 }: CheckoutDialogProps) {
-  const [selectedDuration, setSelectedDuration] = useState(1);
   const [paymentMethod, setPaymentMethod] = useState<
     "PAYMENT_GATEWAY" | "PAYMENT_MANUAL"
   >("PAYMENT_GATEWAY");
@@ -51,12 +35,11 @@ export function CheckoutDialog({
   const { mutateAsync: createPayment, isPending: createPaymentPending } =
     useCreatePayments();
 
-  const totalAmount = basePrice * selectedDuration;
+  const totalAmount = basePrice;
 
   const handleCreatePayment = async () => {
     try {
       const payment = await createPayment({
-        duration: selectedDuration,
         category: categoryName,
         paymentMethod: paymentMethod,
         isRenewal: false,
@@ -90,37 +73,6 @@ export function CheckoutDialog({
         </DialogHeader>
 
         <div className="space-y-8">
-          <div className="space-y-3">
-            <Label
-              htmlFor="duration"
-              className="text-lg font-semibold text-gray-900"
-            >
-              Subscription Duration
-            </Label>
-            <Select
-              value={selectedDuration.toString()}
-              onValueChange={(value) => setSelectedDuration(Number(value))}
-            >
-              <SelectTrigger
-                id="duration"
-                className="h-12 border-gray-200 bg-white text-base"
-              >
-                <SelectValue placeholder="Select duration" />
-              </SelectTrigger>
-              <SelectContent>
-                {DURATION_OPTIONS.map((option) => (
-                  <SelectItem
-                    key={option.months}
-                    value={option.months.toString()}
-                    className="text-base"
-                  >
-                    {option.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
           <div className="space-y-3">
             <h3 className="text-lg font-semibold text-gray-900">
               Payment Method
@@ -184,10 +136,7 @@ export function CheckoutDialog({
               </div>
               <div className="flex justify-between text-base">
                 <span className="text-gray-600">Duration</span>
-                <span className="font-medium text-gray-900">
-                  {selectedDuration}{" "}
-                  {selectedDuration === 1 ? "month" : "months"}
-                </span>
+                <span className="font-medium text-gray-900">1 Month</span>
               </div>
             </div>
             <div className="flex justify-between pt-2">

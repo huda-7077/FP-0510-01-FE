@@ -39,6 +39,7 @@ const AssessmentDetailsCard: FC<AssessmentDetailsCardProps> = ({
 
   const formik = useFormik({
     initialValues: {
+      slug,
       title: "",
       description: "",
       passingScore: 0,
@@ -54,10 +55,10 @@ const AssessmentDetailsCard: FC<AssessmentDetailsCardProps> = ({
         });
 
         if (generateSlug === true) {
-          await updateAssessmentData.preTestAssessment;
+          await updateAssessmentData;
 
           router.replace(
-            `/pre-test-assessment/update/${updateAssessmentData.preTestAssessment.slug}`,
+            `/dashboard/admin/pre-test-assessment/update/${updateAssessmentData.slug}`,
           );
         }
 
@@ -71,6 +72,7 @@ const AssessmentDetailsCard: FC<AssessmentDetailsCardProps> = ({
   useEffect(() => {
     if (assessment) {
       formik.setValues({
+        slug,
         title: assessment.title,
         description: assessment.description,
         passingScore: assessment.passingScore,

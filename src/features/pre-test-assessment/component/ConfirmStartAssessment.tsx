@@ -11,85 +11,48 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { SkillAssessment } from "@/types/skillAssessments";
+import { Assessment } from "@/types/assessment";
 import { AlertTriangle, Clock, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FC, useEffect, useRef, useState } from "react";
 import InfoCard from "./InfoCard";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface ConfirmStartSkillAssessmentProps {
-  skillAssessment: SkillAssessment;
+  assessment: Assessment;
+  userAttemptStatus: string;
   onStart: () => void;
   isPending: boolean;
-  createdAt: number | null;
-  isPassed: boolean | null;
 }
 
-const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
-  skillAssessment,
+const ConfirmStartAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
+  assessment,
+  userAttemptStatus,
   onStart,
   isPending,
-  createdAt,
-  isPassed,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
-  const [isTimeWarning, setIsTimeWarning] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(0);
-
-  useEffect(() => {
-    if (createdAt !== null) {
-      const endTime = createdAt + 3 * 24 * 60 * 60 * 1000;
-
-      const updateTimer = () => {
-        const now = Date.now();
-        const remainingTime = Math.max(0, Math.floor((endTime - now) / 1000));
-        setTimeLeft(remainingTime);
-        if (remainingTime <= 0) {
-          setIsTimeWarning(true);
-        } else {
-          setIsTimeWarning(false);
-        }
-      };
-
-      updateTimer();
-      const timerInterval = setInterval(updateTimer, 1000);
-
-      return () => clearInterval(timerInterval);
-    } else if (createdAt === null) {
-      setIsTimeWarning(true);
-    }
-  }, [createdAt]);
 
   useEffect(() => {
     if (descriptionRef.current) {
       const descriptionElement = descriptionRef.current;
-
       descriptionElement.classList.add("line-clamp-4");
       const clampedHeight = descriptionElement.clientHeight;
       descriptionElement.classList.remove("line-clamp-4");
-
       if (descriptionElement.scrollHeight > clampedHeight) {
         setShowMoreButton(true);
       } else {
         setShowMoreButton(false);
       }
-
       if (!isExpanded) {
         descriptionElement.classList.add("line-clamp-4");
       }
     }
-  }, [skillAssessment.description, isExpanded]);
-
-  const formatTime = (seconds: number) => {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-  };
+  }, [assessment.description, isExpanded]);
 
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -109,14 +72,13 @@ const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
                 priority
               />
             </div>
-            <span className="text-lg font-bold">Skill Assessment Platform</span>
+            <span className="text-lg font-bold">Assessment Platform</span>
           </Link>
         </div>
-
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xl space-y-6">
             <h1 className="text-3xl font-bold text-blue-600 md:text-4xl">
-              {skillAssessment.title}
+              {assessment.title}
             </h1>
             <div>
               <div
@@ -124,7 +86,7 @@ const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
                 className={isExpanded ? "" : "line-clamp-4"}
               >
                 <p className="mb-1 text-justify text-gray-600">
-                  {skillAssessment.description}
+                  {assessment.description}
                 </p>
               </div>
               {showMoreButton && (
@@ -136,7 +98,6 @@ const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
                 </button>
               )}
             </div>
-
             <div className="space-y-4">
               <InfoCard
                 icon={<AlertTriangle className="text-amber-600" size={20} />}
@@ -150,7 +111,7 @@ const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
               <InfoCard
                 icon={<Clock className="text-blue-600" size={20} />}
                 title="Assessment Overview"
-                description="25 multiple-choice questions, 30-minute time limit, Automatic submission at time expiry"
+                description="25 multiple-choice questions, 120-minute time limit, Automatic submission at time expiry"
                 iconClass="text-blue-600"
                 bgColor="bg-blue-50"
                 textColor="text-blue-700"
@@ -166,54 +127,58 @@ const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
                 borderColor="border-green-400"
               />
             </div>
-
             <div className="mt-6 text-center">
-              {isPassed === true && (
-                <h3 className="text-lg font-semibold">
-                  You have already passed this skill assessment
-                </h3>
-              )}
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    disabled={isPending || !isTimeWarning}
-                    className={`${isPassed ? "hidden" : ""} w-full ${isTimeWarning ? "bg-blue-600" : "cursor-not-allowed bg-red-600 font-semibold"} px-8 py-3 text-white transition-colors duration-300 hover:bg-blue-700 md:w-auto`}
-                  >
-                    {isTimeWarning
-                      ? "Begin Assessment"
-                      : `Waiting Time: ${formatTime(timeLeft)}`}
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Confirm Assessment Start
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Are you ready to begin? Once started, you cannot pause or
-                      retake the assessment. Ensure you have a stable internet
-                      connection and are in a quiet environment.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel className="mr-2">
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={onStart}
+              {userAttemptStatus === "ENDED" ? (
+                <div>
+                  <p className="mb-4 text-sm font-bold">
+                    You have already completed this assessment.
+                  </p>
+                  <Link href="/jobs">
+                    <Button className="w-full bg-blue-600 px-8 py-3 text-white transition-colors duration-300 hover:bg-blue-700 md:w-auto">
+                      Browse Jobs
+                    </Button>
+                  </Link>
+                </div>
+              ) : (
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
                       disabled={isPending}
-                      className="bg-blue-600 text-white hover:bg-blue-700"
+                      className="w-full bg-blue-600 px-8 py-3 text-white transition-colors duration-300 hover:bg-blue-700 md:w-auto"
                     >
-                      Start Assessment
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                      Begin Assessment
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Confirm Assessment Start
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Are you ready to begin? Once started, you cannot pause
+                        or retake the assessment. Ensure you have a stable
+                        internet connection and are in a quiet environment.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="mr-2">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={onStart}
+                        disabled={isPending}
+                        className="bg-blue-600 text-white hover:bg-blue-700"
+                      >
+                        Start Assessment
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              )}
             </div>
           </div>
         </div>
       </div>
-
       <div className="relative hidden bg-white lg:block">
         <Image
           src="/Exams-bro.svg"
@@ -227,4 +192,4 @@ const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
   );
 };
 
-export default ConfirmStartSkillAssessment;
+export default ConfirmStartAssessment;

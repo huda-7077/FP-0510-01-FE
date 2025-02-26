@@ -132,6 +132,7 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
               applicantName={application.user.fullName}
               jobApplicationId={application.id}
               status={application.status}
+              assessmentStatus={assessmentStatus}
             />
           )}
           <ApplicationCardDropdown

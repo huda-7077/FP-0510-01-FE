@@ -1,20 +1,13 @@
 import useAxios from "@/hooks/useAxios";
+import { UserPreTestAssessment } from "@/types/assessment";
 import { useQuery } from "@tanstack/react-query";
-
-interface GetUserScoreData {
-  attemptId: number;
-  totalQuestions: number;
-  correctAnswers: number;
-  score: number;
-  slug: string;
-}
 
 const useGetUserScore = (attemptId: number) => {
   const { axiosInstance } = useAxios();
   return useQuery({
     queryKey: ["assessment-user-attempts", attemptId],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<GetUserScoreData>(
+      const { data } = await axiosInstance.get<UserPreTestAssessment>(
         `/assessment-user-attempts/${attemptId}/score`,
       );
       return data;

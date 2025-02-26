@@ -67,3 +67,14 @@ export enum AssessmentUserAttemptStatus {
   STARTED = "STARTED",
   ENDED = "ENDED",
 }
+
+export interface UserPreTestAssessment {
+  id: number;
+  userId: number;
+  preTestAssessmentId: number;
+  score: number;
+  createdAt: Date;
+  updatedAt: Date;
+  user: User;
+  preTestAssessment: Assessment;
+}

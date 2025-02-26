@@ -19,22 +19,13 @@ interface RenewSubscriptionDialogProps {
   onClose: () => void;
   categoryName: string;
   basePrice: number;
-  duration: number;
 }
-
-const DURATION_OPTIONS = [
-  { months: 1, label: "1 Month" },
-  { months: 3, label: "3 Months" },
-  { months: 6, label: "6 Months" },
-  { months: 12, label: "12 Months" },
-];
 
 export function RenewSubscriptionDialog({
   isOpen,
   onClose,
   categoryName,
   basePrice,
-  duration,
 }: RenewSubscriptionDialogProps) {
   const [paymentMethod, setPaymentMethod] = useState<
     "PAYMENT_GATEWAY" | "PAYMENT_MANUAL"
@@ -44,12 +35,11 @@ export function RenewSubscriptionDialog({
   const { mutateAsync: createPayment, isPending: createPaymentPending } =
     useCreatePayments();
 
-  const totalAmount = basePrice * duration;
+  const totalAmount = basePrice;
 
   const handleCreatePayment = async () => {
     try {
       const payment = await createPayment({
-        duration: duration,
         category: categoryName,
         paymentMethod: paymentMethod,
         isRenewal: true,
@@ -146,9 +136,7 @@ export function RenewSubscriptionDialog({
               </div>
               <div className="flex justify-between text-base">
                 <span className="text-gray-600">Duration</span>
-                <span className="font-medium text-gray-900">
-                  {duration} {duration === 1 ? "month" : "months"}
-                </span>
+                <span className="font-medium text-gray-900">1 Month</span>
               </div>
             </div>
             <div className="flex justify-between pt-2">

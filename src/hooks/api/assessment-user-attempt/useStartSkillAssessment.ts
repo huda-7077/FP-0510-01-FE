@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
-const useStartSkillAssessment = () => {
+const useStartAssessment = () => {
   const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
 
@@ -18,7 +18,7 @@ const useStartSkillAssessment = () => {
       queryClient.invalidateQueries({
         queryKey: ["assessment-user-attempts"],
       });
-      toast.success("Assessment started successfully");
+      toast.success("Good luck!");
     },
     onError: (error: AxiosError<any>) => {
       toast.error(
@@ -28,4 +28,4 @@ const useStartSkillAssessment = () => {
   });
 };
 
-export default useStartSkillAssessment;
+export default useStartAssessment;

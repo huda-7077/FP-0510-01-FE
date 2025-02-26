@@ -2,9 +2,9 @@
 
 import React, { useState } from "react";
 
-import Sidebar from "../sidebar/Sidebar";
 import { developerSidebarLinks } from "../consts";
-import Developerbar from "../Developerbar";
+import Navbar from "../Navbar";
+import Sidebar from "../sidebar/Sidebar";
 
 interface DeveloperLayoutProps {
   children: React.ReactNode;
@@ -15,7 +15,7 @@ export const DeveloperLayout = ({ children }: DeveloperLayoutProps) => {
 
   return (
     <>
-      <Developerbar />
+      <Navbar />
       <div className="min-w-screen h-full">
         <div className="container relative mx-auto flex">
           <Sidebar

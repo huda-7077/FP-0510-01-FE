@@ -1,5 +1,10 @@
 import {
   Award,
+  Badge,
+  BadgeCheck,
+  BadgeIcon,
+  BadgePlus,
+  BadgeX,
   BellRing,
   Bookmark,
   BriefcaseBusiness,
@@ -7,13 +12,17 @@ import {
   CircleDollarSign,
   Clock,
   CreditCard,
+  FileBadge,
+  FileBadge2,
   FileStack,
   Layers,
   Luggage,
   PencilLine,
   Settings,
+  Trophy,
   UserPlus,
 } from "lucide-react";
+import { FaIdBadge } from "react-icons/fa6";
 
 export const adminSidebarLinks = [
   {
@@ -63,6 +72,11 @@ export const userSidebarLinks = [
     name: "Job Alerts",
     url: "/dashboard/user/job-alerts",
     icon: BellRing,
+  },
+  {
+    name: "Badges",
+    url: "/dashboard/user/badges",
+    icon: Award,
   },
   {
     name: "Create CV",

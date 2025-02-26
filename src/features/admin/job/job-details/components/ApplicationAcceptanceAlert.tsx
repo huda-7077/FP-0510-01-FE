@@ -47,11 +47,7 @@ const ApplicationAcceptanceAlert: FC<ApplicationAcceptanceAlertProps> = ({
             (status === "IN_REVIEW" && updatedStatus !== "REJECTED")
           }
         >
-          {isDisabled ? (
-            <LoaderCircle className="h-24 w-24 animate-spin" />
-          ) : (
-            buttonIcon
-          )}
+          {buttonIcon}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
