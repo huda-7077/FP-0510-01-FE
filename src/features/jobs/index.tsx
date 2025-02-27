@@ -130,7 +130,7 @@ const JobsPage = () => {
                         <div className="flex items-center justify-between">
                           <div className="flex gap-2">
                             <Image
-                              src={job.company.logo}
+                              src={job.company.logo || "anonymous.svg"}
                               alt={job.company.name}
                               width={40}
                               height={40}

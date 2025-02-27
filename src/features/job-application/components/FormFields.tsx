@@ -27,10 +27,6 @@ interface FormValues {
   educationLevel: string;
   currentAddress: string;
   phoneNumber: string;
-  cvUrl: File | null;
-  cvUrlPreview?: string;
-  profilePicture: File | null;
-  profilePicturePreview?: string;
   skills: string;
   provinceId: string;
   regencyId: string;

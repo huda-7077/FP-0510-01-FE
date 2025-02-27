@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { FormikProps } from "formik";
-import { PlusCircle } from "lucide-react";
+import { FileImage, PlusCircle } from "lucide-react";
 import { toast } from "react-toastify";
 
 interface FormValues {
@@ -37,7 +37,10 @@ export const LogoUploadSection = ({ formik }: LogoUploadSectionProps) => {
 
   return (
     <div className="space-y-2">
-      <Label>Company Logo</Label>
+      <Label className="flex items-center gap-2 font-semibold text-gray-700">
+        <FileImage size={18} />
+        Company Logo
+      </Label>
       <div className="flex flex-col items-center gap-4">
         <div className="relative">
           <Avatar className="h-24 w-24 rounded-lg">
@@ -45,9 +48,6 @@ export const LogoUploadSection = ({ formik }: LogoUploadSectionProps) => {
               src={formik.values.logoPreview || "/anonymous.svg"}
               className="rounded-lg object-cover"
             />
-            <AvatarFallback className="rounded-lg">
-              {formik.values.name?.[0] || ""}
-            </AvatarFallback>
           </Avatar>
           <label
             htmlFor="logo"

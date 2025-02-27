@@ -137,7 +137,7 @@ export default function DiscoverySection() {
           >
             <div className="flex items-center gap-4">
               <Image
-                src={job.company.logo || "/logo.svg"}
+                src={job.company.logo || "/anonymous.svg"}
                 alt={job.company.name}
                 width={40}
                 height={40}

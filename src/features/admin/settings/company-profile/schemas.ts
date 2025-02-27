@@ -28,7 +28,6 @@ export const companySchema = Yup.object().shape({
 
   links: Yup.string()
     .required("Company website/links are required")
-    .url("Please enter a valid URL")
     .max(500, "Links must not exceed 500 characters"),
 
   about: Yup.string()

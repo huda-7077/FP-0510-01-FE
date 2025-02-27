@@ -1,6 +1,6 @@
 "use client";
 
-import { FileText, FileUser, Replace, Upload } from "lucide-react";
+import { FileText, Replace, Upload } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { FormikProps } from "formik";
 import { Label } from "@/components/ui/label";
@@ -61,13 +61,7 @@ const CvDropzone = ({ formik }: CvDropzoneProps) => {
 
   return (
     <div className="space-y-2">
-      <Label
-        htmlFor="cvUrl"
-        className="flex items-center gap-2 font-semibold text-gray-700"
-      >
-        <FileUser size={18} />
-        CV / Resume
-      </Label>
+      <Label htmlFor="cvUrl">CV / Resume</Label>
       {formik.values.cvUrlPreview ? (
         <div className="rounded-lg border-2 border-dashed bg-blue-50 p-4">
           <div className="flex items-center justify-between">
