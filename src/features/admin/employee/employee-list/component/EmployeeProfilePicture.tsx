@@ -4,13 +4,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import useGetInitials from "@/hooks/useGetInitials";
 import { FC } from "react";
 
-interface ApplicantProfilePictureProps {
+interface EmployeeProfilePictureProps {
   profilePicture: string;
   fullName: string;
   ringColor: string;
 }
 
-const ApplicantProfilePicture: FC<ApplicantProfilePictureProps> = ({
+const EmployeeProfilePicture: FC<EmployeeProfilePictureProps> = ({
   profilePicture,
   fullName,
   ringColor,
@@ -31,4 +31,4 @@ const ApplicantProfilePicture: FC<ApplicantProfilePictureProps> = ({
   );
 };
 
-export default ApplicantProfilePicture;
+export default EmployeeProfilePicture;

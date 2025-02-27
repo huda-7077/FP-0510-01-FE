@@ -58,7 +58,7 @@ const RegisterEmployeeButton: FC<RegisterEmployeeButtonProps> = ({
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          className="bg-blue-600 p-3 text-white shadow-none hover:bg-blue-700"
+          className="w-full bg-blue-600 p-3 text-white shadow-none hover:bg-blue-700"
           disabled={isUpdateEmployeePending}
         >
           {isUpdateEmployeePending ? "Editting..." : "Edit Employee"}

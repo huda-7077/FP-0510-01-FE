@@ -1,6 +1,7 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 const useDeleteAssessmentQuestion = () => {
   const queryClient = useQueryClient();
@@ -20,7 +21,7 @@ const useDeleteAssessmentQuestion = () => {
       });
     },
     onError: (error: AxiosError<any>) => {
-      console.log(error.response?.data);
+      toast.error(error.response?.data?.message || "Failed to delete question");
     },
   });
 };

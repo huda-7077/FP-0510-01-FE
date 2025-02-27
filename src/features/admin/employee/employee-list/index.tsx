@@ -5,9 +5,9 @@ import PaginationSection from "@/components/PaginationSection";
 import useGetEmployees from "@/hooks/api/employee/useGetEmployees";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
-import { ApplicationCard } from "./component/ApplicationCard";
-import LoadingSkeleton from "./component/skeletons/JobApplicationListSkeleton";
 import { EmployeeListHeader } from "./component/EmployeeListHeader";
+import { EmployeeCard } from "./component/EmployeeCard";
+import LoadingSkeleton from "./component/skeletons/EmployeeListSkeleton";
 
 export const EmployeeListComponent = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -58,7 +58,7 @@ export const EmployeeListComponent = () => {
                 onSearch={handleSearch}
                 onSortChange={handleSortChange}
                 onSortOrderChange={handleSortOrderChange}
-                totalJobApplications={employees?.meta.total || 0}
+                totalEmployee={employees?.meta.total || 0}
               />
             </div>
           </div>
@@ -71,7 +71,7 @@ export const EmployeeListComponent = () => {
             <div className="grid grid-cols-1 gap-2 md:gap-4">
               {isEmployeesPending && <LoadingSkeleton />}
               {employees?.data.map((employee) => (
-                <ApplicationCard employee={employee} key={employee.id} />
+                <EmployeeCard employee={employee} key={employee.id} />
               ))}
             </div>
           )}

@@ -3,22 +3,21 @@
 import { Card } from "@/components/ui/card";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { Employee } from "@/types/employee";
-import ApplicantProfilePicture from "./ApplicantProfilePicture";
-import { Button } from "@/components/ui/button";
 import RegisterEmployeeButton from "./UpdateEmployeeButton";
+import EmployeeProfilePicture from "./EmployeeProfilePicture";
 
 interface EmployeeCardProps {
   employee: Employee;
 }
 
-export const ApplicationCard = ({ employee }: EmployeeCardProps) => {
+export const EmployeeCard = ({ employee }: EmployeeCardProps) => {
   const { formatLongDate } = useLongDateFormatter();
 
   return (
-    <Card className="group relative overflow-hidden rounded-2xl border-2 border-gray-200 bg-white px-6 py-4 shadow-none transition-all duration-300 ease-in-out hover:border-blue-600">
+    <Card className="group relative overflow-hidden rounded-2xl border-2 border-gray-200 bg-white p-8 shadow-none transition-all duration-300 ease-in-out hover:border-blue-600 md:px-6 md:py-4 lg:pe-16">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
         <div className="flex-shrink-0">
-          <ApplicantProfilePicture
+          <EmployeeProfilePicture
             profilePicture={employee.user.profilePicture || ""}
             fullName={employee.user.fullName}
             ringColor="ring-gray-200"

@@ -14,29 +14,24 @@ import {
 import { Search, Sliders, X } from "lucide-react";
 import { useRef, useState } from "react";
 
-interface JobApplicationListHeaderProps {
-  totalJobApplications: number;
+interface EmployeeListHeaderProps {
+  totalEmployee: number;
   onSortChange: (sort: string) => void;
   onSortOrderChange: (sortOrder: string) => void;
   onSearch: (searchQuery: string) => void;
 }
 
 export const EmployeeListHeader = ({
-  totalJobApplications,
+  totalEmployee,
   onSortChange,
   onSortOrderChange,
   onSearch,
-}: JobApplicationListHeaderProps) => {
+}: EmployeeListHeaderProps) => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [selectedSort, setSelectedSort] = useState<string>("createdAt");
-  const [selectedEducationLevel, setSelectedEducationLevel] =
-    useState<string>("all");
   const [sortOrder, setSortOrder] = useState<string>("asc");
 
-  const hasFiltersApplied =
-    selectedSort !== "createdAt" ||
-    selectedEducationLevel !== "all" ||
-    sortOrder !== "asc";
+  const hasFiltersApplied = selectedSort !== "createdAt" || sortOrder !== "asc";
 
   const handleSortChange = (sort: string) => {
     setSelectedSort(sort);
@@ -46,7 +41,6 @@ export const EmployeeListHeader = ({
   const handleResetAll = () => {
     setSelectedSort("createdAt");
     onSortChange("createdAt");
-    setSelectedEducationLevel("all");
     setSortOrder("asc");
     onSortOrderChange("asc");
   };
@@ -69,7 +63,7 @@ export const EmployeeListHeader = ({
             variant="secondary"
             className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 sm:text-sm"
           >
-            {totalJobApplications}
+            {totalEmployee}
           </Badge>
         </div>
       </div>
