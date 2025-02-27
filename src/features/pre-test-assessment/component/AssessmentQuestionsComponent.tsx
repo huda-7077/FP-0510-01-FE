@@ -61,7 +61,7 @@ export default function AssessmentQuestionsComponent({
       hasAutoSubmitted.current = true;
       await autoSubmitUserAnswers(attempt.id);
       clearAndFinalizeAssessment();
-      router.replace(`/skill-assessments/${slug}/score`);
+      router.replace(`/pre-test-assessment/${slug}/score`);
     }
   };
 
