@@ -9,7 +9,6 @@ import useGetAssessmentQuestions from "@/hooks/api/assessment-question/useGetAss
 import useGetAssessment from "@/hooks/api/assessment/useGetAssessment";
 import useUpdateAssessmentStatus from "@/hooks/api/assessment/useUpdateAssessmentStatus";
 import { AssessmentStatus } from "@/types/assessment";
-import { SkillAssessmentStatus } from "@/types/skillAssessments";
 import { FC, useEffect, useState } from "react";
 import AssessmentDetailsCard from "./form/AssessmentDetailsCard";
 import { QuestionForm } from "./form/QuestionForm";

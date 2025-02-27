@@ -1,6 +1,7 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 export interface UpdateAssessmentQuestionPayload {
   preTestAssessmentQuestionId: number;
@@ -26,11 +27,7 @@ const useUpdateAssessmentQuestion = () => {
     },
 
     onError: (error: AxiosError<any>) => {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data ||
-        "Failed to update question";
-      console.log(errorMessage);
+      toast.error(error.response?.data?.message || "Failed to update question");
     },
   });
 };

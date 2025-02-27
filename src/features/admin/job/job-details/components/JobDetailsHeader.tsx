@@ -88,21 +88,29 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56 space-y-1 p-2">
-            <Link href={`/dashboard/admin/jobs/edit/${job.id}`}>
-              <DropdownMenuItem className="cursor-pointer rounded-md p-2 text-sm font-medium transition-colors hover:bg-gray-100">
-                <PenSquare /> Edit Job Details
-              </DropdownMenuItem>
-            </Link>
+            <DropdownMenuItem
+              onClick={() =>
+                router.push(`/dashboard/admin/jobs/edit/${job.id}`)
+              }
+              disabled={job.isPublished}
+              className="cursor-pointer rounded-md p-2 text-sm font-medium transition-colors hover:bg-gray-100"
+            >
+              <PenSquare /> Edit Job Details
+            </DropdownMenuItem>
             {job.requiresAssessment && (
               <>
                 {job.preTestAssessments && job.preTestAssessments.length > 0 ? (
-                  <Link
-                    href={`/dashboard/admin/pre-test-assessment/update/${job.preTestAssessments[0].slug}`}
+                  <DropdownMenuItem
+                    onClick={() =>
+                      router.push(
+                        `/dashboard/admin/pre-test-assessment/update/${job.preTestAssessments[0].slug}`,
+                      )
+                    }
+                    disabled={job.isPublished}
+                    className="cursor-pointer rounded-md px-2 text-sm font-medium transition-colors hover:bg-gray-100"
                   >
-                    <DropdownMenuItem className="cursor-pointer rounded-md px-2 text-sm font-medium transition-colors hover:bg-gray-100">
-                      <Pen /> Edit Assessment
-                    </DropdownMenuItem>
-                  </Link>
+                    <Pen /> Edit Assessment
+                  </DropdownMenuItem>
                 ) : (
                   <Link
                     href={`/dashboard/admin/pre-test-assessment/create/${job.id}`}

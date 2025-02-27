@@ -41,17 +41,10 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
     jobId,
   });
 
-  if (
+  const notFound =
     !isJobApplicationsPending &&
     jobApplications &&
-    jobApplications?.data.length === 0
-  ) {
-    return (
-      <div className="flex min-h-[400px] items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50/50">
-        <DataNotFound title="No Applications Found" />
-      </div>
-    );
-  }
+    jobApplications?.data.length === 0;
 
   const onChangePage = (page: number) => {
     setPage(page);
@@ -98,12 +91,18 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-2 md:gap-4">
-          {isJobApplicationsPending && <JobApplicationListSkeleton />}
-          {jobApplications?.data.map((application) => (
-            <ApplicationCard application={application} key={application.id} />
-          ))}
-        </div>
+        {notFound ? (
+          <div className="flex min-h-[400px] items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50/50">
+            <DataNotFound title="No Applications Found" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 gap-2 md:gap-4">
+            {isJobApplicationsPending && <JobApplicationListSkeleton />}
+            {jobApplications?.data.map((application) => (
+              <ApplicationCard application={application} key={application.id} />
+            ))}
+          </div>
+        )}
 
         <div className="mt-6 flex justify-center gap-2 border-t border-gray-100 pt-6">
           {jobApplications &&

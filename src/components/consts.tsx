@@ -1,10 +1,5 @@
 import {
   Award,
-  Badge,
-  BadgeCheck,
-  BadgeIcon,
-  BadgePlus,
-  BadgeX,
   BellRing,
   Bookmark,
   BriefcaseBusiness,
@@ -12,17 +7,14 @@ import {
   CircleDollarSign,
   Clock,
   CreditCard,
-  FileBadge,
-  FileBadge2,
   FileStack,
   Layers,
   Luggage,
   PencilLine,
   Settings,
-  Trophy,
   UserPlus,
+  Users,
 } from "lucide-react";
-import { FaIdBadge } from "react-icons/fa6";
 
 export const adminSidebarLinks = [
   {
@@ -44,6 +36,11 @@ export const adminSidebarLinks = [
     name: "Interview Schedules",
     url: "/dashboard/admin/interviews",
     icon: Clock,
+  },
+  {
+    name: "Employees",
+    url: "/dashboard/admin/employee",
+    icon: Users,
   },
   {
     name: "Settings",
