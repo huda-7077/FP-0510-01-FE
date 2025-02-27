@@ -1,7 +1,6 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
 import useCalculateAge from "@/hooks/useCalculateAge";
 import useFormatRupiah from "@/hooks/useFormatRupiah";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
@@ -22,34 +21,33 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
   const [userAssessment, setUserAssessment] = useState<{
     userId: number;
     score: number;
-    status: string;
   }>();
   const [assessmentStatus, setAssessmentStatus] = useState("");
   const { formatLongDate } = useLongDateFormatter();
   const { calculateAge } = useCalculateAge();
 
-  const { data: assessments } = useGetAssessments({
-    jobId: application.jobId,
-  });
-
   useEffect(() => {
     if (
       application.job.requiresAssessment &&
-      assessments &&
-      assessments.data &&
-      assessments.data.length > 0 &&
-      Array.isArray(assessments.data[0].userAssessments)
+      application.job.preTestAssessments &&
+      application.job.preTestAssessments.length > 0 &&
+      Array.isArray(
+        application.job.preTestAssessments[0].userPreTestAssessments,
+      )
     ) {
       setUserAssessment(
-        assessments.data[0].userAssessments.find(
-          (userAssessment) => userAssessment.userId === application.userId,
+        application.job.preTestAssessments[0].userPreTestAssessments.find(
+          (assessment) => assessment.userId === application.userId,
         ),
       );
 
       if (!userAssessment) {
         setAssessmentStatus("");
       } else {
-        if (userAssessment.score >= assessments.data[0].passingScore) {
+        if (
+          userAssessment.score >=
+          application.job.preTestAssessments[0].passingScore
+        ) {
           setAssessmentStatus("Passed");
         } else {
           setAssessmentStatus("Failed");
@@ -134,7 +132,7 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
               applicantName={application.user.fullName}
               jobApplicationId={application.id}
               status={application.status}
-              userAssessmentStatus={userAssessment?.status || ""}
+              assessmentStatus={assessmentStatus}
             />
           )}
           <ApplicationCardDropdown

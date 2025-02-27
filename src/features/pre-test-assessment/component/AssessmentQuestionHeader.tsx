@@ -1,53 +1,26 @@
-import React, { FC, useState, useEffect, useRef } from "react";
-import { Timer, CheckCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+"use client";
+import { Progress } from "@/components/ui/progress";
+import { CheckCircle, Timer } from "lucide-react";
+import { FC, useEffect, useState } from "react";
 
 interface AssessmentQuestionHeaderProps {
-  index: number;
+  currentIndex: number;
+  timeLeft: number;
   totalQuestions: number;
-  remainingTime: number;
-  onTimeExpired: () => void;
+  progress: number;
 }
 
-const formatTime = (seconds: number): string =>
-  new Date(seconds * 1000).toISOString().substr(11, 8);
-
 const AssessmentQuestionHeader: FC<AssessmentQuestionHeaderProps> = ({
-  index,
+  currentIndex,
   totalQuestions,
-  remainingTime: initialRemainingTime,
-  onTimeExpired,
+  timeLeft,
+  progress,
 }) => {
-  const router = useRouter();
-  const [remainingTime, setRemainingTime] = useState(initialRemainingTime);
   const [isTimeWarning, setIsTimeWarning] = useState(false);
-  const hasExpired = useRef(false);
 
   useEffect(() => {
-    if (remainingTime <= 0 && !hasExpired.current) {
-      hasExpired.current = true;
-      onTimeExpired();
-      toast.success("Time's up! Your progress has been saved.");
-      setTimeout(() => router.push("/"), 2000);
-    }
-  }, [remainingTime, onTimeExpired, router]);
-
-  useEffect(() => {
-    const timer = setInterval(
-      () => setRemainingTime((prevTime) => Math.max(prevTime - 1, 0)),
-      1000,
-    );
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("remainingTime", remainingTime.toString());
-  }, [remainingTime]);
-
-  useEffect(() => {
-    setIsTimeWarning(remainingTime <= 300);
-  }, [remainingTime]);
+    setIsTimeWarning(timeLeft <= 300);
+  }, [timeLeft]);
 
   return (
     <div
@@ -63,7 +36,7 @@ const AssessmentQuestionHeader: FC<AssessmentQuestionHeaderProps> = ({
           </div>
           <div>
             <h3 className="text-lg font-semibold text-white md:text-xl">
-              Question {index + 1}{" "}
+              Question {currentIndex + 1}{" "}
               <span className="text-sm text-white/70">of {totalQuestions}</span>
             </h3>
           </div>
@@ -74,10 +47,14 @@ const AssessmentQuestionHeader: FC<AssessmentQuestionHeaderProps> = ({
             size={24}
           />
           <p className="text-lg font-bold text-white transition-colors duration-300 md:text-xl">
-            {formatTime(remainingTime)}
+            {Math.floor(timeLeft / 60)}:{String(timeLeft % 60).padStart(2, "0")}
           </p>
         </div>
       </div>
+      <Progress
+        value={progress}
+        className={`blue rounded-none ${isTimeWarning ? "bg-red-500 [&>div]:bg-red-700" : "bg-blue-500 [&>div]:bg-blue-700"} shadow-md transition-colors duration-300`}
+      />
     </div>
   );
 };

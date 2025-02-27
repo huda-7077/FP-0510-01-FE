@@ -1,5 +1,5 @@
 import { axiosInstance } from "@/lib/axios";
-import { UserAssessment } from "@/types/userAssessment";
+import { UserAssessment } from "@/types/assessment";
 import { useQuery } from "@tanstack/react-query";
 
 interface GetUserAssessmentsQuery {

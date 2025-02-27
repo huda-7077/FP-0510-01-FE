@@ -4,11 +4,11 @@ import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
 export interface UpdateAssessmentPayload {
-  id: number;
-  title?: string;
-  description?: string;
-  passingScore?: number;
-  status?: string;
+  slug: string;
+  title: string;
+  description: string;
+  passingScore: number;
+  generateSlug: boolean;
 }
 
 const useUpdateAssessment = () => {
@@ -17,9 +17,9 @@ const useUpdateAssessment = () => {
 
   return useMutation({
     mutationFn: async (payload: UpdateAssessmentPayload) => {
-      const { id, ...dataToUpdate } = payload;
+      const { slug, ...dataToUpdate } = payload;
       const { data } = await axiosInstance.patch(
-        `/assessments/${id}`,
+        `/assessments/${slug}`,
         dataToUpdate,
       );
       return data;

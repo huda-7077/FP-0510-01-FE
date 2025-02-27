@@ -21,9 +21,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
 import useDeleteJob from "@/hooks/api/job/useDeleteJob";
-import useGetAssessmentPath from "@/hooks/useGetAssessmentPath";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
 import { Job } from "@/types/job";
 import {
@@ -33,6 +31,7 @@ import {
   MoreVertical,
   Pen,
   PenSquare,
+  Plus,
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
@@ -48,27 +47,18 @@ interface JobDetailsHeaderProps {
 
 export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
   const router = useRouter();
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+
   const { mutateAsync: deleteJob, isPending: isDeleteJobPending } =
     useDeleteJob();
 
-  const { data: assessment } = useGetAssessments({
-    jobId: job.id,
-  });
-
   const { formatLongDate } = useLongDateFormatter();
-
-  const { getAssessmentPath } = useGetAssessmentPath(
-    (assessment && assessment?.data.length) || 0,
-    job.id.toString(),
-  );
-
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   const handleJobDelete = async (event: React.MouseEvent) => {
     event.preventDefault();
     try {
       await deleteJob(job.id);
-      setIsDialogOpen(false);
+      setIsDeleteDialogOpen(false);
       toast.success("Job Deleted Successfully");
     } catch (error) {
       console.log(error);
@@ -104,21 +94,35 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
               </DropdownMenuItem>
             </Link>
             {job.requiresAssessment && (
-              <Link href={getAssessmentPath}>
-                <DropdownMenuItem className="cursor-pointer rounded-md px-2 text-sm font-medium transition-colors hover:bg-gray-100">
-                  <Pen />
-                  {assessment && assessment.data.length > 0
-                    ? "Edit "
-                    : "Create "}
-                  Assessment
-                </DropdownMenuItem>
-              </Link>
+              <>
+                {job.preTestAssessments && job.preTestAssessments.length > 0 ? (
+                  <Link
+                    href={`/dashboard/admin/pre-test-assessment/update/${job.preTestAssessments[0].slug}`}
+                  >
+                    <DropdownMenuItem className="cursor-pointer rounded-md px-2 text-sm font-medium transition-colors hover:bg-gray-100">
+                      <Pen /> Edit Assessment
+                    </DropdownMenuItem>
+                  </Link>
+                ) : (
+                  <Link
+                    href={`/dashboard/admin/pre-test-assessment/create/${job.id}`}
+                  >
+                    <DropdownMenuItem className="cursor-pointer rounded-md px-2 text-sm font-medium transition-colors hover:bg-gray-100">
+                      <Plus size={16} />
+                      Create Assessment
+                    </DropdownMenuItem>
+                  </Link>
+                )}
+              </>
             )}
             <DropdownMenuItem
               className="m-0 rounded-md p-0"
               onSelect={(e) => e.preventDefault()}
             >
-              <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+              <AlertDialog
+                open={isDeleteDialogOpen}
+                onOpenChange={setIsDeleteDialogOpen}
+              >
                 <AlertDialogTrigger asChild>
                   <Button
                     variant="outline"

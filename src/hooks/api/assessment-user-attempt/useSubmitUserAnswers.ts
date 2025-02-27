@@ -3,32 +3,29 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
-export interface UpdateJobStatusPayload {
-  id: number;
-  isPublished: boolean;
-}
-
-const useUpdateJobStatus = () => {
+const useSubmitUserAnswers = () => {
   const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
 
   return useMutation({
-    mutationFn: async (payload: UpdateJobStatusPayload) => {
-      const { id, ...dataToUpdate } = payload;
+    mutationFn: async (attemptId: number) => {
       const { data } = await axiosInstance.patch(
-        `/jobs/status/${id}`,
-        dataToUpdate,
+        `/assessment-user-attempts/${attemptId}/submit`,
       );
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+      queryClient.invalidateQueries({
+        queryKey: ["assessment-user-attempts"],
+      });
+      toast.success("User answers submitted successfully");
     },
-
     onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data.message || error.response?.data);
+      toast.error(
+        error.response?.data?.message || "Failed to submit user answers",
+      );
     },
   });
 };
 
-export default useUpdateJobStatus;
+export default useSubmitUserAnswers;

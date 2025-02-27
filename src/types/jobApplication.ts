@@ -32,5 +32,16 @@ export interface JobApplication {
     };
     experience: WorkExperience[];
   };
-  job: Pick<Job, "title" | "requiresAssessment">;
+  job: {
+    title: string;
+    requiresAssessment: boolean;
+    preTestAssessments: {
+      id: number;
+      passingScore: number;
+      userPreTestAssessments: {
+        userId: number;
+        score: number;
+      }[];
+    }[];
+  };
 }

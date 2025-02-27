@@ -31,6 +31,7 @@ import EditJobFormSelectInput from "./EditJobFormSelectInput";
 import TagsInput from "./EditJobFormTagInput";
 import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
+import useGetCompanyJob from "@/hooks/api/job/useGetCompanyJob";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -46,7 +47,6 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
   const user = session?.user;
   const companyId = user?.companyId || 0;
 
-  // State Management
   const [selectedImage, setSelectedImage] = useState("");
   const [isPublished, setIsPublished] = useState(false);
   const [requiresAssessment, setRequiresAssessment] = useState(false);
@@ -54,20 +54,16 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
 
   const { formatTitleCase } = useFormatTitleCase();
 
-  // Fetch Job Data
-  const { data: job, isPending: isJobPending } = useGetJob({
+  const { data: job, isPending: isJobPending } = useGetCompanyJob({
     jobId: id,
-    companyId,
   });
 
-  // Update Job Mutation
   const { mutateAsync: updateJob, isPending: isUpdateJobPending } =
     useUpdateJob(id);
 
   const { data: companyLocations, isLoading: isCompanyLocationsLoading } =
     useGetCompanyLocations();
 
-  // Formik Initialization
   const formik = useFormik({
     initialValues: {
       companyId: 0,
@@ -321,11 +317,21 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
                   id="is-publish"
                   checked={isPublished}
                   onCheckedChange={setIsPublished}
-                  disabled={requiresAssessment || isUpdateJobPending}
+                  disabled={
+                    (requiresAssessment &&
+                      job.preTestAssessments[0]?.status === "DRAFT") ||
+                    (requiresAssessment &&
+                      job.preTestAssessments.length <= 0) ||
+                    isUpdateJobPending
+                  }
                 />
                 <Label
                   htmlFor="is-publish"
-                  className={`${requiresAssessment && "text-gray-400"}`}
+                  className={`${
+                    requiresAssessment &&
+                    job.preTestAssessments[0]?.status === "DRAFT" &&
+                    "text-gray-400"
+                  }`}
                 >
                   Publish
                 </Label>
