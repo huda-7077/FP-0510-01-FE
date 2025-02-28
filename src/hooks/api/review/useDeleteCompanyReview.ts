@@ -8,8 +8,8 @@ const useDeleteCompanyReview = () => {
   const { axiosInstance } = useAxios();
 
   return useMutation({
-    mutationFn: async (companyId: number) => {
-      const { data } = await axiosInstance.delete(`/reviews/${companyId}`);
+    mutationFn: async (reviewId: number) => {
+      const { data } = await axiosInstance.delete(`/reviews/${reviewId}`);
       return data;
     },
     onSuccess: () => {

@@ -16,6 +16,7 @@ import { Pen } from "lucide-react";
 import { CreateCompanyReviewDialog } from "./CreateReviewDialog";
 import { useState } from "react";
 import useDeleteCompanyReview from "@/hooks/api/review/useDeleteCompanyReview";
+import useGetCompanyEmployee from "@/hooks/api/employee/useGetCompanyEmployee";
 
 interface CompanyReviewsProps {
   companyId: number;
@@ -33,7 +34,11 @@ const CompanyReviews = ({ companyId }: CompanyReviewsProps) => {
     defaultValue: "createdAt",
   });
 
-  const { data: reviews, isLoading } = useGetCompanyReviews(
+  const { data: employee } = useGetCompanyEmployee(companyId, {
+    enabled: !!user,
+  });
+
+  const { data: reviews } = useGetCompanyReviews(
     {
       page,
       sortOrder,
@@ -71,7 +76,7 @@ const CompanyReviews = ({ companyId }: CompanyReviewsProps) => {
           </p>
         </div>
         <div className="flex w-full items-center justify-between gap-4 md:w-auto">
-          {user && (
+          {user && employee && (
             <>
               <Button
                 className="bg-blue-600 text-white hover:bg-blue-700"
