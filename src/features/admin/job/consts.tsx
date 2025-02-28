@@ -1,9 +1,9 @@
 export const JobCategory = [
-  "Information Technology (IT) & Software Development",
+  "Information Technology & Software Development",
   "Business & Management",
   "Sales & Marketing",
   "Finance & Accounting",
-  "Human Resources (HR)",
+  "Human Resources",
   "Customer Service & Support",
   "Healthcare & Medical",
   "Engineering",

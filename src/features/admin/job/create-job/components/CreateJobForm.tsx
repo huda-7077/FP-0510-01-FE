@@ -12,7 +12,6 @@ import {
   AlignLeft,
   Calendar,
   DollarSign,
-  LibraryBig,
   Tag,
   Trash2,
   Upload,
@@ -24,11 +23,11 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { createJobSchema } from "../schemas";
+import CategorySelectInput from "./CategorySelectInput";
+import CompanyLocationSelectInput from "./CompanyLocationSelectInput";
 import CreateJobFormHeader from "./CreateJobFormHeader";
 import CreateJobFormInput from "./CreateJobFormInput";
 import TagsInput from "./CreateJobFormTagInput";
-import CompanyLocationSelectInput from "./CompanyLocationSelectInput";
-import CategorySelectInput from "./CategorySelectInput";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -37,8 +36,6 @@ const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
 const CreateJobForm = () => {
   const router = useRouter();
   const { data: session, status } = useSession();
-  const user = session?.user;
-  const companyId = user?.companyId || 0;
 
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [isPublished, setIsPublished] = useState<boolean>(false);
@@ -59,7 +56,6 @@ const CreateJobForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      companyId,
       title: "",
       description: "",
       bannerImage: null,
@@ -75,7 +71,6 @@ const CreateJobForm = () => {
     onSubmit: async (values) => {
       try {
         const payload: CreateJobPayload = {
-          companyId,
           title: values.title,
           description: values.description,
           bannerImage: values.bannerImage,

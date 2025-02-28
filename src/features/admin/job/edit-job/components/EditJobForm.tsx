@@ -1,10 +1,12 @@
 "use client";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import useGetJob from "@/hooks/api/job/useGetJob";
+import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
+import useGetCompanyJob from "@/hooks/api/job/useGetCompanyJob";
 import useUpdateJob, { UpdateJobPayload } from "@/hooks/api/job/useUpdateJob";
 import useFormatTitleCase from "@/hooks/useFormatTitleCase";
 import { formatISO } from "date-fns";
@@ -13,7 +15,6 @@ import {
   AlignLeft,
   Calendar,
   DollarSign,
-  LibraryBig,
   Tag,
   Trash2,
   Upload,
@@ -25,13 +26,11 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { createJobSchema } from "../schemas";
+import CategorySelectInput from "./CategorySelectInput";
 import EditJobFormHeader from "./EditJobFormHeader";
 import EditJobFormInput from "./EditJobFormInput";
 import EditJobFormSelectInput from "./EditJobFormSelectInput";
 import TagsInput from "./EditJobFormTagInput";
-import { DataNotFound } from "@/components/data-not-found/DataNotFound";
-import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
-import useGetCompanyJob from "@/hooks/api/job/useGetCompanyJob";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -117,7 +116,6 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
           : ""
         : "";
 
-      // Reset Formik Values
       formik.resetForm({
         values: {
           companyId: job.companyId,
@@ -251,13 +249,10 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
           </div>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            <EditJobFormInput
+            <CategorySelectInput
               name="category"
-              label="Job Category"
-              placeholder="Ex. Software Development"
+              label="Category"
               formik={formik}
-              icon={<LibraryBig size={18} />}
-              isNotEmpty={true}
               isDisabled={isUpdateJobPending}
             />
             <EditJobFormInput

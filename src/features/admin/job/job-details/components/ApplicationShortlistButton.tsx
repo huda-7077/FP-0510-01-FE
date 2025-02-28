@@ -1,12 +1,12 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateAssessment";
 import { CheckCircle, Clock, LoaderCircle, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { toast } from "react-toastify";
 import ApplicationAcceptanceAlert from "./ApplicationAcceptanceAlert";
+import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateJobApplication";
 
 interface ApplicationShortlistButtonProps {
   isRequireAssessment: boolean;

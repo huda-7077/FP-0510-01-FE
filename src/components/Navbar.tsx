@@ -20,7 +20,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { data: session, status } = useSession();
-  const { data: profile } = useGetProfile();
+  const { data: profile } = useGetProfile({ enabled: !!session?.user });
 
   useEffect(() => {
     setMounted(true);
