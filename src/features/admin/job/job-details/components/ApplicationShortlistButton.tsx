@@ -57,6 +57,7 @@ const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
       {(assessmentStatus === "Passed" && status === "IN_REVIEW") ||
       (!isRequireAssessment && status === "IN_REVIEW") ? (
         <Button
+          className="bg-blue-600 p-3 text-white shadow-none hover:bg-blue-700"
           onClick={() =>
             router.push(
               `/dashboard/admin/interviews/create/${jobApplicationId}`,

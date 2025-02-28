@@ -1,6 +1,7 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 interface CreateAssessmentQuestionPayload {
   preTestAssessmentId: number;
@@ -27,7 +28,7 @@ const useCreateAssessmentQuestion = () => {
       console.log("Assessment Question added successfullly");
     },
     onError: (error: AxiosError<any>) => {
-      console.log(error.response?.data || "Failed to add question");
+      toast.error(error.response?.data?.message || "Failed to add question");
     },
   });
 };

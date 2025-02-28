@@ -12,6 +12,23 @@ import ApplicationCardDropdown from "./ApplicationCardDropdown";
 import ManageApplicationButton from "./ApplicationShortlistButton";
 import ApplicationStatusBadge from "./ApplicationStatusBadge";
 import AssessmentBadge from "./AssessmentBadge";
+import { Button } from "@/components/ui/button";
+import useRegisterEmployee from "@/hooks/api/employee/useRegisterEmployee";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "react-toastify";
+import useFormatTitleCase from "@/hooks/useFormatTitleCase";
+import RegisterEmployeeButton from "./RegisterEmployeeButton";
 
 interface ApplicationCardProps {
   application: JobApplication;
@@ -121,11 +138,15 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
         <div className="flex flex-row items-center gap-2 sm:gap-4">
           {application.status === "ACCEPTED" ||
           application.status === "REJECTED" ? (
-            <p className="text-sm italic text-gray-500">
-              {application.status === "ACCEPTED"
-                ? "Applicant Accepted"
-                : "Applicant Rejected"}
-            </p>
+            <>
+              {application.status === "ACCEPTED" ? (
+                <RegisterEmployeeButton application={application} />
+              ) : (
+                <p className="text-sm font-semibold italic text-red-500">
+                  Applicant Rejected
+                </p>
+              )}
+            </>
           ) : (
             <ManageApplicationButton
               isRequireAssessment={application.job.requiresAssessment}
