@@ -1,169 +1,151 @@
-import React from 'react';
-import { Star } from 'lucide-react';
-import {
-  Card,
-  CardContent,
-} from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import PaginationSection from "@/components/PaginationSection";
+import { Card } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
+import useGetCompanyReviews from "@/hooks/api/review/useGetCompanyReviews";
+import { useSession } from "next-auth/react";
+import { parseAsInteger, useQueryState } from "nuqs";
+import ReviewCard from "./ReviewCard";
+import { Button } from "@/components/ui/button";
+import { Pen } from "lucide-react";
+import { CreateCompanyReviewDialog } from "./CreateReviewDialog";
+import { useState } from "react";
+import useDeleteCompanyReview from "@/hooks/api/review/useDeleteCompanyReview";
 
-interface Rating {
-  label: string;
-  value: number;
+interface CompanyReviewsProps {
+  companyId: number;
 }
+const CompanyReviews = ({ companyId }: CompanyReviewsProps) => {
+  const session = useSession();
+  const user = session.data?.user;
 
-interface Review {
-  id: number;
-  jobTitle: string;
-  salaryRange: string;
-  workCultureRating: number;
-  workLifeBalanceRating: number;
-  facilitiesRating: number;
-  careerGrowthRating: number;
-  overallRating: number;
-  comment: string;
-  createdAt: Date;
-}
+  const [openDialog, setOpenDialog] = useState(false);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [sortOrder, setSortOrder] = useQueryState("sortOrder", {
+    defaultValue: "desc",
+  });
+  const [sortBy, setSortBy] = useQueryState("sortBy", {
+    defaultValue: "createdAt",
+  });
 
-interface RatingStarsProps {
-  rating: number;
-}
-
-interface ReviewCardProps {
-  review: Review;
-}
-
-const CompanyReviews = () => {
-  const reviews: Review[] = [
+  const { data: reviews, isLoading } = useGetCompanyReviews(
     {
-      id: 1,
-      jobTitle: "Software Engineer",
-      salaryRange: "$100k-$150k",
-      workCultureRating: 4,
-      workLifeBalanceRating: 5,
-      facilitiesRating: 4,
-      careerGrowthRating: 3,
-      overallRating: 4,
-      comment: "Great work environment with flexible hours. Good benefits and modern office facilities. Career growth could be better structured.",
-      createdAt: new Date("2024-02-20")
+      page,
+      sortOrder,
+      sortBy,
+      take: 10,
     },
-    {
-      id: 2,
-      jobTitle: "Product Manager",
-      salaryRange: "$120k-$180k",
-      workCultureRating: 5,
-      workLifeBalanceRating: 4,
-      facilitiesRating: 5,
-      careerGrowthRating: 4,
-      overallRating: 5,
-      comment: "Excellent company culture and strong emphasis on personal growth. Leadership is very supportive and transparent.",
-      createdAt: new Date("2024-02-22")
-    }
-  ];
+    companyId,
+  );
 
-  const RatingStars: React.FC<RatingStarsProps> = ({ rating }) => {
-    return (
-      <div className="flex items-center">
-        {[...Array(5)].map((_, index) => (
-          <Star
-            key={index}
-            size={16}
-            className={`${
-              index < rating ? 'fill-blue-500 text-blue-500' : 'fill-gray-200 text-gray-200'
-            }`}
-          />
-        ))}
-      </div>
-    );
+  const { mutateAsync: deleteCompanyReview } = useDeleteCompanyReview();
+
+  const onChangePage = (page: number) => {
+    setPage(page);
   };
 
-  const ReviewCard: React.FC<ReviewCardProps> = ({ review }) => {
-    const ratings: Rating[] = [
-      { label: 'Work Culture', value: review.workCultureRating },
-      { label: 'Work-Life Balance', value: review.workLifeBalanceRating },
-      { label: 'Facilities', value: review.facilitiesRating },
-      { label: 'Career Growth', value: review.careerGrowthRating }
-    ];
+  const handleSortChange = (sort: string) => {
+    setSortBy(sort);
+  };
 
-    return (
-      <Card className="mb-4">
-        <CardContent className="pt-6">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-4">
-            <div className="space-y-2">
-              <h3 className="font-semibold text-lg text-blue-900">{review.jobTitle}</h3>
-              <Badge variant="secondary" className="mt-1">
-                {review.salaryRange}
-              </Badge>
-            </div>
-            <div className="flex flex-col items-start md:items-end gap-1">
-              <div className="flex items-center gap-2">
-                <span className="text-lg font-semibold">{review.overallRating}.0</span>
-                <RatingStars rating={review.overallRating} />
-              </div>
-              <span className="text-sm text-gray-500">
-                {new Date(review.createdAt).toLocaleDateString()}
-              </span>
-            </div>
-          </div>
+  const handleSortOrderChange = (sortOrder: string) => {
+    setSortOrder(sortOrder);
+  };
 
-          <Separator className="my-4" />
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
-            {ratings.map((rating) => (
-              <div key={rating.label} className="flex items-center justify-between sm:flex-col sm:items-start gap-2">
-                <span className="text-sm text-gray-600">{rating.label}</span>
-                <RatingStars rating={rating.value} />
-              </div>
-            ))}
-          </div>
-
-          <Separator className="my-4" />
-
-          <p className="text-gray-700 leading-relaxed">{review.comment}</p>
-        </CardContent>
-      </Card>
-    );
+  const handleDelete = async (id: number) => {
+    await deleteCompanyReview(id);
   };
 
   return (
-    <div className="container mx-auto p-6 mt-6">
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+    <div className="container mx-auto mt-6 p-6">
+      <div className="mb-6 flex flex-col items-start justify-between gap-4 md:flex-row md:items-center">
         <div>
           <h2 className="text-2xl">Company Reviews</h2>
-          <p className="text-gray-500 mt-1">Anonymous reviews from verified employees</p>
+          <p className="mt-1 text-gray-500">
+            Anonymous reviews from verified employees
+          </p>
         </div>
-        <div className="w-full md:w-48">
-          <Select defaultValue="recent">
-            <SelectTrigger>
-              <SelectValue placeholder="Sort by" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="recent">Most Recent</SelectItem>
-              <SelectItem value="highest">Highest Rated</SelectItem>
-              <SelectItem value="lowest">Lowest Rated</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex w-full items-center justify-between gap-4 md:w-auto">
+          {user && (
+            <>
+              <Button
+                className="bg-blue-600 text-white hover:bg-blue-700"
+                onClick={() => setOpenDialog(true)}
+              >
+                <Pen className="mr-2 h-4 w-4" />
+                Add Review
+              </Button>
+            </>
+          )}
+          <div className="w-full md:w-48">
+            <Select
+              defaultValue="recent"
+              onValueChange={(value) => {
+                if (value === "recent") {
+                  handleSortChange("createdAt");
+                  handleSortOrderChange("desc");
+                } else if (value === "highest") {
+                  handleSortChange("overallRating");
+                  handleSortOrderChange("desc");
+                } else if (value === "lowest") {
+                  handleSortChange("overallRating");
+                  handleSortOrderChange("asc");
+                }
+              }}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder="Sort by" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="recent">Most Recent</SelectItem>
+                <SelectItem value="highest">Highest Rated</SelectItem>
+                <SelectItem value="lowest">Lowest Rated</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
       </div>
 
       <div className="space-y-4">
-        {reviews.length > 0 ? (
-          reviews.map((review) => (
-            <ReviewCard key={review.id} review={review} />
+        {reviews && reviews.data.length > 0 ? (
+          reviews.data.map((review) => (
+            <ReviewCard
+              key={review.id}
+              review={review}
+              userId={user?.id}
+              onDelete={handleDelete}
+            />
           ))
         ) : (
           <Card className="p-8">
-            <p className="text-gray-500 text-center">No reviews available yet.</p>
+            <p className="text-center text-gray-500">
+              No reviews available yet.
+            </p>
           </Card>
         )}
       </div>
+      {reviews &&
+        reviews.data.length > 0 &&
+        reviews.meta.total > reviews.meta.take && (
+          <PaginationSection
+            onChangePage={onChangePage}
+            page={Number(page)}
+            take={reviews.meta.take || 4}
+            total={reviews.meta.total}
+          />
+        )}
+      {openDialog && (
+        <CreateCompanyReviewDialog
+          isOpen={openDialog}
+          onClose={() => setOpenDialog(false)}
+          companyId={companyId}
+        />
+      )}
     </div>
   );
 };
