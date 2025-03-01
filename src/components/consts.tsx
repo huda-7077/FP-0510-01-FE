@@ -51,7 +51,7 @@ export const userSidebarLinks = [
   },
   {
     name: "Applied Jobs",
-    url: "/dashboard/user/apply-jobs",
+    url: "/dashboard/user/jobs",
     icon: BriefcaseBusiness,
   },
   {

@@ -1,13 +1,13 @@
 import { UserDashboardLayout } from "@/components/layouts/UserDashboardLayout";
-import CVGeneratorPage from "@/features/cv-generator";
+import AppliedJobsPage from "@/features/user/jobs";
 import UserAuthGuard from "@/hoc/UserAuthGuard";
 
-const CvGenerator = () => {
+const Jobs = () => {
   return (
     <UserDashboardLayout>
-      <CVGeneratorPage />
+      <AppliedJobsPage />
     </UserDashboardLayout>
   );
 };
 
-export default UserAuthGuard(CvGenerator);
+export default UserAuthGuard(Jobs);

@@ -1,3 +1,4 @@
+import { Interview } from "./interviews";
 import { Job } from "./job";
 import { WorkExperience } from "./workExperience";
 
@@ -18,6 +19,7 @@ export interface JobApplication {
   status: JobApplicationStatus;
   notes: string | null;
   createdAt: Date;
+  updatedAt: Date;
   user: {
     fullName: string;
     currentAddress: string;
@@ -32,7 +34,18 @@ export interface JobApplication {
     };
     experience: WorkExperience[];
   };
-  job: Pick<Job, "title" | "requiresAssessment">;
+  interviews: Interview[];
+  job: Pick<
+    Job,
+    | "title"
+    | "requiresAssessment"
+    | "salary"
+    | "company"
+    | "category"
+    | "companyLocation"
+    | "applicationDeadline"
+    | "description"
+  >;
 }
 
 export interface JobApplicationFormData {
