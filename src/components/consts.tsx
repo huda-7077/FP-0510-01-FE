@@ -10,9 +10,11 @@ import {
   FileStack,
   Layers,
   Luggage,
+  PanelsTopLeft,
   PencilLine,
   Settings,
   UserPlus,
+  Users,
 } from "lucide-react";
 
 export const adminSidebarLinks = [
@@ -35,6 +37,11 @@ export const adminSidebarLinks = [
     name: "Interview Schedules",
     url: "/dashboard/admin/interviews",
     icon: Clock,
+  },
+  {
+    name: "Employees",
+    url: "/dashboard/admin/employee",
+    icon: Users,
   },
   {
     name: "Settings",
@@ -65,9 +72,19 @@ export const userSidebarLinks = [
     icon: BellRing,
   },
   {
+    name: "Badges",
+    url: "/dashboard/user/badges",
+    icon: Award,
+  },
+  {
     name: "Create CV",
     url: "/dashboard/user/cv-generator",
     icon: PencilLine,
+  },
+  {
+    name: "Subscriptions",
+    url: "/dashboard/user/subscriptions",
+    icon: CreditCard,
   },
   {
     name: "Settings",
@@ -77,6 +94,11 @@ export const userSidebarLinks = [
 ];
 
 export const developerSidebarLinks = [
+  {
+    name: "Overview",
+    url: "/dashboard/developer",
+    icon: PanelsTopLeft,
+  },
   {
     name: "Subscriptions",
     url: "/dashboard/developer/subscriptions",

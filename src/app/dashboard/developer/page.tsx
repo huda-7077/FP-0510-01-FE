@@ -1,7 +1,8 @@
+import DeveloperOverviewPage from "@/features/developer/overview";
 import DeveloperAuthGuard from "@/hoc/DeveloperAuthGuard";
 
 const Developer = () => {
-  return <div>DeveloperPage</div>;
+  return <DeveloperOverviewPage />;
 };
 
 export default DeveloperAuthGuard(Developer);

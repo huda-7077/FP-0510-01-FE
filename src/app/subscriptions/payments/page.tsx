@@ -1,9 +1,8 @@
-import PaymentPage from "@/features/subscriptions/payments";
-import React from "react";
+import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 
 const Payment = () => {
   //   return <PaymentPage />;
-  return <p>Loading...</p>;
+  return <LoadingScreen message="Page is under construction" />;
 };
 
 export default Payment;

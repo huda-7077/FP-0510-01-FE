@@ -1,7 +1,7 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import useGetProfile from "@/hooks/api/account/useGetProfile";
-import { Bell, Menu, Plus, Settings } from "lucide-react";
+import { Bell, LayoutPanelLeft, Menu, Plus, Settings } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -49,6 +49,8 @@ const Navbar = () => {
     { href: "/", label: "Home" },
     { href: "/jobs", label: "Find Job" },
     { href: "/companies", label: "Find Employers" },
+    { href: "/skill-assessments", label: "Skill Assessments" },
+    { href: "/subscriptions", label: "Subscriptions" },
     {
       href:
         profile?.role === "ADMIN"
@@ -85,9 +87,18 @@ const Navbar = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
-        <DropdownMenuItem className="cursor-pointer">
-          Profile Settings
-        </DropdownMenuItem>
+        {isDeveloper ? (
+          <DropdownMenuItem className="cursor-pointer">
+            <Link href="/dashboard/developer" className="flex items-center">
+              <LayoutPanelLeft className="mr-2 h-4 w-4" /> Dashboard
+            </Link>
+          </DropdownMenuItem>
+        ) : (
+          <DropdownMenuItem className="cursor-pointer">
+            Profile Settings
+          </DropdownMenuItem>
+        )}
+
         <DropdownMenuItem
           className="cursor-pointer text-red-600"
           onClick={() => signOut({ callbackUrl: "/login" })}
@@ -102,7 +113,6 @@ const Navbar = () => {
     <div className="lg:hidden">
       <AvatarMenu
         session={session}
-        navLinks={navLinks}
         avatarSrc={avatarSrc}
         onSignOut={() => signOut({ callbackUrl: "/login" })}
       />
@@ -166,11 +176,12 @@ const Navbar = () => {
                       Category
                     </Button>
                   </Link> */}
-                  <Link href="/dashboard/developer">
+                  {/* <Link href="/dashboard/developer">
                     <Button variant="ghost" className="hidden md:flex">
-                      <Settings className="mr-2 h-4 w-4" /> Developer Settings
+                      <LayoutPanelLeft className="mr-2 h-4 w-4" /> Developer
+                      Dashboard
                     </Button>
-                  </Link>
+                  </Link> */}
                 </>
               )}
               <div className="hidden lg:block">{renderDesktopUserMenu()}</div>
@@ -183,7 +194,7 @@ const Navbar = () => {
     return (
       <div className="container mx-auto px-4 py-3 md:px-6">
         <nav className="flex items-center justify-between gap-8">
-          <div className="flex items-center gap-8 w-3/4">
+          <div className="flex w-3/4 items-center gap-8">
             <Link href="/" className="flex items-center gap-2">
               <div className="relative h-14 w-28">
                 <Image

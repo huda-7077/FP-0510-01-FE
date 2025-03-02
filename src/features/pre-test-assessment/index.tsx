@@ -1,82 +1,76 @@
 "use client";
-
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
-import useGetUserAssessments from "@/hooks/api/user-assessment/useGetUserAssessments";
-import useUpdateUserAssessment from "@/hooks/api/user-assessment/useUpdateUserAssessment";
+import useGetUserAttempt from "@/hooks/api/assessment-user-attempt/useGetUserAttempt";
+import useGetAssessment from "@/hooks/api/assessment/useGetAssessment";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { FC, useEffect } from "react";
+import AssessmentQuestionsComponent from "./component/AssessmentQuestionsComponent";
+import ConfirmStartAssessment from "./component/ConfirmStartAssessment";
+import useGetJobApplications from "@/hooks/api/job-applications/useGetJobApplications";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import ConfirmStartAssessment from "./components/ConfirmStartAssessment";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
+import useCheckJobApplication from "@/hooks/api/job-applications/useCheckJobApplication";
+import useStartAssessment from "@/hooks/api/assessment-user-attempt/useStartAssessment";
 
-interface PreAssessmentTestProps {
-  assessmentId: number;
+interface PreTestAssessmentStartComponentProps {
+  slug: string;
 }
 
-const PreTestAssessmentComponent: FC<PreAssessmentTestProps> = ({
-  assessmentId,
-}) => {
-  const session = useSession();
-  const userId = session.data?.user.id;
+const PreTestAssessmentStartComponent: FC<
+  PreTestAssessmentStartComponentProps
+> = ({ slug }) => {
   const router = useRouter();
-  const { mutateAsync: updateUserAssessment } = useUpdateUserAssessment();
 
-  const { data: userAssessments, isLoading: isUserAssessmentLoading } =
-    useGetUserAssessments({ assessmentId, userId });
+  const { data: userAttempt } = useGetUserAttempt();
+  const { data: assessments, isLoading: isAssessmentLoading } =
+    useGetAssessment(slug);
 
-  useEffect(() => {
-    if (isUserAssessmentLoading) return;
+  const {
+    mutateAsync: startSkillAssessment,
+    isPending: isStartSkillAssessmentPending,
+  } = useStartAssessment();
 
-    const userAssessment = userAssessments?.data?.[0];
+  const jobId = assessments && assessments?.jobId;
 
-    if (!userAssessment) {
-      toast.error("You do not have access to this assessment");
-      router.push("/");
-      return;
-    }
-
-    if (userAssessment.status === "EXPIRED") {
-      toast.error("Your assessment test has expired");
-      router.push("/");
-    } else if (userAssessment.status !== "PENDING") {
-      toast.error("You cannot redo an assessment");
-      router.push("/");
-    } else if (!userAssessment.assessment) {
-      toast.error("Assessment data not found");
-      router.push("/");
-    }
-  }, [userAssessments, isUserAssessmentLoading, router]);
+  const { data: checkJobApplication, isPending: isCheckJobApplicationPending } =
+    useCheckJobApplication(jobId || 0);
 
   const handleStartAssessment = async () => {
-    try {
-      const userAssessment = userAssessments?.data?.[0];
-      if (!userAssessment) return;
-
-      await updateUserAssessment({ id: userAssessment.id, status: "STARTED" });
-
-      const initialRemainingTime = 7200;
-      localStorage.setItem("remainingTime", initialRemainingTime.toString());
-
-      toast.success("Good Luck!");
-      router.push(`/pre-test-assessment/${assessmentId}/${userAssessment.id}`);
-    } catch (error) {
-      console.error("Error updating user assessment:", error);
-      toast.error("Failed to start assessment");
-      router.push("/");
-    }
+    sessionStorage.removeItem("attemptId");
+    sessionStorage.removeItem("submitted");
+    sessionStorage.removeItem("userAnswers");
+    sessionStorage.removeItem("currentIndex");
+    await startSkillAssessment(slug);
   };
 
-  if (isUserAssessmentLoading) return <LoadingScreen />;
+  useEffect(() => {
+    if (checkJobApplication && !checkJobApplication.isExist) {
+      toast.error("You don't have access to this assessment");
+      router.push("/dashboard/user");
+    }
+  }, [checkJobApplication]);
+
+  if (isAssessmentLoading || isCheckJobApplicationPending)
+    return <LoadingScreen />;
+
+  if (!assessments) return <DataNotFound title="Assessment not found" />;
 
   return (
-    userAssessments &&
-    userAssessments.data.length > 0 && (
-      <ConfirmStartAssessment
-        assessment={userAssessments.data[0].assessment}
-        onStart={handleStartAssessment}
-      />
-    )
+    <>
+      {assessments && (!userAttempt || userAttempt?.status === "ENDED") && (
+        <ConfirmStartAssessment
+          assessment={assessments}
+          userAttemptStatus={userAttempt?.status || ""}
+          onStart={handleStartAssessment}
+          isPending={isStartSkillAssessmentPending}
+        />
+      )}
+      {assessments && userAttempt && userAttempt?.status === "STARTED" && (
+        <AssessmentQuestionsComponent attempt={userAttempt} slug={slug} />
+      )}
+    </>
   );
 };
 
-export default PreTestAssessmentComponent;
+export default PreTestAssessmentStartComponent;

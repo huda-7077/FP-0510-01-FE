@@ -177,7 +177,7 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
               <div className="flex justify-between text-base">
                 <span className="text-gray-600">Duration</span>
                 <span className="font-medium text-gray-900">
-                  {data?.duration} {data?.duration === 1 ? "month" : "months"}
+                  {data?.duration} {data?.duration === 1 ? "Month" : "Months"}
                 </span>
               </div>
               <div className="border-t pt-4">

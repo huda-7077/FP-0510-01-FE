@@ -186,7 +186,7 @@ const CompanyPage = ({ companyId }: CompanyDetailsProps) => {
           </div>
         )}
         {currentTab === "open-jobs" && <OpenJobs companyId={company?.id} />}
-        {currentTab === "reviews" && <CompanyReviews />}
+        {currentTab === "reviews" && <CompanyReviews companyId={company?.id} />}
       </div>
     </div>
   );

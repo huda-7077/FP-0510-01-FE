@@ -52,9 +52,7 @@ export const JobCard = ({ job, notifyDatabaseChange }: JobCardProps) => {
             </Link>
             <JobActionsMenu
               notifyDatabaseChange={notifyDatabaseChange}
-              jobId={job.id}
-              isPublished={job.isPublished}
-              isRequireAssessment={job.requiresAssessment}
+              job={job}
             />
           </div>
         </div>

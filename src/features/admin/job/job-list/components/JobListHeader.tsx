@@ -18,7 +18,13 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { Search, Sliders, X } from "lucide-react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { HelpCircle, Search, Sliders, TriangleAlert, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 interface JobListHeaderProps {

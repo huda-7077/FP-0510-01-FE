@@ -1,28 +1,21 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useFormik } from "formik";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SkillInput } from "./form/SkillInput";
-import { EducationInput } from "./form/EducationInput";
-import { ExperienceInput } from "./form/ExperienceInput";
+import { Textarea } from "@/components/ui/textarea";
 import { CVData } from "@/types/cv";
-import { OrganizationInput } from "./form/OrganizationInput";
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
+import CVPreviewDialog from "./CVPreviewDialog";
 import { CertificationInput } from "./form/CertificationInput";
 import { DetailInput } from "./form/DetailInput";
-import { Textarea } from "@/components/ui/textarea";
-import CVSchema from "./schemas";
+import { EducationInput } from "./form/EducationInput";
+import { ExperienceInput } from "./form/ExperienceInput";
 import { NonFormalEducationInput } from "./form/NonFormalEducationInput";
-import CVPreviewDialog from "./CVPreviewDialog";
+import { OrganizationInput } from "./form/OrganizationInput";
+import { SkillInput } from "./form/SkillInput";
+import CVSchema from "./schemas";
 
 const CVGenerator = () => {
   const [showPDF, setShowPDF] = useState(false);
@@ -57,13 +50,11 @@ const CVGenerator = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div>
       <form onSubmit={formik.handleSubmit}>
-        <div className="mx-auto w-full max-w-4xl bg-white shadow-sm space-y-3">
+        <div className="mx-auto w-full space-y-3 bg-white p-2 shadow-sm">
           <div>
-            <h1 className="text-2xl font-bold text-blue-600">
-              CV Generator
-            </h1>
+            <h1 className="text-2xl font-bold text-gray-900">CV Generator</h1>
           </div>
           <div className="space-y-6">
             <div className="space-y-2">
@@ -242,14 +233,14 @@ const CVGenerator = () => {
                 )}
             </div>
           </div>
-          <CardFooter>
+          <div>
             <Button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-700"
             >
               Generate CV
             </Button>
-          </CardFooter>
+          </div>
         </div>
       </form>
       {showPDF && isClient && (

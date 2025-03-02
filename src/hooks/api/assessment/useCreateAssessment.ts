@@ -1,13 +1,13 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 interface CreateAssessmentPayload {
   jobId: number;
   title: string;
   description: string;
   passingScore: number;
-  status: string;
 }
 
 const useCreateAssessment = () => {
@@ -22,7 +22,7 @@ const useCreateAssessment = () => {
       console.log("Assessment Created Successfullly");
     },
     onError: (error: AxiosError<any>) => {
-      console.log(error.response?.data);
+      toast.error(error.response?.data || error.response?.data.message);
     },
   });
 };

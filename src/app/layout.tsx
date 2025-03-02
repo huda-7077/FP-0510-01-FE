@@ -3,14 +3,15 @@ import NuqsProvider from "@/providers/NuqsProvider";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import StoreProvider from "@/providers/StoreProvider";
 import { ThemeProvider } from "@/providers/ThemeProvider";
+import TokenProvider from "@/providers/TokenProvider";
+import "leaflet/dist/leaflet.css";
 import type { Metadata } from "next";
+import { ViewTransitions } from "next-view-transitions";
 import localFont from "next/font/local";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import { PathTracker } from "./path-tracker";
-import TokenProvider from "@/providers/TokenProvider";
-import "leaflet/dist/leaflet.css";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -34,30 +35,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
+    <ViewTransitions>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
-          <NextAuthProvider>
-            <TokenProvider>
-              <NuqsProvider>
-                <StoreProvider>
-                  <ReactQueryProvider>
-                    <PathTracker>{children}</PathTracker>
-                  </ReactQueryProvider>
-                  <ToastContainer />
-                </StoreProvider>
-              </NuqsProvider>
-            </TokenProvider>
-          </NextAuthProvider>
-        </ThemeProvider>
-      </body>
-    </html>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <NextAuthProvider>
+              <TokenProvider>
+                <NuqsProvider>
+                  <StoreProvider>
+                    <ReactQueryProvider>
+                      <PathTracker>{children}</PathTracker>
+                    </ReactQueryProvider>
+                    <ToastContainer />
+                  </StoreProvider>
+                </NuqsProvider>
+              </TokenProvider>
+            </NextAuthProvider>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ViewTransitions>
   );
 }

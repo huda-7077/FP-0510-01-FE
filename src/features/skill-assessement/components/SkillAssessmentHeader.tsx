@@ -10,14 +10,12 @@ import { Search, X } from "lucide-react";
 import { useRef, useState } from "react";
 
 interface SkillAssessmentsHeaderProps {
-  totalSkillAssessments: number;
   onSortOrderChange: (sortOrder: string) => void;
   onSortChange: (sort: string) => void;
   onSearch: (searchQuery: string) => void;
 }
 
 export const SkillAssessmentHeader = ({
-  totalSkillAssessments,
   onSortOrderChange,
   onSortChange,
   onSearch,
@@ -46,19 +44,6 @@ export const SkillAssessmentHeader = ({
   return (
     <>
       <div className="space-y-4 border-b border-gray-200 pb-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-semibold text-gray-900">
-              Skill Assessments
-            </h1>
-            <Badge
-              variant="secondary"
-              className="rounded-full bg-blue-50 px-2.5 py-0.5 text-sm font-medium text-blue-700"
-            >
-              {totalSkillAssessments}
-            </Badge>
-          </div>
-        </div>
         <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
           <div className="relative w-full sm:max-w-xs">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">

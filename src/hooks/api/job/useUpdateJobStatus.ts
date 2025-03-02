@@ -23,7 +23,6 @@ const useUpdateJobStatus = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      toast.success("update job status success");
     },
 
     onError: (error: AxiosError<any>) => {

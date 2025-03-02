@@ -2,7 +2,7 @@ import useAxios from "@/hooks/useAxios";
 import { Subscription, SubscriptionCategory } from "@/types/subscription";
 import { useQuery } from "@tanstack/react-query";
 
-interface GetSubscriptionResponse extends Subscription {
+export interface GetSubscriptionResponse extends Subscription {
   duration: number;
   category: SubscriptionCategory;
 }

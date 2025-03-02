@@ -22,16 +22,46 @@ interface ConfirmStartSkillAssessmentProps {
   skillAssessment: SkillAssessment;
   onStart: () => void;
   isPending: boolean;
+  createdAt: number | null;
+  isPassed: boolean | null;
 }
 
 const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
   skillAssessment,
   onStart,
   isPending,
+  createdAt,
+  isPassed,
 }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showMoreButton, setShowMoreButton] = useState(false);
   const descriptionRef = useRef<HTMLDivElement>(null);
+  const [isTimeWarning, setIsTimeWarning] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(0);
+
+  useEffect(() => {
+    if (createdAt !== null) {
+      const endTime = createdAt + 3 * 24 * 60 * 60 * 1000;
+
+      const updateTimer = () => {
+        const now = Date.now();
+        const remainingTime = Math.max(0, Math.floor((endTime - now) / 1000));
+        setTimeLeft(remainingTime);
+        if (remainingTime <= 0) {
+          setIsTimeWarning(true);
+        } else {
+          setIsTimeWarning(false);
+        }
+      };
+
+      updateTimer();
+      const timerInterval = setInterval(updateTimer, 1000);
+
+      return () => clearInterval(timerInterval);
+    } else if (createdAt === null) {
+      setIsTimeWarning(true);
+    }
+  }, [createdAt]);
 
   useEffect(() => {
     if (descriptionRef.current) {
@@ -52,6 +82,14 @@ const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
       }
     }
   }, [skillAssessment.description, isExpanded]);
+
+  const formatTime = (seconds: number) => {
+    const hours = Math.floor(seconds / 3600);
+    const minutes = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+  };
 
   const toggleDescription = () => {
     setIsExpanded(!isExpanded);
@@ -130,13 +168,20 @@ const ConfirmStartSkillAssessment: FC<ConfirmStartSkillAssessmentProps> = ({
             </div>
 
             <div className="mt-6 text-center">
+              {isPassed === true && (
+                <h3 className="text-lg font-semibold">
+                  You have already passed this skill assessment
+                </h3>
+              )}
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <Button
-                    disabled={isPending}
-                    className="w-full bg-blue-600 px-8 py-3 text-white transition-colors duration-300 hover:bg-blue-700 md:w-auto"
+                    disabled={isPending || !isTimeWarning}
+                    className={`${isPassed ? "hidden" : ""} w-full ${isTimeWarning ? "bg-blue-600" : "cursor-not-allowed bg-red-600 font-semibold"} px-8 py-3 text-white transition-colors duration-300 hover:bg-blue-700 md:w-auto`}
                   >
-                    Begin Assessment
+                    {isTimeWarning
+                      ? "Begin Assessment"
+                      : `Waiting Time: ${formatTime(timeLeft)}`}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>

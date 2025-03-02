@@ -10,7 +10,7 @@ import {
 import useGetSubscriptionCategories from "@/hooks/api/subscription-categories/useGetSubscriptionCategories";
 import { SubscriptionCategory } from "@/types/subscription";
 import { Check } from "lucide-react";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { CheckoutDialog } from "./CheckoutDialog";
 
 function Feature({ text }: { text: string }) {
@@ -24,7 +24,7 @@ function Feature({ text }: { text: string }) {
   );
 }
 
-const SubscriptionCard = () => {
+const SubscriptionCard: FC<{ isActive: boolean }> = ({ isActive }) => {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionCategory | null>(
     null,
@@ -88,6 +88,7 @@ const SubscriptionCard = () => {
                     ? "bg-blue-600 text-white hover:bg-blue-700"
                     : "border-2 border-blue-600 bg-white text-blue-600 hover:bg-blue-50"
                 }`}
+                disabled={isActive}
                 onClick={() => handlePlanSelection(category)}
               >
                 Choose Plan

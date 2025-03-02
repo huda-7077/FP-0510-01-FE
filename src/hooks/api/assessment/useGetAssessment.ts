@@ -1,17 +1,15 @@
-import { axiosInstance } from "@/lib/axios";
-import { AssessmentData } from "@/types/assessment";
+import useAxios from "@/hooks/useAxios";
+import { Assessment } from "@/types/assessment";
 import { useQuery } from "@tanstack/react-query";
 
-interface GetAssessmentQuery {
-  id: number;
-}
+const useGetAssessment = (slug: string) => {
+  const { axiosInstance } = useAxios();
 
-const useGetAssessment = (query: GetAssessmentQuery) => {
   return useQuery({
-    queryKey: ["assessments", query],
+    queryKey: ["assessments", slug],
     queryFn: async () => {
-      const { data } = await axiosInstance.get<AssessmentData>(
-        `/assessments/${query.id}`,
+      const { data } = await axiosInstance.get<Assessment>(
+        `/assessments/${slug}`,
       );
 
       return data;

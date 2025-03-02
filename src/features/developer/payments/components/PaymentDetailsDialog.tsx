@@ -20,12 +20,14 @@ interface PaymentDetailsDialogProps {
   isOpen: boolean;
   onClose: () => void;
   payment: PaymentData;
+  refetch?: () => void;
 }
 
 export function PaymentDetailsDialog({
   isOpen,
   onClose,
   payment,
+  refetch,
 }: PaymentDetailsDialogProps) {
   const { mutateAsync: createSubscription, isPending } =
     useCreateSubscription();
@@ -50,6 +52,7 @@ export function PaymentDetailsDialog({
   const openAlertDialog = (action: "ACCEPTED" | "REJECTED") => {
     setCurrentAction(action);
     setAlertDialogOpen(true);
+    refetch?.();
   };
 
   const closeAlertDialog = () => {
@@ -104,22 +107,11 @@ export function PaymentDetailsDialog({
                 <CardContent className="space-y-4 p-4">
                   <div className="flex items-center justify-between">
                     <span className="text-sm text-gray-500 dark:text-gray-400">
-                      Start Date
+                      Created At
                     </span>
                     <span className="font-medium text-gray-900 dark:text-gray-100">
                       {format(
                         new Date(payment.createdAt),
-                        "MMM dd, yyyy hh:mm aa",
-                      )}
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      Expiry Date
-                    </span>
-                    <span className="font-medium text-gray-900 dark:text-gray-100">
-                      {format(
-                        new Date(payment.expiredAt),
                         "MMM dd, yyyy hh:mm aa",
                       )}
                     </span>

@@ -1,7 +1,6 @@
 "use client";
 
 import { Card } from "@/components/ui/card";
-import useGetAssessments from "@/hooks/api/assessment/useGetAssessments";
 import useCalculateAge from "@/hooks/useCalculateAge";
 import useFormatRupiah from "@/hooks/useFormatRupiah";
 import useLongDateFormatter from "@/hooks/useLongDateFormatter";
@@ -13,6 +12,23 @@ import ApplicationCardDropdown from "./ApplicationCardDropdown";
 import ManageApplicationButton from "./ApplicationShortlistButton";
 import ApplicationStatusBadge from "./ApplicationStatusBadge";
 import AssessmentBadge from "./AssessmentBadge";
+import { Button } from "@/components/ui/button";
+import useRegisterEmployee from "@/hooks/api/employee/useRegisterEmployee";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "react-toastify";
+import useFormatTitleCase from "@/hooks/useFormatTitleCase";
+import RegisterEmployeeButton from "./RegisterEmployeeButton";
 
 interface ApplicationCardProps {
   application: JobApplication;
@@ -22,34 +38,33 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
   const [userAssessment, setUserAssessment] = useState<{
     userId: number;
     score: number;
-    status: string;
   }>();
   const [assessmentStatus, setAssessmentStatus] = useState("");
   const { formatLongDate } = useLongDateFormatter();
   const { calculateAge } = useCalculateAge();
 
-  const { data: assessments } = useGetAssessments({
-    jobId: application.jobId,
-  });
-
   useEffect(() => {
     if (
       application.job.requiresAssessment &&
-      assessments &&
-      assessments.data &&
-      assessments.data.length > 0 &&
-      Array.isArray(assessments.data[0].userAssessments)
+      application.job.preTestAssessments &&
+      application.job.preTestAssessments.length > 0 &&
+      Array.isArray(
+        application.job.preTestAssessments[0].userPreTestAssessments,
+      )
     ) {
       setUserAssessment(
-        assessments.data[0].userAssessments.find(
-          (userAssessment) => userAssessment.userId === application.userId,
+        application.job.preTestAssessments[0].userPreTestAssessments.find(
+          (assessment) => assessment.userId === application.userId,
         ),
       );
 
       if (!userAssessment) {
         setAssessmentStatus("");
       } else {
-        if (userAssessment.score >= assessments.data[0].passingScore) {
+        if (
+          userAssessment.score >=
+          application.job.preTestAssessments[0].passingScore
+        ) {
           setAssessmentStatus("Passed");
         } else {
           setAssessmentStatus("Failed");
@@ -123,18 +138,22 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
         <div className="flex flex-row items-center gap-2 sm:gap-4">
           {application.status === "ACCEPTED" ||
           application.status === "REJECTED" ? (
-            <p className="text-sm italic text-gray-500">
-              {application.status === "ACCEPTED"
-                ? "Applicant Accepted"
-                : "Applicant Rejected"}
-            </p>
+            <>
+              {application.status === "ACCEPTED" ? (
+                <RegisterEmployeeButton application={application} />
+              ) : (
+                <p className="text-sm font-semibold italic text-red-500">
+                  Applicant Rejected
+                </p>
+              )}
+            </>
           ) : (
             <ManageApplicationButton
               isRequireAssessment={application.job.requiresAssessment}
               applicantName={application.user.fullName}
               jobApplicationId={application.id}
               status={application.status}
-              userAssessmentStatus={userAssessment?.status || ""}
+              assessmentStatus={assessmentStatus}
             />
           )}
           <ApplicationCardDropdown
