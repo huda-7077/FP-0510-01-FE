@@ -2,11 +2,11 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import JobPage from "@/features/job";
 
-const Job = ({ params }: { params: { id: string } }) => {
+const Job = ({ params }: { params: { slug: string } }) => {
   return (
     <>
       <Navbar />
-      <JobPage jobId={parseInt(params.id)} />
+      <JobPage slug={params.slug} />
       <Footer />
     </>
   );

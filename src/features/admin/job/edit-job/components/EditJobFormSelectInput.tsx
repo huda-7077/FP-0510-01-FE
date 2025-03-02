@@ -16,7 +16,7 @@ interface EditJobFormSelectInputProps {
   name: string;
   label: string;
   placeholder?: string;
-  formik: any; // Replace `any` with a proper Formik type if available
+  formik: any;
   className?: string;
   isDisabled: boolean;
   companyLocations: CompanyLocation[];
@@ -43,7 +43,7 @@ const EditJobFormSelectInput: React.FC<EditJobFormSelectInputProps> = ({
       </Label>
       <Select
         disabled={isDisabled}
-        value={formik.values[name].toString() || ""}
+        value={formik.values[name].toString()}
         onValueChange={(value: string) => formik.setFieldValue(name, value)}
       >
         <SelectTrigger className="border-gray-200 focus:border-blue-500 focus:ring-blue-200">
@@ -64,7 +64,7 @@ const EditJobFormSelectInput: React.FC<EditJobFormSelectInputProps> = ({
             ) : (
               companyLocations.map((location) => (
                 <SelectItem key={location.id} value={String(location.id)}>
-                  {location.address}, {location.regency.regency}
+                  {location.address}
                 </SelectItem>
               ))
             )}

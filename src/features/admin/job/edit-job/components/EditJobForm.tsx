@@ -17,6 +17,7 @@ import {
   DollarSign,
   Tag,
   Trash2,
+  TriangleAlert,
   Upload,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -31,6 +32,13 @@ import EditJobFormHeader from "./EditJobFormHeader";
 import EditJobFormInput from "./EditJobFormInput";
 import EditJobFormSelectInput from "./EditJobFormSelectInput";
 import TagsInput from "./EditJobFormTagInput";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { JobCategory } from "../../consts";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -42,14 +50,13 @@ interface EditJobFormProps {
 
 const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
   const router = useRouter();
-  const { data: session, status } = useSession();
-  const user = session?.user;
-  const companyId = user?.companyId || 0;
 
   const [selectedImage, setSelectedImage] = useState("");
   const [isPublished, setIsPublished] = useState(false);
+  const [generateSlug, setGenerateSlug] = useState(false);
   const [requiresAssessment, setRequiresAssessment] = useState(false);
   const bannerImageReff = useRef<HTMLInputElement | null>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const { formatTitleCase } = useFormatTitleCase();
 
@@ -65,7 +72,6 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
 
   const formik = useFormik({
     initialValues: {
-      companyId: 0,
       title: "",
       description: "",
       bannerImage: null,
@@ -81,7 +87,6 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
     onSubmit: async (values) => {
       try {
         const payload: UpdateJobPayload = {
-          companyId,
           title: values.title,
           description: values.description,
           bannerImage: values.bannerImage,
@@ -92,6 +97,7 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
           isPublished,
           requiresAssessment,
           companyLocationId: Number(values.companyLocationId),
+          generateSlug,
         };
         const updatedJob = await updateJob(payload);
         router.push(`/dashboard/admin/jobs/${updatedJob.id}`);
@@ -116,13 +122,16 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
           : ""
         : "";
 
+      const validCategory = JobCategory.includes(job.category)
+        ? job.category
+        : "";
+
       formik.resetForm({
         values: {
-          companyId: job.companyId,
           title: job.title || "",
           description: job.description || "",
           bannerImage: null,
-          category: job.category || "",
+          category: validCategory,
           salary: job.salary || 0,
           tags: job.tags || [],
           applicationDeadline,
@@ -140,7 +149,7 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
         bannerImageReff.current.value = "";
       }
     }
-  }, [job, isJobPending, id]);
+  }, [job, isJobPending, companyLocations, isCompanyLocationsLoading, id]);
 
   const onChangeThumbnail = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -158,7 +167,7 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
     }
   };
 
-  if (status === "loading" || isJobPending || isCompanyLocationsLoading) {
+  if (isJobPending && isCompanyLocationsLoading) {
     return <LoadingScreen />;
   }
 
@@ -217,16 +226,62 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
               </p>
             )}
           </div>
+          <div className="grid gap-4">
+            <EditJobFormInput
+              name="title"
+              label="Job Title"
+              placeholder="Ex. Junior Software Engineer"
+              formik={formik}
+              icon={<Tag size={18} />}
+              isNotEmpty={true}
+              isDisabled={isUpdateJobPending}
+            />
+            <TooltipProvider>
+              <div className="flex items-center justify-end space-x-2">
+                <Tooltip open={showTooltip} onOpenChange={setShowTooltip}>
+                  <TooltipTrigger asChild>
+                    <div>
+                      <Switch
+                        id="is-generate-slug"
+                        onCheckedChange={(value) => {
+                          setGenerateSlug(value);
+                          setShowTooltip(true);
+                        }}
+                        disabled={isUpdateJobPending}
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="flex items-center border border-yellow-300 bg-yellow-100 text-yellow-800">
+                    <TriangleAlert className="mr-2 h-4 w-4" />
+                    <p className="w-[205px] text-balance">
+                      Caution! Changing the slug will break existing links.
+                      Ensure you understand the consequences before proceeding.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+                <Label htmlFor="is-generate-slug">Generate Slug</Label>
+              </div>
+            </TooltipProvider>
+          </div>
 
-          <EditJobFormInput
-            name="title"
-            label="Job Title"
-            placeholder="Ex. Junior Software Engineer"
-            formik={formik}
-            icon={<Tag size={18} />}
-            isNotEmpty={true}
-            isDisabled={isUpdateJobPending}
-          />
+          <div className={`space-y-2`}>
+            <Label
+              htmlFor="slug"
+              className="flex items-center gap-2 text-base font-semibold text-gray-700"
+            >
+              <Tag className="h-4 w-4" />
+              Slug
+            </Label>
+            <div className="relative">
+              <Input
+                id="slug"
+                type="text"
+                disabled={true}
+                value={job.slug}
+                className={`w-full rounded-md border bg-white px-4 py-3 text-gray-800 transition-all duration-300 hover:bg-gray-50 focus:border-blue-500 focus:bg-white focus:ring-blue-200`}
+              />
+            </div>
+          </div>
 
           <div className="space-y-2">
             <Label
@@ -314,7 +369,8 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
                   onCheckedChange={setIsPublished}
                   disabled={
                     (requiresAssessment &&
-                      job.preTestAssessments[0]?.status === "DRAFT") ||
+                      job.preTestAssessments[0] &&
+                      job.preTestAssessments[0].status === "DRAFT") ||
                     (requiresAssessment &&
                       job.preTestAssessments.length <= 0) ||
                     isUpdateJobPending
@@ -324,7 +380,8 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
                   htmlFor="is-publish"
                   className={`${
                     requiresAssessment &&
-                    job.preTestAssessments[0]?.status === "DRAFT" &&
+                    job.preTestAssessments[0] &&
+                    job.preTestAssessments[0].status === "DRAFT" &&
                     "text-gray-400"
                   }`}
                 >

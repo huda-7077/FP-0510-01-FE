@@ -41,7 +41,7 @@ const CategorySelectInput: React.FC<FormikSelectProps> = ({
       </Label>
       <Select
         disabled={isDisabled}
-        value={formik.values[name]?.toString() || ""}
+        value={formik.values[name]}
         onValueChange={(value: string) => {
           formik.setFieldValue(name, value);
         }}

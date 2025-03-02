@@ -9,7 +9,7 @@ import JobOverview from "./components/JobOverview";
 import RelatedJobs from "./components/RelatedJobs";
 
 interface JobDetailsProps {
-  jobId: number;
+  slug: string;
 }
 
 const ErrorState = () => (
@@ -83,8 +83,8 @@ const NoDataState = () => (
   </div>
 );
 
-const JobPage = ({ jobId }: JobDetailsProps) => {
-  const { data: job, isLoading, error } = useGetJob({ jobId });
+const JobPage = ({ slug }: JobDetailsProps) => {
+  const { data: job, isLoading, error } = useGetJob({ slug });
 
   if (isLoading) {
     return <LoadingScreen />;
@@ -101,7 +101,7 @@ const JobPage = ({ jobId }: JobDetailsProps) => {
   return (
     <div>
       <div className="bg-[#f7f7f8]">
-        <div className="container mx-auto flex flex-col justify-between px-6 py-5 md:flex-row md:items-center items-start">
+        <div className="container mx-auto flex flex-col items-start justify-between px-6 py-5 md:flex-row md:items-center">
           <h1 className="text-lg font-medium duration-150 hover:pl-3 hover:text-blue-600">
             Job Details
           </h1>

@@ -4,7 +4,6 @@ import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
 export interface UpdateJobPayload {
-  companyId: number;
   title: string;
   description: string;
   bannerImage?: File | null;
@@ -15,6 +14,7 @@ export interface UpdateJobPayload {
   isPublished: boolean;
   requiresAssessment: boolean;
   companyLocationId: number;
+  generateSlug: boolean;
 }
 
 const useUpdateJob = (id: number) => {
@@ -25,9 +25,9 @@ const useUpdateJob = (id: number) => {
     mutationFn: async (payload: UpdateJobPayload) => {
       const formData = new FormData();
 
-      formData.append("companyId", `${payload.companyId}`);
       formData.append("title", payload.title);
       formData.append("description", payload.description);
+      formData.append("generateSlug", `${payload.generateSlug}`);
       if (payload.bannerImage) {
         formData.append("bannerImage", payload.bannerImage);
       }
@@ -55,6 +55,8 @@ const useUpdateJob = (id: number) => {
         error.response?.data?.message ||
         error.response?.data ||
         "An error occurred";
+      console.log(errorMessage);
+
       toast.error(errorMessage);
     },
   });

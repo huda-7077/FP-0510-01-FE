@@ -171,7 +171,7 @@ export default function DiscoverySection() {
                 asChild
                 className="rounded-sm bg-blue-50 px-6 text-blue-600 shadow-none hover:bg-blue-600 hover:text-blue-50"
               >
-                <Link href={`/jobs/${job.id}`}>Apply Now</Link>
+                <Link href={`/jobs/${job.slug}`}>Apply Now</Link>
               </Button>
             </div>
           </div>
