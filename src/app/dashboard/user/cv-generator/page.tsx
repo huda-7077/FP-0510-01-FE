@@ -1,5 +1,6 @@
 import { UserDashboardLayout } from "@/components/layouts/UserDashboardLayout";
 import CVGeneratorPage from "@/features/cv-generator";
+import UserAuthGuard from "@/hoc/UserAuthGuard";
 
 const CvGenerator = () => {
   return (
@@ -9,4 +10,4 @@ const CvGenerator = () => {
   );
 };
 
-export default CvGenerator;
+export default UserAuthGuard(CvGenerator);

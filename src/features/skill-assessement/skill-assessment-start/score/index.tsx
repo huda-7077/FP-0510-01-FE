@@ -52,6 +52,25 @@ export default function SkillAssessmentScorePage({
       : numericScore.toFixed(1);
   };
 
+  const renderMessage = () => {
+    if (Number(userScore?.score) >= passingScore) {
+      return (
+        <div className="mt-4 text-lg text-green-600">
+          🎉 Congratulations! You have passed the assessment.
+          <br />
+          Your certificate can be viewed on your <strong>Profile Badge</strong>.
+        </div>
+      );
+    }
+    return (
+      <div className="mt-4 text-lg text-red-600">
+        Keep trying! You didn't pass this time.
+        <br />
+        Practice more and try again later!
+      </div>
+    );
+  };
+
   if (isLoading) {
     return <LoadingScreen message="Calculating your score..." />;
   }
@@ -76,6 +95,7 @@ export default function SkillAssessmentScorePage({
                     Passing score: {passingScore}
                   </div>
                 </div>
+                {renderMessage()}
                 <Button
                   onClick={handleGoBack}
                   className="mt-8 w-full bg-blue-600 py-6 text-lg hover:bg-blue-700"
