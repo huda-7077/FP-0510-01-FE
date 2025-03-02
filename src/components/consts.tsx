@@ -56,7 +56,7 @@ export const userSidebarLinks = [
   },
   {
     name: "Favorite Jobs",
-    url: "/dashboard/user/apply-jobs",
+    url: "/dashboard/user/saved-jobs",
     icon: Bookmark,
   },
   {

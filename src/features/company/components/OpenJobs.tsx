@@ -1,7 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
-import { Bookmark, MapPin, SearchIcon } from "lucide-react";
+import { Bookmark, BookmarkCheck, MapPin, SearchIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { parseAsInteger, useQueryState } from "nuqs";
@@ -9,15 +9,67 @@ import { useDebounceValue } from "usehooks-ts";
 import PaginationSection from "@/components/PaginationSection";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import { useState } from "react";
+import { useSession } from "next-auth/react";
+import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
+import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
+import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
+import { toast } from "react-toastify";
 
 interface OpenJobsProps {
   companyId?: number;
 }
 
 const OpenJobs = ({ companyId }: OpenJobsProps) => {
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" && !!session;
   const [search, setSearch] = useState("");
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [debouncedSearch] = useDebounceValue(search, 500);
+
+  const { data: savedJobsData } = useGetSavedJobs(
+    {
+      page: 1,
+      take: 100,
+    },
+    {
+      enabled: isAuthenticated,
+      staleTime: 5 * 60 * 1000,
+    },
+  );
+
+  const createSavedJobMutation = useCreateSavedJob();
+  const deleteSavedJobMutation = useDeleteSavedJob();
+
+  const isJobBookmarked = (jobId: number) => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return false;
+    return savedJobsData.data.some((savedJob) => savedJob.job.id === jobId);
+  };
+
+  const getSavedJobId = (jobId: number) => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return null;
+    const savedJob = savedJobsData.data.find(
+      (savedJob) => savedJob.job.id === jobId,
+    );
+    return savedJob ? savedJob.id : null;
+  };
+
+  const handleBookmarkToggle = (jobId: number) => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to bookmark jobs");
+      return;
+    }
+
+    const bookmarked = isJobBookmarked(jobId);
+
+    if (bookmarked) {
+      const savedJobId = getSavedJobId(jobId);
+      if (savedJobId) {
+        deleteSavedJobMutation.mutate(jobId);
+      }
+    } else {
+      createSavedJobMutation.mutate({ jobId });
+    }
+  };
 
   if (!companyId) {
     return (
@@ -59,17 +111,17 @@ const OpenJobs = ({ companyId }: OpenJobsProps) => {
     <div>
       <div className="container mx-auto mt-6 space-y-7 p-6">
         <h1 className="text-2xl md:text-3xl">Open Jobs</h1>
-        <div className="mb-4 relative">
+        <div className="relative mb-4">
           <input
             type="search"
             placeholder="Search jobs..."
             value={search}
             onChange={handleSearchChange}
-            className="md:w-1/2 w-full peer ps-9 pe-9 rounded-md border-[1px] border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:shadow-md"
+            className="peer w-full rounded-md border-[1px] border-gray-300 px-4 py-2 pe-9 ps-9 text-sm focus:border-blue-500 focus:shadow-md focus:outline-none md:w-1/2"
           />
-          <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
-          <SearchIcon size={16} />
-        </div>
+          <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+            <SearchIcon size={16} />
+          </div>
         </div>
         {isPending ? (
           <div className="grid gap-4 md:grid-cols-3">
@@ -132,7 +184,19 @@ const OpenJobs = ({ companyId }: OpenJobsProps) => {
                           </p>
                         </div>
                       </div>
-                      <Bookmark className="h-6 text-gray-400" />
+                      <div
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleBookmarkToggle(job.id);
+                        }}
+                      >
+                        {isJobBookmarked(job.id) ? (
+                          <BookmarkCheck className="h-6 cursor-pointer text-blue-600" />
+                        ) : (
+                          <Bookmark className="h-6 cursor-pointer text-gray-400 hover:text-blue-600" />
+                        )}
+                      </div>
                     </div>
                   </div>
                 </Link>

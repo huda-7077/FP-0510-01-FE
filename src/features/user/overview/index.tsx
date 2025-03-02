@@ -8,9 +8,9 @@ import OverviewButtons from "./components/OverviewButtons";
 import ProfileAlert from "./components/ProfileAlert";
 import RecentJobs from "./components/RecentJobs";
 import useGetProfile from "@/hooks/api/account/useGetProfile";
+import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
 
 const OverviewPage = () => {
-  // Fetch user profile data
   const {
     data: profileData,
     isLoading: isLoadingProfile,
@@ -28,7 +28,6 @@ const OverviewPage = () => {
 
   const userName = profileData?.fullName || "User";
 
-  // Get application stats from the response
   const applicationStats = {
     total: applicationsData?.meta?.total || 0,
     applications: applicationsData?.data || [],
@@ -36,9 +35,17 @@ const OverviewPage = () => {
     error: applicationsError,
   };
 
-  // Get favorites count (using savedJobs from profile)
-  //   const favoritesCount = profileData?.savedJobs?.length || 0;
-  const favoritesCount = 5;
+  const { data } = useGetSavedJobs(
+    {
+      page: 1,
+      take: 5,
+    },
+    {
+      enabled: !isLoadingProfile,
+      staleTime: 5 * 60 * 1000,
+    },
+  );
+  const favoritesCount = data?.meta?.total || 0;
 
   const isLoading = isLoadingProfile || isLoadingApplications;
 

@@ -28,7 +28,7 @@ const OverviewButtons = ({
         </div>
       </Link>
 
-      <Link href="/dashboard/user/favorite-jobs">
+      <Link href="/dashboard/user/saved-jobs">
         <div className="flex items-center justify-between gap-9 rounded-md bg-yellow-100 p-4 duration-150 hover:shadow-lg">
           <div>
             <h2 className="text-xl font-semibold">

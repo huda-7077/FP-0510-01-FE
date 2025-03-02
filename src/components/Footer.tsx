@@ -55,7 +55,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/companies" className="hover:text-white">
                     Browse Employers
                   </Link>
                 </li>
@@ -65,7 +65,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/dashboard/user/saved-jobs" className="hover:text-white">
                     Saved Jobs
                   </Link>
                 </li>
@@ -78,11 +78,6 @@ export default function Footer() {
                 <li>
                   <Link href="#" className="hover:text-white">
                     Post a Job
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-white">
-                    Browse Candidates
                   </Link>
                 </li>
                 <li>

@@ -1,7 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
-import { Bookmark, MapPin } from "lucide-react";
+import { Bookmark, BookmarkCheck, MapPin } from "lucide-react";
 import Image from "next/image";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
@@ -12,8 +12,15 @@ import { JobCardSkeleton } from "./components/JobCardSkeleton";
 import HomeBreadcrumb from "@/components/HomeBreadcrumb";
 import { useState } from "react";
 import { LocationPermission } from "@/components/LocationPermission";
+import { useSession } from "next-auth/react";
+import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
+import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
+import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
+import { toast } from "react-toastify";
 
 const JobsPage = () => {
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" && !!session;
   const [search] = useQueryState("search", { defaultValue: "" });
   const [category] = useQueryState("category", { defaultValue: "" });
   const [location] = useQueryState("location", { defaultValue: "" });
@@ -48,6 +55,51 @@ const JobsPage = () => {
     userLongitude: userLng ? parseFloat(userLng) : undefined,
   });
 
+  const { data: savedJobsData } = useGetSavedJobs(
+    {
+      page: 1,
+      take: 100,
+    },
+    {
+      enabled: isAuthenticated,
+      staleTime: 5 * 60 * 1000,
+    },
+  );
+
+  const createSavedJobMutation = useCreateSavedJob();
+  const deleteSavedJobMutation = useDeleteSavedJob();
+
+  const isJobBookmarked = (jobId: number) => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return false;
+    return savedJobsData.data.some((savedJob) => savedJob.job.id === jobId);
+  };
+
+  const getSavedJobId = (jobId: number) => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return null;
+    const savedJob = savedJobsData.data.find(
+      (savedJob) => savedJob.job.id === jobId,
+    );
+    return savedJob ? savedJob.id : null;
+  };
+
+  const handleBookmarkToggle = (jobId: number) => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to bookmark jobs");
+      return;
+    }
+
+    const bookmarked = isJobBookmarked(jobId);
+
+    if (bookmarked) {
+      const savedJobId = getSavedJobId(jobId);
+      if (savedJobId) {
+        deleteSavedJobMutation.mutate(jobId);
+      }
+    } else {
+      createSavedJobMutation.mutate({ jobId });
+    }
+  };
+
   const onChangePage = (newPage: number) => {
     setPage(newPage);
   };
@@ -59,7 +111,7 @@ const JobsPage = () => {
           <h1 className="text-lg font-medium duration-150 hover:pl-3 hover:text-blue-600">
             Find Job
           </h1>
-          <HomeBreadcrumb lastCrumb="Find Jobs" />
+          <HomeBreadcrumb lastCrumb="Find Job" />
         </div>
       </div>
       <div className="container relative mx-auto flex flex-col bg-background p-4 md:flex-row md:gap-7">
@@ -146,7 +198,19 @@ const JobsPage = () => {
                               </p>
                             </div>
                           </div>
-                          <Bookmark className="h-6 text-gray-400" />
+                          <div
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              handleBookmarkToggle(job.id);
+                            }}
+                          >
+                            {isJobBookmarked(job.id) ? (
+                              <BookmarkCheck className="h-6 cursor-pointer text-blue-600" />
+                            ) : (
+                              <Bookmark className="h-6 cursor-pointer text-gray-400 hover:text-blue-600" />
+                            )}
+                          </div>
                         </div>
                       </div>
                     </Link>

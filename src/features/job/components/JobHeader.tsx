@@ -1,8 +1,11 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
+import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
+import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
 import { useAuth } from "@/hooks/useAuth";
-import { ArrowRight, Bookmark } from "lucide-react";
+import { ArrowRight, Bookmark, BookmarkCheck } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -24,6 +27,54 @@ interface Job {
 const JobHeader: FC<{ job: Job }> = ({ job }) => {
   const router = useRouter();
   const { user, isAuthenticated } = useAuth();
+
+  const { data: savedJobsData } = useGetSavedJobs(
+    {
+      page: 1,
+      take: 100,
+    },
+    {
+      enabled: isAuthenticated,
+      staleTime: 5 * 60 * 1000,
+    },
+  );
+
+  const createSavedJobMutation = useCreateSavedJob();
+  const deleteSavedJobMutation = useDeleteSavedJob();
+
+  const isJobBookmarked = () => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return false;
+    return savedJobsData.data.some((savedJob) => savedJob.job.id === job.id);
+  };
+
+  const getSavedJobId = () => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return null;
+    const savedJob = savedJobsData.data.find(
+      (savedJob) => savedJob.job.id === job.id,
+    );
+    return savedJob ? savedJob.id : null;
+  };
+
+  const handleBookmarkToggle = () => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to bookmark jobs");
+      router.push(`/login?redirect=/jobs/${job.id}`);
+      return;
+    }
+
+    const bookmarked = isJobBookmarked();
+
+    if (bookmarked) {
+      const savedJobId = getSavedJobId();
+      if (savedJobId) {
+        deleteSavedJobMutation.mutate(job.id);
+      } else {
+        console.error("Saved job ID not found");
+      }
+    } else {
+      createSavedJobMutation.mutate({ jobId: job.id });
+    }
+  };
 
   const handleApply = () => {
     if (!isAuthenticated) {
@@ -85,8 +136,19 @@ const JobHeader: FC<{ job: Job }> = ({ job }) => {
           </div>
         </div>
         <div className="flex items-center gap-4">
-          <Button className="h-12 w-12 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-blue-100 md:h-16 md:w-16">
-            <Bookmark style={{ width: "27px", height: "27px" }} />
+          <Button
+            onClick={handleBookmarkToggle}
+            className={`h-12 w-12 ${
+              isJobBookmarked()
+                ? "bg-blue-600 text-blue-50"
+                : "bg-blue-50 text-blue-600"
+            } hover:bg-blue-600 hover:text-blue-100 md:h-16 md:w-16`}
+          >
+            {isJobBookmarked() ? (
+              <BookmarkCheck style={{ width: "27px", height: "27px" }} />
+            ) : (
+              <Bookmark style={{ width: "27px", height: "27px" }} />
+            )}
           </Button>
           <Button
             onClick={handleApply}
