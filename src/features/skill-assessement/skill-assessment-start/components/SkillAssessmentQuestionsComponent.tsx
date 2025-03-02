@@ -1,4 +1,5 @@
 "use client";
+import { AlertDialogComponent } from "@/components/AlertDialogComponent";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,7 +10,7 @@ import useSaveUserAnswer from "@/hooks/api/skill-assessment-user-attempt/useSave
 import useSubmitUserAnswers from "@/hooks/api/skill-assessment-user-attempt/useSubmitUserAnswers";
 import { SkillAssessmentUserAttempt } from "@/types/skillAssessments";
 import { CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { useEffect, useRef, useState } from "react";
 import SkillAssessmentQuestionHeader from "./SkillAssessmentQuestionHeader";
 
@@ -31,8 +32,9 @@ export default function SkillAssessmentQuestionsComponent({
     useGetSkillAssessmentQuestions(slug);
   const { mutateAsync: saveUserAnswer } = useSaveUserAnswer();
   const { mutateAsync: autoSubmitUserAnswers } = useAutoSubmitUserAnswers();
-  const { mutateAsync: submitUserAnswers } = useSubmitUserAnswers();
-
+  const { mutateAsync: submitUserAnswers, isPending: isSubmitting } =
+    useSubmitUserAnswers();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<UserAnswer[]>([]);
   const [timeLeft, setTimeLeft] = useState(0);
@@ -45,7 +47,7 @@ export default function SkillAssessmentQuestionsComponent({
     sessionStorage.setItem("attemptId", String(attempt.id));
   }, [submitted]);
 
-  const router = useRouter();
+  const router = useTransitionRouter();
   const hasAutoSubmitted = useRef(false);
 
   const clearAndFinalizeAssessment = () => {
@@ -221,10 +223,10 @@ export default function SkillAssessmentQuestionsComponent({
                     </Button>
                   ) : (
                     <Button
-                      onClick={handleSubmit}
+                      onClick={() => setIsDialogOpen(true)}
                       className="gap-2 bg-green-600 hover:bg-green-700"
                     >
-                      Submit <CheckCircle className="h-4 w-4" />
+                      Finish <CheckCircle className="h-4 w-4" />
                     </Button>
                   )}
                 </div>
@@ -233,6 +235,20 @@ export default function SkillAssessmentQuestionsComponent({
           )}
         </Card>
       </div>
+      <AlertDialogComponent
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={() => {
+          handleSubmit();
+          setIsDialogOpen(false);
+        }}
+        title="Submit Your Skill Assessment"
+        description="You are about to submit your skill assessment. Once submitted, you will not be able to make any further changes. Please review your answers carefully before proceeding."
+        confirmText="Yes, Submit Assessment"
+        cancelText="No, Go Back"
+        buttonClassName="bg-green-600 hover:bg-green-700"
+        isPending={isSubmitting}
+      />
     </div>
   );
 }

@@ -7,6 +7,7 @@ import { useDebounce } from "use-debounce";
 import { SkillAssessmentCard } from "./components/SkillAssessmentCard";
 import SkillAssessmentCardSkeleton from "./components/SkillAssessmentCardSkeleton";
 import { SkillAssessmentHeader } from "./components/SkillAssessmentHeader";
+import HomeBreadcrumb from "@/components/HomeBreadcrumb";
 
 export const SkillAssessmentListPage = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -46,10 +47,17 @@ export const SkillAssessmentListPage = () => {
   return (
     <>
       <div className="my-1 md:my-2">
-        <div className="container mx-auto w-full">
+        <div className="bg-[#f7f7f8]">
+          <div className="container mx-auto flex items-center justify-between px-6 py-5">
+            <h1 className="text-lg font-medium duration-150 hover:pl-3 hover:text-blue-600">
+              Skill Assessments
+            </h1>
+            <HomeBreadcrumb lastCrumb="Skill Assessments" />
+          </div>
+        </div>
+        <div className="container mx-auto mt-4 w-full">
           <div className="mx-3">
             <SkillAssessmentHeader
-              totalSkillAssessments={skillAssessments?.data.length || 0}
               onSortOrderChange={handleSortOrderChange}
               onSortChange={handleSortChange}
               onSearch={handleSearch}

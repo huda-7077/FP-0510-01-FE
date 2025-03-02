@@ -10,6 +10,7 @@ import {
   FileStack,
   Layers,
   Luggage,
+  PanelsTopLeft,
   PencilLine,
   Settings,
   UserPlus,
@@ -81,6 +82,11 @@ export const userSidebarLinks = [
     icon: PencilLine,
   },
   {
+    name: "Subscriptions",
+    url: "/dashboard/user/subscriptions",
+    icon: CreditCard,
+  },
+  {
     name: "Settings",
     url: "/dashboard/user/settings",
     icon: Settings,
@@ -88,6 +94,11 @@ export const userSidebarLinks = [
 ];
 
 export const developerSidebarLinks = [
+  {
+    name: "Overview",
+    url: "/dashboard/developer",
+    icon: PanelsTopLeft,
+  },
   {
     name: "Subscriptions",
     url: "/dashboard/developer/subscriptions",

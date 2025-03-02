@@ -20,12 +20,14 @@ interface PaymentDetailsDialogProps {
   isOpen: boolean;
   onClose: () => void;
   payment: PaymentData;
+  refetch?: () => void;
 }
 
 export function PaymentDetailsDialog({
   isOpen,
   onClose,
   payment,
+  refetch,
 }: PaymentDetailsDialogProps) {
   const { mutateAsync: createSubscription, isPending } =
     useCreateSubscription();
@@ -50,6 +52,7 @@ export function PaymentDetailsDialog({
   const openAlertDialog = (action: "ACCEPTED" | "REJECTED") => {
     setCurrentAction(action);
     setAlertDialogOpen(true);
+    refetch?.();
   };
 
   const closeAlertDialog = () => {

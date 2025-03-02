@@ -1,10 +1,10 @@
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import {
   FaFacebookF,
-  FaYoutube,
   FaInstagram,
   FaXTwitter,
+  FaYoutube,
 } from "react-icons/fa6";
 
 export default function Footer() {
@@ -16,7 +16,9 @@ export default function Footer() {
             <Image src="/logo-white.svg" alt="logo" width={112} height={26} />
             <p className="mt-2">
               Call now:{" "}
-              <span className="font-semibold text-white"><a href="tel:3195550115">(319) 555-0115</a></span>
+              <span className="font-semibold text-white">
+                <a href="tel:3195550115">(319) 555-0115</a>
+              </span>
             </p>
             <p className="mt-2 text-xs">
               Jl. Anggajaya 2, Sanggrahan, Condongcatur, Kec. Depok, Kabupaten
@@ -121,9 +123,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 flex flex-col items-center justify-between border-t border-gray-700 pt-6 md:flex-row">
-          <p className="text-sm">
-            © 2025 Supajob. All rights reserved.
-          </p>
+          <p className="text-sm">© 2025 Supajob. All rights reserved.</p>
           <div className="mt-4 flex space-x-4 md:mt-0">
             <Link
               href="https://www.facebook.com"
