@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import useGetUserScore from "@/hooks/api/skill-assessment-user-attempt/useGetUserScore";
 import useGetSkillAssessment from "@/hooks/api/skill-assessment/useGetSkillAssessment";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { useEffect, useState } from "react";
 
 interface SkillAssessmentProps {
@@ -36,13 +36,21 @@ export default function SkillAssessmentScorePage({
   const { data: userScore, isLoading: userScoreLoading } =
     useGetUserScore(attemptId);
 
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const handleGoBack = () => {
     router.replace("/skill-assessments");
   };
 
   const isLoading = isSkillAssessmentLoading || userScoreLoading;
+
+  const formatScore = (score: any) => {
+    const numericScore = Number(score);
+    if (isNaN(numericScore)) return "-";
+    return numericScore % 1 === 0
+      ? numericScore.toFixed(0)
+      : numericScore.toFixed(1);
+  };
 
   if (isLoading) {
     return <LoadingScreen message="Calculating your score..." />;
@@ -62,7 +70,7 @@ export default function SkillAssessmentScorePage({
                   <div
                     className={`text-5xl font-bold ${userScore && userScore.score >= passingScore ? "text-green-600" : "text-red-600"}`}
                   >
-                    {userScore.score}
+                    {formatScore(userScore.score)}
                   </div>
                   <div className="mt-2 text-sm text-slate-600">
                     Passing score: {passingScore}
