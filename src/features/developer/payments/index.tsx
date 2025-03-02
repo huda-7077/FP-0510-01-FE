@@ -24,7 +24,11 @@ export const PaymentListComponent = () => {
     defaultValue: "",
   });
 
-  const { data: payments, isLoading } = useGetPayments({
+  const {
+    data: payments,
+    isLoading,
+    refetch,
+  } = useGetPayments({
     page,
     sortOrder: "desc",
     sortBy,
@@ -67,6 +71,10 @@ export const PaymentListComponent = () => {
     setSortBy(sort);
   };
 
+  const handleRefetch = () => {
+    refetch();
+  };
+
   return (
     <>
       <DashboardBreadcrumb route="developer" lastCrumb="Payments" />
@@ -91,7 +99,11 @@ export const PaymentListComponent = () => {
                 </>
               )}
               {payments?.data.map((payment, index) => (
-                <PaymentCard payment={payment} key={index} />
+                <PaymentCard
+                  payment={payment}
+                  key={index}
+                  refetch={handleRefetch}
+                />
               ))}
             </div>
           </div>

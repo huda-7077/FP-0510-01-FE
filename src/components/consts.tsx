@@ -81,6 +81,11 @@ export const userSidebarLinks = [
     icon: PencilLine,
   },
   {
+    name: "Subscriptions",
+    url: "/dashboard/user/subscriptions",
+    icon: CreditCard,
+  },
+  {
     name: "Settings",
     url: "/dashboard/user/settings",
     icon: Settings,

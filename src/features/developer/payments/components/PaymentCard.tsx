@@ -10,9 +10,10 @@ import { PaymentStatusBadge } from "./PaymentStatusBadge";
 
 interface PaymentCardProps {
   payment?: PaymentData;
+  refetch?: () => void;
 }
 
-export const PaymentCard = ({ payment }: PaymentCardProps) => {
+export const PaymentCard = ({ payment, refetch }: PaymentCardProps) => {
   const [openDetails, setOpenDetails] = useState(false);
   return (
     <div>
@@ -66,6 +67,7 @@ export const PaymentCard = ({ payment }: PaymentCardProps) => {
           isOpen={openDetails}
           onClose={() => setOpenDetails(false)}
           payment={payment}
+          refetch={() => refetch?.()}
         />
       )}
     </div>

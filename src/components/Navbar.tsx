@@ -49,6 +49,8 @@ const Navbar = () => {
     { href: "/", label: "Home" },
     { href: "/jobs", label: "Find Job" },
     { href: "/companies", label: "Find Employers" },
+    { href: "/skill-assessments", label: "Skill Assessments" },
+    { href: "/subscriptions", label: "Subscriptions" },
     {
       href:
         profile?.role === "ADMIN"

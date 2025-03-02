@@ -19,6 +19,8 @@ interface AlertDialogComponentProps {
   description: string;
   confirmText: string;
   cancelText: string;
+  buttonClassName?: string;
+  isPending?: boolean;
 }
 
 export const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
@@ -29,6 +31,8 @@ export const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
   description,
   confirmText,
   cancelText,
+  buttonClassName,
+  isPending,
 }) => {
   return (
     <AlertDialog open={isOpen}>
@@ -40,8 +44,9 @@ export const AlertDialogComponent: React.FC<AlertDialogComponentProps> = ({
         <AlertDialogFooter>
           <AlertDialogCancel onClick={onClose}>{cancelText}</AlertDialogCancel>
           <AlertDialogAction
-            className="bg-blue-600 hover:bg-blue-700"
+            className={buttonClassName || "bg-blue-600 hover:bg-blue-700"}
             onClick={onConfirm}
+            disabled={isPending}
           >
             {confirmText}
           </AlertDialogAction>
