@@ -28,7 +28,7 @@ const CVGeneratorPage = () => {
       (subscription.status === "ACTIVE" || subscription.status === "MAILED") ? (
         <CVGenerator />
       ) : (
-        <FeatureLocked />
+        <FeatureLocked isDashboard={true} />
       )}
     </>
   );
