@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { JobApplication } from "@/types/jobApplication";
-import { MoreVertical } from "lucide-react";
+import { Download, MoreVertical } from "lucide-react";
 import { FC } from "react";
 import ApplicantDetails from "./ApplicantDetails";
 import DownloadCVButton from "./DownloadCVButton";
@@ -45,8 +45,13 @@ const ApplicationCardDropdown: FC<ApplicationCardDropdownProps> = ({
         </DropdownMenuItem>
         <DropdownMenuItem className="cursor-pointer rounded-md px-3 py-2 text-sm font-medium transition-colors hover:bg-gray-100">
           <DownloadCVButton
-            cvUrl={application.cvFile}
-            clasName="flex h-full w-full justify-start border-none bg-transparent p-0 text-start text-black shadow-none hover:bg-transparent hover:text-black"
+            text="Download CV"
+            url={application.cvFile}
+            icon={
+              <Download className="h-4 w-4 transition-transform group-hover:-translate-y-1" />
+            }
+            variant={"outline"}
+            className="flex h-full w-full justify-start border-none bg-transparent p-0 text-start text-black shadow-none hover:bg-transparent hover:text-black"
           />
         </DropdownMenuItem>
       </DropdownMenuContent>

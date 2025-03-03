@@ -25,8 +25,26 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "FINPRO",
-  description: "NO DESC",
+  title: "Supajob: Your Career, Your Future, Supersized.",
+  description:
+    "Supajob is the ultimate job board designed to connect top talent with exciting career opportunities. Whether you're searching for a full-time position, freelance gig, or your next big challenge, Supajob is here to simplify your job hunt. With an intuitive interface, personalized job recommendations, and a vast network of companies, Supajob makes it easier than ever to take your career to new heights. Explore, apply, and succeed — all in one place!",
+  keywords: [
+    "Job board",
+    "career opportunities",
+    "job search",
+    "job listings",
+    "job portal",
+    "freelance jobs",
+    "remote work",
+    "job seekers",
+    "career growth",
+    "talent connection",
+    "professional network",
+    "job opportunities",
+    "work-life balance",
+    "career advancement",
+    "recruitment platform",
+  ],
 };
 
 export default function RootLayout({

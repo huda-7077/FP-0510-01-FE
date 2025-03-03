@@ -49,7 +49,7 @@ const RegisterEmployeeButton: FC<RegisterEmployeeButtonProps> = ({
 
       await refetchEmployeeExistance();
     } catch (error) {
-      toast.error("Failed to register this applicant as employee");
+      console.log(error);
     }
   };
 

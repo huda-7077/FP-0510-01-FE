@@ -23,7 +23,6 @@ const useUpdateAssessmentQuestion = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["assessment-questions"] });
-      console.log("Question Updated Successfullly");
     },
 
     onError: (error: AxiosError<any>) => {

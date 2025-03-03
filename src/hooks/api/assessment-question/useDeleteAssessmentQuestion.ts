@@ -15,7 +15,6 @@ const useDeleteAssessmentQuestion = () => {
       return data;
     },
     onSuccess: async () => {
-      console.log(`Assessment Question deleted successfully`);
       await queryClient.invalidateQueries({
         queryKey: ["assessment-questions"],
       });

@@ -4,7 +4,6 @@ import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
 export interface CreateJobPayload {
-  companyId: number;
   title: string;
   description: string;
   bannerImage?: File | null;
@@ -25,7 +24,6 @@ const useCreateJob = () => {
     mutationFn: async (payload: CreateJobPayload) => {
       const formData = new FormData();
 
-      formData.append("companyId", `${payload.companyId}`);
       formData.append("title", payload.title);
       formData.append("description", payload.description);
       if (payload.bannerImage) {
@@ -47,15 +45,10 @@ const useCreateJob = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["jobs"] });
-      console.log("Job Created Successfullly");
     },
 
     onError: (error: AxiosError<any>) => {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data ||
-        "An error occurred";
-      toast.error(errorMessage);
+      toast.error(error.response?.data?.message || "Failed to create job");
     },
   });
 };

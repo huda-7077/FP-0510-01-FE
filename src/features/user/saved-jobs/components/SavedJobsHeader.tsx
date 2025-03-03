@@ -14,7 +14,7 @@ import { SearchIcon, Calendar } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
-import { JobCategory } from "@/features/admin/job/create-job/consts";
+import { JobCategory } from "@/features/admin/job/consts";
 
 interface SavedJobsHeaderProps {
   totalSavedJobs: number;

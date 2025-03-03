@@ -2,15 +2,19 @@ import JobApplicationClient from "@/features/job-application";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
-export default async function JobApplicationPage({ params }: { params: { id: string } }) {
+export default async function JobApplicationPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   const session = await auth();
-  
-  if (typeof window !== 'undefined') {
+
+  if (typeof window !== "undefined") {
     await new Promise((resolve) => setTimeout(resolve, 100));
   }
 
   const secondCheck = await auth();
-  
+
   if (!session && !secondCheck) {
     redirect("/login");
   }

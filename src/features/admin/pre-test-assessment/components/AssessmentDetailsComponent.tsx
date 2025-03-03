@@ -119,6 +119,7 @@ export const AssessmentDetailsComponent: FC<PreAssessmentTestFormProps> = ({
                 <CardContent className="p-6">
                   <QuestionForm
                     assessmentId={assessment.id}
+                    assessmentStatus={assessment.status}
                     assessmentQuestionId={editQuestion?.id}
                     editQuestion={editQuestion}
                     onCancelEdit={handleCancelEdit}
@@ -138,6 +139,7 @@ export const AssessmentDetailsComponent: FC<PreAssessmentTestFormProps> = ({
               </CardHeader>
               <CardContent className="p-6">
                 <QuestionListTable
+                  assessmentStatus={assessment.status}
                   questions={assessmentQuestion.data}
                   isProcessing={isProcessing}
                   onDelete={handleDelete}

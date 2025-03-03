@@ -1,7 +1,5 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import {
   AlertTriangle,
   ArrowLeft,
@@ -11,25 +9,11 @@ import {
   Loader2,
   MapPin,
 } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
 
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { ApplicationStatusBadge } from "./components/ApplicationStatusBagde";
-import { InterviewDetails } from "./components/InterviewDetails";
-import { RejectionFeedback } from "./components/RejectionFeedback";
-import { ApplicationTimeline } from "./components/ApplicationTimeline";
-import useGetJobApplication from "@/hooks/api/job-applications/useGetJobApplication";
-import MarkDown from "@/components/Markdown";
-import ApplicationDetailSkeleton from "./components/ApplicationDetailSkeleton";
 import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
-import { AlertDialog, AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import MarkDown from "@/components/Markdown";
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -39,8 +23,25 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Label } from "@/components/ui/label";
-import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateAssessment";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import useGetJobApplication from "@/hooks/api/job-applications/useGetJobApplication";
+import { AlertDialog, AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import ApplicationDetailSkeleton from "./components/ApplicationDetailSkeleton";
+import { ApplicationStatusBadge } from "./components/ApplicationStatusBagde";
+import { ApplicationTimeline } from "./components/ApplicationTimeline";
+import { InterviewDetails } from "./components/InterviewDetails";
+import { RejectionFeedback } from "./components/RejectionFeedback";
+import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateJobApplication";
+import useGetAssessment from "@/hooks/api/assessment/useGetAssessment";
+import useGetAssessmentSlug from "@/hooks/api/assessment/useGetAssessmentSlug";
 
 interface JobApplicationDetailProps {
   jobApplicationId: number;
@@ -53,6 +54,8 @@ const ApplicationDetailPage = ({
     jobApplicationId,
   });
   const updateJobApplication = useUpdateJobApplication();
+  const { data: assessment, isLoading: isAssessmentLoading } =
+    useGetAssessmentSlug();
 
   const handleCancelApplication = () => {
     updateJobApplication.mutate({ id: jobApplicationId, status: "CANCELLED" });
@@ -87,7 +90,7 @@ const ApplicationDetailPage = ({
           </Link>
         </div>
 
-        {isLoading ? (
+        {isLoading && isAssessmentLoading ? (
           <ApplicationDetailSkeleton />
         ) : application ? (
           <>
@@ -111,10 +114,11 @@ const ApplicationDetailPage = ({
                         </p>
                       )}
                     </div>
-                    <Link href="/pre-test-assessment/"></Link>
-                    <Button className="bg-yellow-500 text-white hover:bg-yellow-600">
-                      Start Assessment
-                    </Button>
+                    <Link href={`/pre-test-assessment/${assessment?.slug}`}>
+                      <Button className="bg-yellow-500 text-white hover:bg-yellow-600">
+                        Start Assessment
+                      </Button>
+                    </Link>
                   </div>
                 </CardContent>
               </Card>

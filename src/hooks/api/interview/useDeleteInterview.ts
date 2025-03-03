@@ -20,8 +20,9 @@ const useDeleteInterview = () => {
       toast.success("Interview schedule deleted successfully");
     },
     onError: (error: AxiosError<any>) => {
-      console.log(error.response?.data);
-      toast.error(error.response?.data.message);
+      toast.error(
+        error.response?.data?.message || "Failed to delete interview",
+      );
     },
   });
 };

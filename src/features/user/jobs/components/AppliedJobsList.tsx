@@ -14,6 +14,7 @@ import { format } from "date-fns";
 import { JobApplication } from "@/types/jobApplication";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import useGetAssessmentSlug from "@/hooks/api/assessment/useGetAssessmentSlug";
 
 interface AppliedJobsListProps {
   applications: JobApplication[];
@@ -27,6 +28,9 @@ const AppliedJobsList = ({
   error = null,
 }: AppliedJobsListProps) => {
   const router = useRouter();
+
+  const { data: assessment, isLoading: isAssessmentLoading } =
+    useGetAssessmentSlug();
 
   const formatSalary = (amount: number | null | undefined): string | null => {
     if (!amount) return null;
@@ -171,7 +175,7 @@ const AppliedJobsList = ({
                   <TableCell>
                     {application.job.requiresAssessment &&
                     application.status === "IN_REVIEW" ? (
-                      <Link href={`/dashboard/user/jobs/${application.id}`}>
+                      <Link href={`/pre-test-assessment/${assessment?.slug}`}>
                         <Button
                           variant="ghost"
                           className="text-orange-400 hover:bg-orange-100 hover:text-orange-400"
@@ -272,7 +276,7 @@ const AppliedJobsList = ({
                       className="text-orange-400 hover:bg-orange-100 hover:text-orange-400"
                       onClick={(e) => {
                         e.preventDefault();
-                        router.push("/jobs/pre-assessment");
+                        router.push(`/pre-test-assessment/${assessment?.slug}`);
                       }}
                     >
                       Start Assessment

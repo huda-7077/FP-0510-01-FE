@@ -14,7 +14,9 @@ import { JobApplication } from "@/types/jobApplication";
 import {
   Building2,
   Calendar,
+  Clipboard,
   Clock,
+  Download,
   Eye,
   Globe,
   GraduationCap,
@@ -70,9 +72,25 @@ const ApplicantDetails = ({
                   </h2>
                   <div className="flex flex-col gap-3 sm:flex-row">
                     <DownloadCVButton
-                      cvUrl={applicant.cvFile}
-                      clasName="h-8 text-xs sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
+                      text="Download CV"
+                      url={applicant.cvFile}
+                      icon={
+                        <Download className="h-4 w-4 transition-transform group-hover:-translate-y-1" />
+                      }
+                      variant={"outline"}
+                      className="h-8 text-xs sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
                     />
+                    {applicant.attachment && (
+                      <DownloadCVButton
+                        icon={
+                          <Clipboard className="h-4 w-4 transition-transform group-hover:-translate-y-1" />
+                        }
+                        text="Attachment"
+                        variant="default"
+                        url={applicant.attachment}
+                        className="h-8 text-xs sm:h-9 sm:flex-none sm:px-4 md:h-10 md:px-5"
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -204,7 +222,6 @@ const ApplicantDetails = ({
                               : ""
                           } md:grid-cols-3`}
                         >
-                          {/* Timeline and Company Info */}
                           <div className="md:col-span-1">
                             <div className="flex items-center gap-2 text-sm text-gray-600">
                               <Clock className="h-4 w-4 text-blue-600" />
@@ -222,8 +239,6 @@ const ApplicantDetails = ({
                               </span>
                             </div>
                           </div>
-
-                          {/* Role and Description */}
                           <div className="md:col-span-2">
                             <h4 className="text-base font-semibold text-gray-900">
                               {experience.jobTitle}

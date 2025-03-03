@@ -88,7 +88,6 @@ export const JobActionsMenu = ({
       notifyDatabaseChange();
     } catch (error) {
       console.log(error);
-      toast.error("Failed Updating Job");
     }
   };
 

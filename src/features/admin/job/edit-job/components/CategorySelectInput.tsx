@@ -1,5 +1,4 @@
 "use client";
-
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -42,8 +41,10 @@ const CategorySelectInput: React.FC<FormikSelectProps> = ({
       </Label>
       <Select
         disabled={isDisabled}
-        value={formik.values[name]?.toString() || ""}
-        onValueChange={(value: string) => formik.setFieldValue(name, value)}
+        value={formik.values[name]}
+        onValueChange={(value: string) => {
+          formik.setFieldValue(name, value);
+        }}
       >
         <SelectTrigger className="border-gray-200 focus:border-blue-500 focus:ring-blue-200">
           <SelectValue placeholder={placeholder} />

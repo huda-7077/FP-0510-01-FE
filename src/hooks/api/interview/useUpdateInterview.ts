@@ -29,14 +29,11 @@ const useUpdateInterview = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["interviews"] });
-      console.log("Interview Updated Successfullly");
     },
     onError: (error: AxiosError<any>) => {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data ||
-        "An error occurred";
-      toast.error(errorMessage);
+      toast.error(
+        error.response?.data?.message || "Failed to update interview",
+      );
     },
   });
 };

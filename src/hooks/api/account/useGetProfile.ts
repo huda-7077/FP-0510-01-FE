@@ -1,11 +1,13 @@
 import useAxios from "@/hooks/useAxios";
 import { User } from "@/types/user";
 import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
 
-const useGetProfile = () => {
-  const { data } = useSession();
-  const token = data?.user.token;
+interface Options {
+  enabled?: boolean;
+}
+
+const useGetProfile = (options: Options = {}) => {
+  const { enabled = true } = options;
   const { axiosInstance } = useAxios();
   return useQuery({
     queryKey: ["profile"],
@@ -13,7 +15,8 @@ const useGetProfile = () => {
       const { data } = await axiosInstance.get<User>("/accounts/profile");
       return data;
     },
-    enabled: !!token,
+    enabled,
+    ...options,
   });
 };
 

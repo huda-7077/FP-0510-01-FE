@@ -7,6 +7,10 @@ interface GetJobApplicationsQuery extends PaginationQueries {
   search?: string;
   jobId?: number;
   educationLevel?: string;
+  maxExpectedSalary?: number;
+  minExpectedSalary?: number;
+  maxAge?: number;
+  minAge?: number;
 }
 
 const useGetJobApplications = (queries: GetJobApplicationsQuery) => {
