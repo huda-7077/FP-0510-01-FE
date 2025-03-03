@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
+// import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
 import useGetCompanyJob from "@/hooks/api/job/useGetCompanyJob";
 import useUpdateJob, { UpdateJobPayload } from "@/hooks/api/job/useUpdateJob";
 import useFormatTitleCase from "@/hooks/useFormatTitleCase";
@@ -60,8 +60,8 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
   const { mutateAsync: updateJob, isPending: isUpdateJobPending } =
     useUpdateJob(id);
 
-  const { data: companyLocations, isLoading: isCompanyLocationsLoading } =
-    useGetCompanyLocations();
+  // const { data: companyLocations, isLoading: isCompanyLocationsLoading } =
+  //   useGetCompanyLocations();
 
   const formik = useFormik({
     initialValues: {
@@ -159,9 +159,9 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
     }
   };
 
-  if (status === "loading" || isJobPending || isCompanyLocationsLoading) {
-    return <LoadingScreen />;
-  }
+  // if (status === "loading" || isJobPending || isCompanyLocationsLoading) {
+  //   return <LoadingScreen />;
+  // }
 
   if (!job) {
     return <DataNotFound />;
@@ -295,7 +295,7 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
             name="companyLocationId"
             label="Company Location"
             placeholder="Select Company Location"
-            companyLocations={companyLocations || []}
+            // companyLocations={companyLocations || []}
             formik={formik}
             isDisabled={isUpdateJobPending}
           />

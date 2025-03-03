@@ -9,8 +9,6 @@ import { useAuth } from "@/hooks/useAuth";
 import { Bookmark, BookmarkCheck, MapPin } from "lucide-react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
 interface RelatedJobsProps {

@@ -3,20 +3,17 @@ import PaginationSection from "@/components/PaginationSection";
 import { Badge } from "@/components/ui/badge";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
+import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
+import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
+import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
 import { Bookmark, BookmarkCheck, MapPin, SearchIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useState } from "react";
-import { useDebounceValue } from "usehooks-ts";
-import PaginationSection from "@/components/PaginationSection";
-import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
-import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
-import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
-import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
 import { toast } from "react-toastify";
+import { useDebounceValue } from "usehooks-ts";
 
 interface OpenJobsProps {
   companyId?: number;

@@ -10,12 +10,12 @@ import {
 } from "lucide-react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { toast } from "react-toastify";
 import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
 import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
 import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
+import { useEffect, useState } from "react";
 
 const formatSalary = (amount: number | null | undefined): string | null => {
   if (!amount) return null;
