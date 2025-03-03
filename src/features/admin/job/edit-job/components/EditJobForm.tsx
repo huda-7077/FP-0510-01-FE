@@ -1,10 +1,12 @@
 "use client";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import useGetJob from "@/hooks/api/job/useGetJob";
+import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
+import useGetCompanyJob from "@/hooks/api/job/useGetCompanyJob";
 import useUpdateJob, { UpdateJobPayload } from "@/hooks/api/job/useUpdateJob";
 import useFormatTitleCase from "@/hooks/useFormatTitleCase";
 import { formatISO } from "date-fns";
@@ -19,9 +21,9 @@ import {
   Upload,
 } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useTransitionRouter } from "next-view-transitions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { createJobSchema } from "../schemas";
@@ -29,9 +31,6 @@ import EditJobFormHeader from "./EditJobFormHeader";
 import EditJobFormInput from "./EditJobFormInput";
 import EditJobFormSelectInput from "./EditJobFormSelectInput";
 import TagsInput from "./EditJobFormTagInput";
-import { DataNotFound } from "@/components/data-not-found/DataNotFound";
-import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
-import useGetCompanyJob from "@/hooks/api/job/useGetCompanyJob";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -42,7 +41,7 @@ interface EditJobFormProps {
 }
 
 const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const { data: session, status } = useSession();
   const user = session?.user;
   const companyId = user?.companyId || 0;

@@ -1,12 +1,12 @@
+import { useTransitionRouter } from "next-view-transitions";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function VerificationGuard(Component: any) {
   return function IsVerifying(props: any) {
-    const router = useRouter();
+    const router = useTransitionRouter();
     const searchParams = useSearchParams();
-    const email = searchParams.get('email');
+    const email = searchParams.get("email");
 
     useEffect(() => {
       // Only allow access if there's an email in the URL (coming from registration)

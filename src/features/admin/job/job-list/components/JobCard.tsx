@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Job } from "@/types/job";
 import { formatDaysRemaining } from "@/utils/formatDaysRemaining";
 import { Eye } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ApplicantCount } from "./ApplicantCount";
 import { AssessmentStatusBadge } from "./AssessmentStatusBadge";
 import { JobActionsMenu } from "./JobActionsMenu";

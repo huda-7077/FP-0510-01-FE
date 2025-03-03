@@ -1,14 +1,14 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import { Search } from "lucide-react";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { useGetSearchSuggestions } from "@/hooks/api/search/useGetSearchSuggestion";
+import { Search } from "lucide-react";
+import { useTransitionRouter } from "next-view-transitions";
+import { useState } from "react";
 
 export default function SearchBar() {
   const [query, setQuery] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const { data: suggestions, isLoading } = useGetSearchSuggestions(query);
 

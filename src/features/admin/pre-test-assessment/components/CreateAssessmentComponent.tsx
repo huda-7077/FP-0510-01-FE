@@ -14,9 +14,9 @@ import { Textarea } from "@/components/ui/textarea";
 import useCreateAssessment from "@/hooks/api/assessment/useCreateAssessment";
 import { useFormik } from "formik";
 import { Award, BookOpen, FileText } from "lucide-react";
+import { useTransitionRouter } from "next-view-transitions";
 import { toast } from "react-toastify";
 import { CreateAssessmentSchema } from "../schemas";
-import { useRouter } from "next/navigation";
 
 interface CreateSkillAssessmentFormProps {
   jobId: number;
@@ -25,7 +25,7 @@ interface CreateSkillAssessmentFormProps {
 export function CreateAssessmentComponent({
   jobId,
 }: CreateSkillAssessmentFormProps) {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const { mutateAsync: createAssessment, isPending } = useCreateAssessment();
 

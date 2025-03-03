@@ -10,8 +10,8 @@ import useGetPayment from "@/hooks/api/payment/useGetPayment";
 import useUpdatePayment from "@/hooks/api/payment/useUpdatePayment";
 import { useFormik } from "formik";
 import { Clock, Receipt, Upload, X } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 
 interface PaymentPageProps {

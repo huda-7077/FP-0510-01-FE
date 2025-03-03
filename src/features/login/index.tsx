@@ -1,7 +1,7 @@
 "use client";
 
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { LoginForm } from "./components/LoginForm";
 
 export default function UserRegisterPage() {

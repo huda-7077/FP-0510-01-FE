@@ -2,10 +2,10 @@
 import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import useGetUserScore from "@/hooks/api/assessment-user-attempt/useGetUserScore";
+import { useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface AssessmentEndScreenProps {
@@ -31,7 +31,7 @@ export default function AssessmentEndScreen({
   const { data: userScore, isLoading: userScoreLoading } =
     useGetUserScore(attemptId);
 
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const handleGoBack = () => {
     router.replace("/dashboard/user");

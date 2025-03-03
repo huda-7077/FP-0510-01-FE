@@ -1,11 +1,11 @@
-import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
 export default function VerifySuccessGuard(Component: any) {
   return function IsVerifying(props: any) {
-    const router = useRouter();
+    const router = useTransitionRouter();
     const isVerificationSuccess = useSelector(
       (state: RootState) => state.verification.isVerificationSuccess,
     );

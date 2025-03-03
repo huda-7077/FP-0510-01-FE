@@ -1,7 +1,7 @@
 "use client";
 
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { ForgotPasswordForm } from "./components/ForgotPasswordForm";
 
 export default function ForgotPasswordPage() {

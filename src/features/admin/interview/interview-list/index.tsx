@@ -5,15 +5,15 @@ import { DashboardLayout } from "@/components/layouts/DashboardLayout";
 import PaginationSection from "@/components/PaginationSection";
 import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 import useGetInterviews from "@/hooks/api/interview/useGetInterviews";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { parseAsInteger, useQueryState } from "nuqs";
+import { useEffect } from "react";
 import { useDebounce } from "use-debounce";
 import { InterviewCard } from "./components/InterviewCard";
 import { InterviewListHeader } from "./components/InterviewListHeader";
-import { useEffect } from "react";
 
 const InterviewListComponent = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [sortOrder, setSortOrder] = useQueryState("sortOrder", {

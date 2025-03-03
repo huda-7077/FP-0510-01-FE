@@ -12,7 +12,6 @@ import {
   AlignLeft,
   Calendar,
   DollarSign,
-  LibraryBig,
   Tag,
   Trash2,
   Upload,
@@ -20,22 +19,22 @@ import {
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { createJobSchema } from "../schemas";
+import CategorySelectInput from "./CategorySelectInput";
+import CompanyLocationSelectInput from "./CompanyLocationSelectInput";
 import CreateJobFormHeader from "./CreateJobFormHeader";
 import CreateJobFormInput from "./CreateJobFormInput";
 import TagsInput from "./CreateJobFormTagInput";
-import CompanyLocationSelectInput from "./CompanyLocationSelectInput";
-import CategorySelectInput from "./CategorySelectInput";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
 });
 
 const CreateJobForm = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const { data: session, status } = useSession();
   const user = session?.user;
   const companyId = user?.companyId || 0;

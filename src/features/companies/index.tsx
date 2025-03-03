@@ -1,16 +1,16 @@
 "use client";
+import HomeBreadcrumb from "@/components/HomeBreadcrumb";
+import PaginationSection from "@/components/PaginationSection";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import useGetCompanies from "@/hooks/api/company/useGetCompanies";
 import { MapPin, Star } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
-import PaginationSection from "@/components/PaginationSection";
-import Link from "next/link";
-import { EmployerSearchSidebar } from "./components/EmployerSearchSidebar";
 import { EmployerCardSkeleton } from "./components/EmployerCardSkeleton";
-import HomeBreadcrumb from "@/components/HomeBreadcrumb";
+import { EmployerSearchSidebar } from "./components/EmployerSearchSidebar";
 
 const CompaniesPage = () => {
   const [search] = useQueryState("search", { defaultValue: "" });
@@ -49,11 +49,11 @@ const CompaniesPage = () => {
   return (
     <div className="min-h-screen">
       <div className="bg-[#f7f7f8]">
-        <div className="container mx-auto flex justify-between px-6 py-5 items-center">
+        <div className="container mx-auto flex items-center justify-between px-6 py-5">
           <h1 className="text-lg font-medium duration-150 hover:pl-3 hover:text-blue-600">
             Find Employers
           </h1>
-          <HomeBreadcrumb lastCrumb="Find Employers"/>
+          <HomeBreadcrumb lastCrumb="Find Employers" />
         </div>
       </div>
       <div className="container relative mx-auto flex flex-col bg-background p-4 md:flex-row md:gap-7">

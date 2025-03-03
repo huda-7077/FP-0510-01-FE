@@ -1,17 +1,17 @@
 "use client";
+import HomeBreadcrumb from "@/components/HomeBreadcrumb";
+import { LocationPermission } from "@/components/LocationPermission";
+import PaginationSection from "@/components/PaginationSection";
 import { Badge } from "@/components/ui/badge";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { Bookmark, MapPin } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useDebounceValue } from "usehooks-ts";
-import { JobSearchSidebar } from "./components/JobsSearchSidebar";
-import PaginationSection from "@/components/PaginationSection";
-import Link from "next/link";
-import { JobCardSkeleton } from "./components/JobCardSkeleton";
-import HomeBreadcrumb from "@/components/HomeBreadcrumb";
 import { useState } from "react";
-import { LocationPermission } from "@/components/LocationPermission";
+import { useDebounceValue } from "usehooks-ts";
+import { JobCardSkeleton } from "./components/JobCardSkeleton";
+import { JobSearchSidebar } from "./components/JobsSearchSidebar";
 
 const JobsPage = () => {
   const [search] = useQueryState("search", { defaultValue: "" });
@@ -23,10 +23,6 @@ const JobsPage = () => {
   const [sortOrder] = useQueryState("sortOrder", { defaultValue: "desc" });
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [debouncedValue] = useDebounceValue(search, 500);
-  const [userCoordinates, setUserCoordinates] = useState<{
-    lat: number;
-    lng: number;
-  } | null>(null);
   const [userLat, setUserLat] = useQueryState("userLat");
   const [userLng, setUserLng] = useQueryState("userLng");
   const [isUsingLocation, setIsUsingLocation] = useState(

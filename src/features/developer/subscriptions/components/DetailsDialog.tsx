@@ -10,7 +10,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Subscription } from "@/types/subscription";
 import { format } from "date-fns";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 interface DetailsDialogProps {
   isOpen: boolean;

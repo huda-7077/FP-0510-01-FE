@@ -13,12 +13,10 @@ import {
 import { Button } from "@/components/ui/button";
 import { Assessment } from "@/types/assessment";
 import { AlertTriangle, Clock, ShieldCheck } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { FC, useEffect, useRef, useState } from "react";
 import InfoCard from "./InfoCard";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 
 interface ConfirmStartSkillAssessmentProps {
   assessment: Assessment;
