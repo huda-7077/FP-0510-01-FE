@@ -1,14 +1,26 @@
 import useAxios from "@/hooks/useAxios";
+import { PageableResponse, PaginationQueries } from "@/types/pagination";
+import { WorkExperience } from "@/types/workExperience";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetWorkExperiences = () => {
+interface GetWorkExperiencesQuery extends PaginationQueries {
+  search?: string;
+}
+
+const useGetWorkExperiences = (queries: GetWorkExperiencesQuery) => {
   const { axiosInstance } = useAxios();
 
   return useQuery({
-    queryKey: ["workExperiences"],
+    queryKey: ["workExperiences", queries],
     queryFn: async () => {
-      const { data } = await axiosInstance.get("/work-experiences");
+      const { data } = await axiosInstance.get<
+        PageableResponse<WorkExperience>
+      >("/work-experiences", {
+        params: queries,
+      });
       return data;
     },
   });
 };
+
+export default useGetWorkExperiences;

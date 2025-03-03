@@ -17,7 +17,7 @@ export default function Footer() {
             <p className="mt-2">
               Call now:{" "}
               <span className="font-semibold text-white">
-                <a href="tel:3195550115">(319) 555-0115</a>
+                <a href="tel:3195550115">(319) 555-0xxx</a>
               </span>
             </p>
             <p className="mt-2 text-xs">
@@ -31,7 +31,7 @@ export default function Footer() {
               <h3 className="mb-2 font-semibold text-white">Quick Link</h3>
               <ul className="space-y-2 text-xs">
                 <li>
-                  <Link href="/about" className="hover:text-white">
+                  <Link href="/about-us" className="hover:text-white">
                     About
                   </Link>
                 </li>
@@ -99,7 +99,7 @@ export default function Footer() {
               <h3 className="mb-2 font-semibold text-white">Support</h3>
               <ul className="space-y-2 text-xs">
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/contact" className="hover:text-white">
                     FAQs
                   </Link>
                 </li>
@@ -110,7 +110,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link href="/terms" className="hover:text-white">
-                    Terms & Conditions
+                    Terms of Service
                   </Link>
                 </li>
               </ul>

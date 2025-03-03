@@ -1,15 +1,15 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
-import TermsOfServicePage from "@/features/terms-of-service";
+import ContactPage from "@/features/contact";
 
-const TermsOfService = () => {
+const Contact = () => {
   return (
     <>
       <Navbar />
-      <TermsOfServicePage />
+      <ContactPage />
       <Footer />
     </>
   );
 };
 
-export default TermsOfService;
+export default Contact;

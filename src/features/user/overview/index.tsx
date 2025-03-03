@@ -9,6 +9,7 @@ import ProfileAlert from "./components/ProfileAlert";
 import RecentJobs from "./components/RecentJobs";
 import useGetProfile from "@/hooks/api/account/useGetProfile";
 import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
+import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
 
 const OverviewPage = () => {
   const {
@@ -50,7 +51,9 @@ const OverviewPage = () => {
   const isLoading = isLoadingProfile || isLoadingApplications;
 
   return (
-    <div className="container mx-auto space-y-6 p-4 sm:p-6 md:space-y-8">
+    <>
+    <DashboardBreadcrumb route="user" lastCrumb="Overview" />
+    <div className="container mx-auto space-y-6 px-1 md:space-y-8 py-2">
       <div>
         <h1 className="text-xl">
           {isLoadingProfile ? "Loading..." : `Hello, ${userName}!`}
@@ -87,6 +90,7 @@ const OverviewPage = () => {
         />
       </div>
     </div>
+    </>
   );
 };
 

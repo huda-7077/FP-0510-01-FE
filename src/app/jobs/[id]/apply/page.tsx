@@ -5,7 +5,6 @@ import { redirect } from "next/navigation";
 export default async function JobApplicationPage({ params }: { params: { id: string } }) {
   const session = await auth();
   
-  // Add a small delay to ensure session is properly loaded
   if (typeof window !== 'undefined') {
     await new Promise((resolve) => setTimeout(resolve, 100));
   }

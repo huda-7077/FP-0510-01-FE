@@ -67,11 +67,6 @@ export const userSidebarLinks = [
     icon: Bookmark,
   },
   {
-    name: "Job Alerts",
-    url: "/dashboard/user/job-alerts",
-    icon: BellRing,
-  },
-  {
     name: "Badges",
     url: "/dashboard/user/badges",
     icon: Award,

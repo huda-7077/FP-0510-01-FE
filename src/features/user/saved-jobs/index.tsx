@@ -8,6 +8,7 @@ import { useMemo } from "react";
 import { useDebounce } from "use-debounce";
 import { SavedJobsHeader } from "./components/SavedJobsHeader";
 import SavedJobsList from "./components/SavedJobsList";
+import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
 
 export const SavedJobsPage = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -61,59 +62,55 @@ export const SavedJobsPage = () => {
     setPage(1);
   };
 
-  const uniqueCategories = Array.from(
-    new Set(savedJobs.map((job) => job.job.category)),
-  );
-
   const handleUnbookmark = (jobId: number) => {
-    const savedJob = savedJobs.find(job => job.job.id === jobId);
+    const savedJob = savedJobs.find((job) => job.job.id === jobId);
     if (savedJob) {
       deleteSavedJob(savedJob.job.id);
     }
   };
 
   return (
-    <div className="container mx-auto p-6">
-      <div>
+    <>
+      <DashboardBreadcrumb route="user" lastCrumb="Favorite Jobs" />
+      <div className="container mx-auto px-1 py-2">
         <div>
-          <SavedJobsHeader
-            totalSavedJobs={data?.meta.total || 0}
-            categories={uniqueCategories}
-            onSearch={handleSearch}
-            onCategoryChange={handleCategoryChange}
-            onDateChange={handleDateChange}
-            isDisabled={isLoading}
-          />
-          <div className="mt-4 sm:mt-6 md:mt-8">
-            {savedJobs.length === 0 && !isLoading ? (
-              <DataNotFound
-                message="You haven't saved any jobs yet. Explore our job listings to find opportunities."
-                title="No Saved Jobs Found"
-                actionLabel="Browse Jobs"
-                onAction={() => (window.location.href = "/jobs")}
-              />
-            ) : (
-              <SavedJobsList
-                savedJobs={savedJobs}
-                isLoading={isLoading}
-                error={null}
-                onUnbookmark={handleUnbookmark}
-              />
-            )}
+          <div>
+            <SavedJobsHeader
+              totalSavedJobs={data?.meta.total || 0}
+              onSearch={handleSearch}
+              onCategoryChange={handleCategoryChange}
+              onDateChange={handleDateChange}
+              isDisabled={isLoading}
+            />
+            <div className="mt-4 sm:mt-6 md:mt-8">
+              {savedJobs.length === 0 && !isLoading ? (
+                <DataNotFound
+                  message="You haven't saved any jobs yet. Explore our job listings to find opportunities."
+                  title="No Saved Jobs Found"
+                  actionLabel="Browse Jobs"
+                  onAction={() => (window.location.href = "/jobs")}
+                />
+              ) : (
+                <SavedJobsList
+                  savedJobs={savedJobs}
+                  isLoading={isLoading}
+                  error={null}
+                  onUnbookmark={handleUnbookmark}
+                />
+              )}
+            </div>
           </div>
+          {data && data.data.length > 0 && data.meta.total > data.meta.take && (
+            <PaginationSection
+              onChangePage={onChangePage}
+              page={Number(page)}
+              take={10}
+              total={data.meta.total}
+            />
+          )}
         </div>
-        {data &&
-          data.data.length > 0 &&
-          data.meta.total > data.meta.take && (
-          <PaginationSection
-            onChangePage={onChangePage}
-            page={Number(page)}
-            take={10}
-            total={data.meta.total}
-          />
-        )}
       </div>
-    </div>
+    </>
   );
 };
 

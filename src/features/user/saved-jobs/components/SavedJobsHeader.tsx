@@ -14,10 +14,10 @@ import { SearchIcon, Calendar } from "lucide-react";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
 import { Badge } from "@/components/ui/badge";
+import { JobCategory } from "@/features/admin/job/create-job/consts";
 
 interface SavedJobsHeaderProps {
   totalSavedJobs: number;
-  categories: string[];
   onSearch: (query: string) => void;
   onCategoryChange: (category: string) => void;
   onDateChange: (startDate: string, endDate: string) => void;
@@ -27,7 +27,6 @@ interface SavedJobsHeaderProps {
 export const SavedJobsHeader = React.memo(
   ({
     totalSavedJobs,
-    categories,
     onSearch,
     onCategoryChange,
     onDateChange,
@@ -44,6 +43,7 @@ export const SavedJobsHeader = React.memo(
     const [endDate, setEndDate] = useQueryState("endDate", {
       defaultValue: "",
     });
+    const [dateError, setDateError] = useState<string | null>(null);
 
     const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setSearch(e.target.value);
@@ -51,16 +51,37 @@ export const SavedJobsHeader = React.memo(
     };
 
     const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setStartDate(e.target.value);
+      const newStartDate = e.target.value;
+      setStartDate(newStartDate);
+
+      if (endDate && newStartDate > endDate) {
+        setDateError(
+          "Start date cannot be later than end date. Adjusting end date.",
+        );
+        setEndDate(newStartDate);
+      } else {
+        setDateError(null);
+      }
     };
 
     const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setEndDate(e.target.value);
+      const newEndDate = e.target.value;
+      setEndDate(newEndDate);
+
+      if (startDate && startDate > newEndDate) {
+        setDateError(
+          "End date cannot be earlier than start date. Adjusting start date.",
+        );
+        setStartDate(newEndDate);
+      } else {
+        setDateError(null);
+      }
     };
 
     const applyDateFilter = () => {
       onDateChange(startDate, endDate);
       setShowDateFilter(false);
+      setDateError(null);
     };
 
     const clearDateFilter = () => {
@@ -68,10 +89,12 @@ export const SavedJobsHeader = React.memo(
       setEndDate("");
       onDateChange("", "");
       setShowDateFilter(false);
+      setDateError(null);
     };
 
     const toggleDatePicker = () => {
       setShowDateFilter(!showDateFilter);
+      setDateError(null);
     };
 
     return (
@@ -111,8 +134,8 @@ export const SavedJobsHeader = React.memo(
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Categories</SelectItem>
-              {categories.map((category) => (
-                <SelectItem key={category} value={category}>
+              {JobCategory.map((category, idx) => (
+                <SelectItem key={idx} value={category}>
                   {category}
                 </SelectItem>
               ))}
@@ -161,6 +184,11 @@ export const SavedJobsHeader = React.memo(
                         className="w-full rounded-md border px-3 py-2 text-sm"
                       />
                     </div>
+                    {dateError && (
+                      <div className="flex items-center text-xs text-red-500">
+                        {dateError}
+                      </div>
+                    )}
                     <div className="flex justify-between pt-2">
                       <Button
                         variant="outline"
