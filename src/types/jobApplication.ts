@@ -1,4 +1,6 @@
-import { Job } from "./job";
+import { Company } from "./company";
+import { CompanyLocation } from "./companyLocation";
+import { Interview } from "./interviews";
 import { WorkExperience } from "./workExperience";
 
 export type JobApplicationStatus =
@@ -18,6 +20,7 @@ export interface JobApplication {
   status: JobApplicationStatus;
   notes: string | null;
   createdAt: Date;
+  updatedAt: Date;
   user: {
     fullName: string;
     currentAddress: string;
@@ -32,9 +35,16 @@ export interface JobApplication {
     };
     experience: WorkExperience[];
   };
+  interviews: Interview[];
   job: {
     title: string;
     requiresAssessment: boolean;
+    salary: number;
+    company: Company;
+    category: string;
+    companyLocation: CompanyLocation;
+    applicationDeadline: Date;
+    description: string;
     preTestAssessments: {
       id: number;
       passingScore: number;
@@ -44,4 +54,21 @@ export interface JobApplication {
       }[];
     }[];
   };
+}
+
+export interface JobApplicationFormData {
+  expectedSalary: number;
+  notes?: string;
+  useExistingCV: boolean;
+  cvFile: File | null;
+  attachment?: File | null;
+}
+
+export interface CreateJobApplicationRequest {
+  jobId: number;
+  expectedSalary: number;
+  notes?: string;
+  cvFile?: File | null;
+  useExistingCV?: boolean;
+  attachment?: File | null;
 }

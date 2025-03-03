@@ -7,18 +7,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Loader2, Trash2 } from "lucide-react";
-import {
-  ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getSortedRowModel,
-  SortingState,
-  useReactTable,
-} from "@tanstack/react-table";
-import { cn } from "@/lib/utils";
-import { useState } from "react";
-import { CompanyLocation } from "@/types/companyLocation";
+import { Loader2, Trash2, MapPin, Mailbox } from "lucide-react";
+import type { CompanyLocation } from "@/types/companyLocation";
+import React from "react";
 
 interface CompanyLocationsTableProps {
   locations: CompanyLocation[];
@@ -28,86 +19,18 @@ interface CompanyLocationsTableProps {
   isDeleting: boolean;
 }
 
-export default function CompanyLocationsTable({
+const CompanyLocationsTable = ({
   locations,
   isLoading,
   isError,
   onDeleteLocation,
   isDeleting,
-}: CompanyLocationsTableProps) {
-  const [sorting, setSorting] = useState<SortingState>([]);
-
-  const columns: ColumnDef<CompanyLocation>[] = [
-    {
-      header: "Address",
-      accessorKey: "address",
-      size: 300,
-    },
-    {
-      header: "Postcode",
-      accessorKey: "postalCode",
-      size: 120,
-    },
-    {
-      header: "Province",
-      accessorFn: (row) => row.regency?.province?.province || "Unknown",
-      size: 150,
-    },
-    {
-      header: "Regency",
-      accessorFn: (row) =>
-        row.regency
-          ? `${row.regency.regency} (${row.regency.type})`
-          : "Unknown",
-      size: 150,
-    },
-    {
-      header: "Latitude",
-      accessorKey: "latitude",
-      size: 120,
-    },
-    {
-      header: "Longitude",
-      accessorKey: "longitude",
-      size: 120,
-    },
-    {
-      header: "Created At",
-      accessorFn: (row) =>
-        row.createdAt ? new Date(row.createdAt).toLocaleDateString() : "-",
-      size: 120,
-    },
-    {
-      id: "actions",
-      size: 60,
-      cell: ({ row }) => (
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 text-destructive hover:bg-destructive/10 hover:text-destructive"
-          onClick={() => onDeleteLocation(row.original.id)}
-          disabled={isDeleting}
-        >
-          {isDeleting ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Trash2 className="h-4 w-4" />
-          )}
-        </Button>
-      ),
-    },
-  ];
-
-  const table = useReactTable({
-    data: locations,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
-    state: {
-      sorting,
-    },
-  });
+}: CompanyLocationsTableProps) => {
+  const formatDate = (dateString: string | undefined) => {
+    if (!dateString) return "-";
+    const date = new Date(dateString);
+    return date.toLocaleDateString();
+  };
 
   if (isError) {
     return (
@@ -118,66 +41,138 @@ export default function CompanyLocationsTable({
   }
 
   return (
-    <div className="rounded-lg border border-border bg-background">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id} className="hover:bg-transparent">
-              {headerGroup.headers.map((header) => (
-                <TableHead
-                  key={header.id}
-                  style={{ width: `${header.getSize()}px` }}
-                  className="h-11"
-                >
-                  {header.isPlaceholder ? null : header.column.getCanSort() ? (
-                    <div
-                      className={cn(
-                        "flex h-full cursor-pointer select-none items-center gap-2",
-                      )}
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      {flexRender(
-                        header.column.columnDef.header,
-                        header.getContext(),
-                      )}
-                    </div>
-                  ) : (
-                    flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )
-                  )}
-                </TableHead>
-              ))}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {isLoading ? (
+    <div className="w-full">
+      <div className="hidden md:block">
+        <Table>
+          <TableHeader className="bg-gray-50">
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                <Loader2 className="mx-auto h-6 w-6 animate-spin" />
-              </TableCell>
+              <TableHead className="w-[300px]">Address</TableHead>
+              <TableHead>Postal Code</TableHead>
+              <TableHead>Province</TableHead>
+              <TableHead>Regency</TableHead>
+              <TableHead>Created At</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
-          ) : table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>
-                ))}
+          </TableHeader>
+          <TableBody>
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <div className="py-8 text-center">
+                    <Loader2 className="mx-auto h-6 w-6 animate-spin" />
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      Loading locations...
+                    </p>
+                  </div>
+                </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No locations found.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
+            ) : locations.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={7}>
+                  <div className="py-8 text-center">No locations found</div>
+                </TableCell>
+              </TableRow>
+            ) : (
+              locations.map((location) => (
+                <TableRow key={location.id}>
+                  <TableCell className="font-medium">
+                    {location.address}
+                  </TableCell>
+                  <TableCell>{location.postalCode}</TableCell>
+                  <TableCell>
+                    {location.regency?.province?.province || "Unknown"}
+                  </TableCell>
+                  <TableCell>
+                    {location.regency
+                      ? `${location.regency.regency} (${location.regency.type})`
+                      : "Unknown"}
+                  </TableCell>
+                  <TableCell>
+                    {formatDate(location.createdAt.toLocaleString())}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      onClick={() => onDeleteLocation(location.id)}
+                      disabled={isDeleting}
+                    >
+                      {isDeleting ? (
+                        <Loader2 className="mr-1 h-4 w-4 animate-spin" />
+                      ) : (
+                        <Trash2 className="mr-1 h-4 w-4" />
+                      )}
+                      Delete
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      <div className="grid gap-4 md:hidden">
+        {isLoading ? (
+          <div className="py-8 text-center">
+            <Loader2 className="mx-auto h-6 w-6 animate-spin" />
+            <p className="mt-2 text-sm text-muted-foreground">
+              Loading locations...
+            </p>
+          </div>
+        ) : locations.length === 0 ? (
+          <div className="py-8 text-center">
+            <p className="text-sm text-muted-foreground">No locations found.</p>
+          </div>
+        ) : (
+          locations.map((location) => (
+            <div
+              key={location.id}
+              className="rounded-md border-[1px] bg-card p-4 shadow-sm"
+            >
+              <div className="flex flex-col gap-4">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h2 className="text-base font-semibold">
+                      {location.address}
+                    </h2>
+                    <p className="text-sm text-gray-500">
+                      {location.regency?.province?.province || "Unknown"},{" "}
+                      {location.regency?.regency || "Unknown"}
+                    </p>
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                    onClick={() => onDeleteLocation(location.id)}
+                    disabled={isDeleting}
+                  >
+                    {isDeleting ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <Trash2 className="h-4 w-4" />
+                    )}
+                  </Button>
+                </div>
+                <div className="flex items-center text-xs text-gray-500">
+                  <Mailbox size={14} className="mr-1" />
+                  {location.postalCode}
+                </div>
+                <div>
+                  <span className="font-medium">Created:</span>
+                  <br />
+                  {formatDate(location.createdAt.toLocaleString())}
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-sm"></div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default React.memo(CompanyLocationsTable);

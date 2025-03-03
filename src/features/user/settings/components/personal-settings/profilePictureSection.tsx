@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Label } from "@/components/ui/label";
 import { FormikProps } from "formik";
-import { PlusCircle } from "lucide-react";
+import { CircleUserRound, PlusCircle } from "lucide-react";
 import { toast } from "react-toastify";
 
 interface FormValues {
@@ -43,7 +43,10 @@ export const ProfilePictureSection = ({ formik }: FormFieldsProps) => {
 
   return (
     <div className="space-y-2">
-      <Label>Profile Picture</Label>
+      <Label className="flex items-center gap-2 font-semibold text-gray-700">
+        <CircleUserRound size={18} />
+        Profile Picture
+      </Label>
       <div className="flex flex-col items-center gap-4">
         <div className="relative">
           <Avatar className="h-24 w-24">

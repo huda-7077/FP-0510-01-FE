@@ -8,6 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { FormikProps } from "formik";
+import { House } from "lucide-react";
 import { useState } from "react";
 
 interface FormValues {
@@ -43,7 +44,6 @@ const COMMON_INDUSTRIES = [
 
 export const IndustrySelect = ({ formik }: IndustrySelectProps) => {
   const [showCustomInput, setShowCustomInput] = useState(() => {
-    // Check if initial value is not in common industries
     return !COMMON_INDUSTRIES.includes(formik.values.industry);
   });
 
@@ -59,7 +59,14 @@ export const IndustrySelect = ({ formik }: IndustrySelectProps) => {
 
   return (
     <div className="space-y-2">
-      <Label htmlFor="industry">Industry</Label>
+      <Label
+        htmlFor="industry"
+        className="flex items-center gap-2 font-semibold text-gray-700"
+      >
+        <House size={18} />
+        Industry
+        <span className="text-red-600">*</span>
+      </Label>
       {!showCustomInput ? (
         <Select
           onValueChange={handleIndustryChange}

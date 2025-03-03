@@ -3,11 +3,16 @@ import PaginationSection from "@/components/PaginationSection";
 import { Badge } from "@/components/ui/badge";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
-import { Bookmark, MapPin, SearchIcon } from "lucide-react";
+import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
+import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
+import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
+import { Bookmark, BookmarkCheck, MapPin, SearchIcon } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useDebounceValue } from "usehooks-ts";
 
 interface OpenJobsProps {
@@ -15,9 +20,56 @@ interface OpenJobsProps {
 }
 
 const OpenJobs = ({ companyId }: OpenJobsProps) => {
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" && !!session;
   const [search, setSearch] = useState("");
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [debouncedSearch] = useDebounceValue(search, 500);
+
+  const { data: savedJobsData } = useGetSavedJobs(
+    {
+      page: 1,
+      take: 100,
+    },
+    {
+      enabled: isAuthenticated,
+      staleTime: 5 * 60 * 1000,
+    },
+  );
+
+  const createSavedJobMutation = useCreateSavedJob();
+  const deleteSavedJobMutation = useDeleteSavedJob();
+
+  const isJobBookmarked = (jobId: number) => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return false;
+    return savedJobsData.data.some((savedJob) => savedJob.job.id === jobId);
+  };
+
+  const getSavedJobId = (jobId: number) => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return null;
+    const savedJob = savedJobsData.data.find(
+      (savedJob) => savedJob.job.id === jobId,
+    );
+    return savedJob ? savedJob.id : null;
+  };
+
+  const handleBookmarkToggle = (jobId: number) => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to bookmark jobs");
+      return;
+    }
+
+    const bookmarked = isJobBookmarked(jobId);
+
+    if (bookmarked) {
+      const savedJobId = getSavedJobId(jobId);
+      if (savedJobId) {
+        deleteSavedJobMutation.mutate(jobId);
+      }
+    } else {
+      createSavedJobMutation.mutate({ jobId });
+    }
+  };
 
   if (!companyId) {
     return (
@@ -132,7 +184,19 @@ const OpenJobs = ({ companyId }: OpenJobsProps) => {
                           </p>
                         </div>
                       </div>
-                      <Bookmark className="h-6 text-gray-400" />
+                      <div
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          handleBookmarkToggle(job.id);
+                        }}
+                      >
+                        {isJobBookmarked(job.id) ? (
+                          <BookmarkCheck className="h-6 cursor-pointer text-blue-600" />
+                        ) : (
+                          <Bookmark className="h-6 cursor-pointer text-gray-400 hover:text-blue-600" />
+                        )}
+                      </div>
                     </div>
                   </div>
                 </Link>

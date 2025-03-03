@@ -1,9 +1,20 @@
 import DiscoverySkeleton from "@/components/skeletons/DiscoverySkeleton";
 import { Button } from "@/components/ui/button";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
-import { ArrowRight, Bookmark, MapPin, Wallet } from "lucide-react";
+import {
+  ArrowRight,
+  Bookmark,
+  BookmarkCheck,
+  MapPin,
+  Wallet,
+} from "lucide-react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
+import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
+import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
+import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
 import { useEffect, useState } from "react";
 
 const formatSalary = (amount: number | null | undefined): string | null => {
@@ -35,6 +46,9 @@ const EmptyState = () => (
 );
 
 export default function DiscoverySection() {
+  const { data: session, status } = useSession();
+  const isAuthenticated = status === "authenticated" && !!session;
+
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -51,12 +65,10 @@ export default function DiscoverySection() {
           });
         },
         (error) => {
-          console.error("Error getting location:", error.message);
           setIsLocationDenied(true);
         },
       );
     } else {
-      console.error("Geolocation is not supported by this browser.");
       setIsLocationDenied(true);
     }
   }, []);
@@ -68,6 +80,51 @@ export default function DiscoverySection() {
     userLongitude: userLocation?.longitude,
     maxDistance: 50,
   });
+
+  const { data: savedJobsData } = useGetSavedJobs(
+    {
+      page: 1,
+      take: 100,
+    },
+    {
+      enabled: isAuthenticated,
+      staleTime: 5 * 60 * 1000,
+    },
+  );
+
+  const createSavedJobMutation = useCreateSavedJob();
+  const deleteSavedJobMutation = useDeleteSavedJob();
+
+  const isJobBookmarked = (jobId: number) => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return false;
+    return savedJobsData.data.some((savedJob) => savedJob.job.id === jobId);
+  };
+
+  const getSavedJobId = (jobId: number) => {
+    if (!isAuthenticated || !savedJobsData || !savedJobsData.data) return null;
+    const savedJob = savedJobsData.data.find(
+      (savedJob) => savedJob.job.id === jobId,
+    );
+    return savedJob ? savedJob.id : null;
+  };
+
+  const handleBookmarkToggle = (jobId: number) => {
+    if (!isAuthenticated) {
+      toast.info("Please log in to bookmark jobs");
+      return;
+    }
+
+    const bookmarked = isJobBookmarked(jobId);
+
+    if (bookmarked) {
+      const savedJobId = getSavedJobId(jobId);
+      if (savedJobId) {
+        deleteSavedJobMutation.mutate(jobId);
+      }
+    } else {
+      createSavedJobMutation.mutate({ jobId });
+    }
+  };
 
   if (isLoading) {
     return (
@@ -137,7 +194,7 @@ export default function DiscoverySection() {
           >
             <div className="flex items-center gap-4">
               <Image
-                src={job.company.logo || "/logo.svg"}
+                src={job.company.logo || "/anonymous.svg"}
                 alt={job.company.name}
                 width={40}
                 height={40}
@@ -166,7 +223,17 @@ export default function DiscoverySection() {
               </div>
             </div>
             <div className="flex items-center justify-between gap-4 sm:justify-end">
-              <Bookmark className="cursor-pointer text-blue-300 hover:text-blue-600" />
+              {isJobBookmarked(job.id) ? (
+                <BookmarkCheck
+                  className="cursor-pointer text-blue-600 hover:text-blue-800"
+                  onClick={() => handleBookmarkToggle(job.id)}
+                />
+              ) : (
+                <Bookmark
+                  className="cursor-pointer text-blue-300 hover:text-blue-600"
+                  onClick={() => handleBookmarkToggle(job.id)}
+                />
+              )}
               <Button
                 asChild
                 className="rounded-sm bg-blue-50 px-6 text-blue-600 shadow-none hover:bg-blue-600 hover:text-blue-50"

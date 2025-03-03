@@ -1,13 +1,8 @@
-import { UserDashboardLayout } from "@/components/layouts/UserDashboardLayout";
-import UserDashboardPage from "@/features/user/dashboard";
 import UserAuthGuard from "@/hoc/UserAuthGuard";
+import { redirect } from "next/navigation";
 
-const UserDashboard = () => {
-  return (
-    <UserDashboardLayout>
-      <UserDashboardPage />
-    </UserDashboardLayout>
-  );
+const DashboardUser = () => {
+  redirect("/dashboard/user/overview");
 };
 
-export default UserAuthGuard(UserDashboard);
+export default UserAuthGuard(DashboardUser);

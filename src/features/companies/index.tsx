@@ -1,5 +1,6 @@
 "use client";
 import HomeBreadcrumb from "@/components/HomeBreadcrumb";
+import { LocationPermission } from "@/components/LocationPermission";
 import PaginationSection from "@/components/PaginationSection";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -8,6 +9,7 @@ import { MapPin, Star } from "lucide-react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { parseAsInteger, useQueryState } from "nuqs";
+import { useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { EmployerCardSkeleton } from "./components/EmployerCardSkeleton";
 import { EmployerSearchSidebar } from "./components/EmployerSearchSidebar";
@@ -28,6 +30,15 @@ const CompaniesPage = () => {
   const [sortOrder] = useQueryState("sortOrder", { defaultValue: "asc" });
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [debouncedValue] = useDebounceValue(search, 500);
+  const [userCoordinates, setUserCoordinates] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [userLat, setUserLat] = useQueryState("userLat");
+  const [userLng, setUserLng] = useQueryState("userLng");
+  const [isUsingLocation, setIsUsingLocation] = useState(
+    !!userLat && !!userLng,
+  );
 
   const { data: companies, isPending } = useGetCompanies({
     search: debouncedValue,
@@ -40,6 +51,8 @@ const CompaniesPage = () => {
     sortOrder,
     take: 10,
     page,
+    userLatitude: userLat ? parseFloat(userLat) : undefined,
+    userLongitude: userLng ? parseFloat(userLng) : undefined,
   });
 
   const onChangePage = (newPage: number) => {
@@ -60,6 +73,21 @@ const CompaniesPage = () => {
         <EmployerSearchSidebar />
         <main className="flex-1">
           <div className="container mx-auto p-4">
+            <div className="mb-4 flex items-center justify-between">
+              <LocationPermission
+                onLocationUpdate={(coordinates) => {
+                  if (coordinates) {
+                    setUserLat(coordinates.lat.toString());
+                    setUserLng(coordinates.lng.toString());
+                  } else {
+                    setUserLat(null);
+                    setUserLng(null);
+                  }
+                  setIsUsingLocation(!!coordinates);
+                }}
+                isUsingLocation={isUsingLocation}
+              />
+            </div>
             {isPending ? (
               <div className="grid gap-4 md:grid-cols-2">
                 {[...Array(6)].map((_, index) => (

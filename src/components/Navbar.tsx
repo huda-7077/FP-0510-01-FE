@@ -1,11 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import useGetProfile from "@/hooks/api/account/useGetProfile";
-import { Bell, LayoutPanelLeft, Menu, Plus } from "lucide-react";
+import { LayoutPanelLeft, Mail, Menu, Plus } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AvatarMenu from "./AvatarNavbar";
 import SearchBar from "./NavbarSearchbar";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -15,20 +15,18 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const { data: session, status } = useSession();
   const { data: profile } = useGetProfile();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted || status === "loading") {
-    return null;
-  }
 
   const userRole = session?.user?.role || "USER";
   const isAdmin = userRole === "ADMIN";
@@ -43,6 +41,11 @@ const Navbar = () => {
     if (isDeveloper) return "/logo-developer.png";
     if (isAdmin) return "/logo-company.svg";
     return "/logo.svg";
+  };
+
+  const getVerificationUrl = () => {
+    if (isAdmin) return "/dashboard/admin/settings";
+    return "/dashboard/user/settings";
   };
 
   const navLinks = [
@@ -60,8 +63,7 @@ const Navbar = () => {
             : "/dashboard/developer",
       label: "Dashboard",
     },
-    { href: "/job-alerts", label: "Job Alerts" },
-    { href: "/customer-supports", label: "Customer Supports" },
+    { href: "/about-us", label: "About Us" },
   ];
 
   const renderDesktopUserMenu = () => (
@@ -118,6 +120,28 @@ const Navbar = () => {
       />
     </div>
   );
+
+  const renderVerificationButton = () => {
+    if (profile?.isVerified) return null;
+
+    return (
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Link href={getVerificationUrl()}>
+              <Button variant="ghost" size="icon" className="relative">
+                <Mail className="h-5 w-5 text-amber-500" />
+                <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
+              </Button>
+            </Link>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Email not verified. Click to verify your email.</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    );
+  };
 
   const renderTopBar = () => (
     <div className="hidden border-b bg-gray-50 px-6 py-2 lg:block">
@@ -195,10 +219,7 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             {session ? (
               <>
-                <Button variant="ghost" size="icon" className="relative">
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500" />
-                </Button>
+                {!profile?.isVerified && renderVerificationButton()}
                 <div className="hidden lg:block">{renderDesktopUserMenu()}</div>
                 <div className="lg:hidden">{renderMobileUserMenu()}</div>
               </>

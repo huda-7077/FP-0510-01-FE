@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { LogOut, LucideIcon, Menu, Plus, X } from "lucide-react";
+import { LogOut, LucideIcon, Menu, X } from "lucide-react";
 import UserSidebarLink from "./components/UserSidebarLink";
 import { Link } from "next-view-transitions";
 
@@ -9,7 +9,6 @@ interface SidebarProps {
   isOpen: boolean;
   onToggle: () => void;
 }
-
 const UserSidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
   return (
     <>
@@ -34,21 +33,10 @@ const UserSidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
         <div className="flex h-full flex-col justify-between">
           <div className="space-y-2 p-4">
             <div className="mb-4">
-              <p className="px-3 text-xs font-medium uppercase text-gray-500">
+              <p className="px-3 text-xs font-medium uppercase text-gray-500 pt-7 md:pt-0">
                 CANDIDATE DASHBOARD
               </p>
             </div>
-            <Link
-              href="/dashboard/admin/jobs/create"
-              className="flex w-full sm:hidden"
-            >
-              <Button
-                variant="default"
-                className="w-full bg-blue-600 hover:bg-blue-800 md:flex"
-              >
-                <Plus className="mr-2 h-4 w-4" /> Post A Job
-              </Button>
-            </Link>
 
             <div className="space-y-2">
               {links.map((link, index) => (

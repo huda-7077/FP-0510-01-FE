@@ -59,18 +59,13 @@ export const userSidebarLinks = [
   },
   {
     name: "Applied Jobs",
-    url: "/dashboard/user/apply-jobs",
+    url: "/dashboard/user/jobs",
     icon: BriefcaseBusiness,
   },
   {
     name: "Favorite Jobs",
-    url: "/dashboard/user/apply-jobs",
+    url: "/dashboard/user/saved-jobs",
     icon: Bookmark,
-  },
-  {
-    name: "Job Alerts",
-    url: "/dashboard/user/job-alerts",
-    icon: BellRing,
   },
   {
     name: "Badges",

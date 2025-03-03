@@ -106,8 +106,8 @@ const JobPage = ({ jobId }: JobDetailsProps) => {
             Job Details
           </h1>
           <HomeBreadcrumb
-            crumb1={{ href: "jobs", label: "Find Jobs" }}
-            lastCrumb={`${job.title}`}
+            crumb1={{ href: "jobs", label: "Find Job" }}
+            lastCrumb={`${job.title || "Job Details"}`}
           />
         </div>
       </div>

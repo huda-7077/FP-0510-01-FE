@@ -26,7 +26,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
     { href: "/jobs", label: "Find Job" },
     { href: "/companies", label: "Find Employers" },
     { href: "/job-alerts", label: "Job Alerts" },
-    { href: "/customer-supports", label: "Customer Supports" },
+    { href: "/about-us", label: "About Us" },
     { href: "/dashboard/user/settings", label: "Settings" },
   ];
 
