@@ -5,6 +5,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
 import useGetCompanyJob from "@/hooks/api/job/useGetCompanyJob";
 import useUpdateJob, { UpdateJobPayload } from "@/hooks/api/job/useUpdateJob";
@@ -20,25 +26,19 @@ import {
   TriangleAlert,
   Upload,
 } from "lucide-react";
-import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
+import { JobCategory } from "../../consts";
 import { createJobSchema } from "../schemas";
 import CategorySelectInput from "./CategorySelectInput";
 import EditJobFormHeader from "./EditJobFormHeader";
 import EditJobFormInput from "./EditJobFormInput";
 import EditJobFormSelectInput from "./EditJobFormSelectInput";
 import TagsInput from "./EditJobFormTagInput";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { JobCategory } from "../../consts";
+import useGetCompanyProfile from "@/hooks/api/company/useGetCompanyProfile";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -67,8 +67,8 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
   const { mutateAsync: updateJob, isPending: isUpdateJobPending } =
     useUpdateJob(id);
 
-  const { data: companyLocations, isLoading: isCompanyLocationsLoading } =
-    useGetCompanyLocations();
+  const { data: companyProfile, isLoading: isCompanyProfileLoading } =
+    useGetCompanyProfile();
 
   const formik = useFormik({
     initialValues: {
@@ -104,7 +104,6 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
         toast.success("Job Updated Successfully");
       } catch (error) {
         console.log(error);
-        toast.error((error as Error).toString());
       }
     },
   });
@@ -149,7 +148,7 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
         bannerImageReff.current.value = "";
       }
     }
-  }, [job, isJobPending, companyLocations, isCompanyLocationsLoading, id]);
+  }, [job, isJobPending, companyProfile, isCompanyProfileLoading, id]);
 
   const onChangeThumbnail = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -167,7 +166,7 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
     }
   };
 
-  if (isJobPending && isCompanyLocationsLoading) {
+  if (isJobPending && isCompanyProfileLoading) {
     return <LoadingScreen />;
   }
 
@@ -180,7 +179,6 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
       <EditJobFormHeader />
       <form onSubmit={formik.handleSubmit}>
         <div className="space-y-8">
-          {/* Banner Image Preview */}
           {selectedImage && (
             <div className="w-full">
               <div className="relative h-[200px] overflow-hidden rounded-xl shadow-md sm:h-[300px] md:h-[480px]">
@@ -193,8 +191,6 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
               </div>
             </div>
           )}
-
-          {/* Image Upload Section */}
           <div className="space-y-3 rounded-lg border border-dashed border-blue-200 bg-blue-50/50 p-6">
             <Label className="flex items-center gap-2 text-lg font-semibold text-blue-700">
               <Upload size={20} />
@@ -346,7 +342,7 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
             name="companyLocationId"
             label="Company Location"
             placeholder="Select Company Location"
-            companyLocations={companyLocations || []}
+            companyLocations={companyProfile?.companyLocations || []}
             formik={formik}
             isDisabled={isUpdateJobPending}
           />

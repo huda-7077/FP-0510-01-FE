@@ -87,7 +87,6 @@ const CreateJobForm = () => {
         toast.success("Job Created Successfully");
       } catch (error) {
         console.log(error);
-        toast.error((error as Error).toString());
       }
     },
   });

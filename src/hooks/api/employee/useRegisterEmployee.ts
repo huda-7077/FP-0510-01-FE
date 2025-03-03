@@ -19,10 +19,11 @@ const useRegisterEmployee = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
-      console.log("Employee Registered Successfullly");
     },
     onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data || error.response?.data.message);
+      toast.error(
+        error.response?.data?.message || "Failed to register employee",
+      );
     },
   });
 };

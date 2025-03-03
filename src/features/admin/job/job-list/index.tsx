@@ -14,8 +14,6 @@ import { JobCategory } from "../consts";
 
 export const JobListComponent = () => {
   const router = useRouter();
-  const session = useSession();
-  const user = session.data && session.data.user;
 
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
@@ -37,9 +35,6 @@ export const JobListComponent = () => {
   });
 
   const [debouncedSearch] = useDebounce(search, 500);
-
-  // const { data: jobCategories, isPending: isJobCategoriesPending } =
-  //   useGetJobCategories({ companyId: user?.companyId });
 
   const {
     data: jobs,

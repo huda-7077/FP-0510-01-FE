@@ -30,7 +30,7 @@ import {
   Upload,
 } from "lucide-react";
 import Link from "next/link";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -89,7 +89,6 @@ export const JobActionsMenu = ({
       notifyDatabaseChange();
     } catch (error) {
       console.log(error);
-      toast.error("Failed Updating Job");
     }
   };
 

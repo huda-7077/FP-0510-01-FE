@@ -27,7 +27,7 @@ interface UpdateInterviewFormProps {
 const UpdateInterviewForm: FC<UpdateInterviewFormProps> = ({ id }) => {
   const router = useRouter();
   const [isOnline, setIsOnline] = useState<boolean>(false);
-  const [isInitialized, setIsInitialized] = useState<boolean>(false); // Track initialization
+  const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const { formatDateForDateTimeLocal } = useFormatDateForDateTimeLocal();
   const { data: interview, isPending: isInterviewPending } = useGetInterview({
     id,
@@ -69,7 +69,6 @@ const UpdateInterviewForm: FC<UpdateInterviewFormProps> = ({ id }) => {
         toast.success("Interview Updated Successfully");
       } catch (error) {
         console.log(error);
-        toast.error((error as Error).toString());
       }
     },
   });

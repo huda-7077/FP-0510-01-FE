@@ -223,7 +223,10 @@ const AssessmentDetailsCard: FC<AssessmentDetailsCardProps> = ({
                   type="submit"
                   className="rounded-lg bg-blue-600 px-8 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-400"
                   disabled={
-                    isProcessing || !formik.isValid || isUpdateJobStatusPending
+                    isProcessing ||
+                    !formik.isValid ||
+                    isUpdateJobStatusPending ||
+                    assessment.status === "PUBLISHED"
                   }
                 >
                   {isUpdateJobStatusPending ? "Updating..." : "Update Details"}

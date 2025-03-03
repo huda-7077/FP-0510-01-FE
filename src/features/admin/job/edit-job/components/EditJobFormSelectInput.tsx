@@ -19,7 +19,18 @@ interface EditJobFormSelectInputProps {
   formik: any;
   className?: string;
   isDisabled: boolean;
-  companyLocations: CompanyLocation[];
+  companyLocations: {
+    id: number;
+    address: string;
+    latitude: string;
+    longitude: string;
+    regency: {
+      regency: string;
+      province: {
+        province: string;
+      };
+    };
+  }[];
 }
 
 const EditJobFormSelectInput: React.FC<EditJobFormSelectInputProps> = ({

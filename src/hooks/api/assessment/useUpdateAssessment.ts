@@ -30,11 +30,9 @@ const useUpdateAssessment = () => {
     },
 
     onError: (error: AxiosError<any>) => {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.response?.data ||
-        "An error occurred";
-      toast.error(errorMessage);
+      toast.error(
+        error.response?.data?.message || "Failed to update assessment status",
+      );
     },
   });
 };

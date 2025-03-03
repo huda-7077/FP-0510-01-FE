@@ -1,6 +1,7 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 const useDeleteJob = () => {
   const queryClient = useQueryClient();
@@ -17,7 +18,7 @@ const useDeleteJob = () => {
       });
     },
     onError: (error: AxiosError<any>) => {
-      console.log(error.response?.data);
+      toast.error(error.response?.data?.message || "Failed to delete job");
     },
   });
 };

@@ -25,7 +25,6 @@ const useCreateAssessmentQuestion = () => {
       queryClient.invalidateQueries({
         queryKey: ["assessment-questions"],
       });
-      console.log("Assessment Question added successfullly");
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data?.message || "Failed to add question");

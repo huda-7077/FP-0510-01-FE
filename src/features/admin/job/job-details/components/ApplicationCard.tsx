@@ -12,22 +12,6 @@ import ApplicationCardDropdown from "./ApplicationCardDropdown";
 import ManageApplicationButton from "./ApplicationShortlistButton";
 import ApplicationStatusBadge from "./ApplicationStatusBadge";
 import AssessmentBadge from "./AssessmentBadge";
-import { Button } from "@/components/ui/button";
-import useRegisterEmployee from "@/hooks/api/employee/useRegisterEmployee";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "react-toastify";
-import useFormatTitleCase from "@/hooks/useFormatTitleCase";
 import RegisterEmployeeButton from "./RegisterEmployeeButton";
 
 interface ApplicationCardProps {
@@ -78,15 +62,14 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
   return (
     <Card className="group relative overflow-hidden rounded-2xl border-2 border-gray-200 bg-white px-6 py-4 shadow-none transition-all duration-300 ease-in-out hover:border-blue-600">
       <div className="flex flex-col gap-6 sm:flex-row sm:items-center">
-        <div className="flex-shrink-0">
-          <ApplicantProfilePicture
-            profilePicture={application.user.profilePicture}
-            fullName={application.user.fullName}
-            ringColor="ring-gray-200"
-          />
-        </div>
-
         <div className="flex-grow space-y-3">
+          <div className="flex-shrink-0">
+            <ApplicantProfilePicture
+              profilePicture={application.user.profilePicture}
+              fullName={application.user.fullName}
+              ringColor="ring-gray-200"
+            />
+          </div>
           <div className="space-y-2">
             <div className="flex items-center gap-2">
               <h3 className="text-base font-semibold tracking-tight text-gray-900">

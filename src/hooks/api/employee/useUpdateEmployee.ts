@@ -25,10 +25,9 @@ const useUpdateEmployee = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["employees"] });
-      console.log("Employee Updated Successfullly");
     },
     onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data || error.response?.data.message);
+      toast.error(error.response?.data?.message || "Failed to update employee");
     },
   });
 };
