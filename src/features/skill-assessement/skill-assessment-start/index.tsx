@@ -7,6 +7,8 @@ import useGetSkillAssessment from "@/hooks/api/skill-assessment/useGetSkillAsses
 import { FC, useEffect, useState } from "react";
 import ConfirmStartSkillAssessment from "./components/ConfirmStartSkillAssessment";
 import SkillAssessmentQuestionsComponent from "./components/SkillAssessmentQuestionsComponent";
+import useGetSubscription from "@/hooks/api/subscription/useGetSubscription";
+import { FeatureLocked } from "@/components/FeatureLocked";
 
 interface SkillAssessmentStartProps {
   slug: string;
@@ -17,7 +19,8 @@ const SkillAssessmentStartPage: FC<SkillAssessmentStartProps> = ({ slug }) => {
   const [isPassed, setIsPassed] = useState<boolean | null>(null);
 
   const { data: userAttempt } = useGetUserAttempt(slug);
-
+  const { data: subscription, isLoading: isSubscriptionLoading } =
+    useGetSubscription();
   const { data: skillAssessments, isLoading: isSkillAssessmentLoading } =
     useGetSkillAssessment(slug);
 
@@ -41,12 +44,20 @@ const SkillAssessmentStartPage: FC<SkillAssessmentStartProps> = ({ slug }) => {
     }
   }, [userAttempt, createdAt, isPassed]);
 
-  const isLoading = isSkillAssessmentLoading;
+  const isLoading = isSkillAssessmentLoading || isSubscriptionLoading;
 
   if (isLoading) return <LoadingScreen />;
 
   return (
     <>
+      {subscription &&
+        (subscription.status === "EXPIRED" ||
+          subscription.status === "INACTIVE" ||
+          subscription.status === "RENEWED") && (
+          <>
+            <FeatureLocked />
+          </>
+        )}
       {skillAssessments &&
         (!userAttempt || userAttempt?.status === "ENDED") && (
           <ConfirmStartSkillAssessment
