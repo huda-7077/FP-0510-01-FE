@@ -20,6 +20,7 @@ interface Question {
 
 interface QuestionFormProps {
   assessmentId?: number;
+  assessmentStatus: string;
   assessmentQuestionId?: number;
   editQuestion?: Question | null;
   onCancelEdit?: () => void;
@@ -28,6 +29,7 @@ interface QuestionFormProps {
 
 export function QuestionForm({
   assessmentId,
+  assessmentStatus,
   assessmentQuestionId,
   editQuestion,
   onCancelEdit,
@@ -201,7 +203,11 @@ export function QuestionForm({
           <Button
             type="submit"
             className="rounded-lg bg-blue-600 px-8 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500/20 disabled:bg-gray-100 disabled:text-gray-400"
-            disabled={isProcessing || formik.isSubmitting}
+            disabled={
+              isProcessing ||
+              formik.isSubmitting ||
+              assessmentStatus === "PUBLISHED"
+            }
           >
             {editQuestion ? "Update Question" : "Add Question"}
           </Button>

@@ -60,7 +60,6 @@ const CreateInterviewForm: FC<CreateInterviewFormProps> = ({
         toast.success("Interview Created Successfully");
       } catch (error) {
         console.log(error);
-        toast.error((error as Error).toString());
       }
     },
   });

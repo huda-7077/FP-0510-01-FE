@@ -5,11 +5,6 @@ import { toast } from "react-toastify";
 
 export interface UpdateJobApplicationPayload {
   id: number;
-  jobId?: number;
-  userId?: number;
-  cvFile?: string;
-  attachment?: string;
-  expectedSalary?: number;
   status?: string;
   notes?: string;
 }

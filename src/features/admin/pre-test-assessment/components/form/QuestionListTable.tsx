@@ -20,6 +20,7 @@ interface Question {
 
 interface QuestionListTableProps {
   questions: AssessmentQuestion[];
+  assessmentStatus: string;
   isProcessing: boolean;
   onDelete: (id: number) => void;
   onEdit: (id: number, question: Omit<Question, "id">) => void;
@@ -27,6 +28,7 @@ interface QuestionListTableProps {
 
 export function QuestionListTable({
   questions,
+  assessmentStatus,
   isProcessing,
   onDelete,
   onEdit,
@@ -107,7 +109,7 @@ export function QuestionListTable({
                         ),
                       })
                     }
-                    disabled={isProcessing}
+                    disabled={isProcessing || assessmentStatus === "PUBLISHED"}
                   >
                     <Pencil className="h-4 w-4" />
                   </Button>
@@ -118,7 +120,7 @@ export function QuestionListTable({
                     size="icon"
                     className="h-8 w-8 bg-red-50 text-red-600 transition-colors hover:bg-red-100 hover:text-red-700"
                     onClick={() => onDelete(question.id)}
-                    disabled={isProcessing}
+                    disabled={isProcessing || assessmentStatus === "PUBLISHED"}
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>

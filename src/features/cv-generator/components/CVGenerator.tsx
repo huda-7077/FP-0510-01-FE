@@ -16,14 +16,27 @@ import { NonFormalEducationInput } from "./form/NonFormalEducationInput";
 import { OrganizationInput } from "./form/OrganizationInput";
 import { SkillInput } from "./form/SkillInput";
 import CVSchema from "./schemas";
+import useGetProfile from "@/hooks/api/account/useGetProfile";
 
 const CVGenerator = () => {
   const [showPDF, setShowPDF] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const { data } = useGetProfile();
 
   useEffect(() => {
     setIsClient(true);
-  }, []);
+    if (data) {
+      formik.setValues((prevValues) => ({
+        ...prevValues,
+        fullName: data.fullName || "",
+        details: [
+          data.email || "",
+          ...(data.phoneNumber ? [data.phoneNumber] : []),
+          ...(data.currentAddress ? [data.currentAddress] : []),
+        ],
+      }));
+    }
+  }, [data]);
 
   const formik = useFormik<CVData>({
     initialValues: {

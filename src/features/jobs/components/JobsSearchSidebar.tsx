@@ -22,7 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { JobCategory } from "@/features/admin/job/create-job/consts";
+import { JobCategory } from "@/features/admin/job/consts";
 import useGetRegencies from "@/hooks/api/location/useGetRegencies";
 import { cn } from "@/lib/utils";
 import { addDays, addMonths, endOfDay, format, startOfDay } from "date-fns";

@@ -9,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import useGetCompanyProfile from "@/hooks/api/company/useGetCompanyProfile";
 import { MapPin } from "lucide-react";
 import React from "react";
 
@@ -29,8 +30,8 @@ const CompanyLocationSelectInput: React.FC<FormikSelectProps> = ({
   className = "",
   isDisabled = false,
 }) => {
-  // const { data: companyLocations, isLoading: isCompanyLocationsLoading } =
-  //   useGetCompanyLocations({ take: 10, page: 1 });
+  const { data: companyProfile, isLoading: isCompanyProfileLoading } =
+    useGetCompanyProfile();
 
   return (
     <div className={`space-y-2 ${className}`}>
@@ -52,17 +53,17 @@ const CompanyLocationSelectInput: React.FC<FormikSelectProps> = ({
         </SelectTrigger>
         <SelectContent className="max-h-60 overflow-auto">
           <SelectGroup>
-            {/* {isCompanyLocationsLoading ? (
+            {isCompanyProfileLoading ? (
               <SelectItem value="Loading" disabled={true}>
                 Loading...
               </SelectItem>
             ) : (
-              companyLocations?.map((location) => (
+              companyProfile?.companyLocations.map((location) => (
                 <SelectItem key={location.id} value={String(location.id)}>
                   {location.address}, {location.regency.regency}
                 </SelectItem>
               ))
-            )} */}
+            )}
           </SelectGroup>
         </SelectContent>
       </Select>

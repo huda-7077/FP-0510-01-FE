@@ -1,21 +1,37 @@
 import { Button } from "@/components/ui/button";
-import { Download } from "lucide-react";
 import { FC } from "react";
 
 interface DownloadCVButtonProps {
-  cvUrl: string;
-  clasName?: string;
+  url: string;
+  className?: string;
+  variant:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link"
+    | null
+    | undefined;
+  text: string;
+  icon: any;
 }
 
-const DownloadCVButton: FC<DownloadCVButtonProps> = ({ cvUrl, clasName }) => {
+const DownloadCVButton: FC<DownloadCVButtonProps> = ({
+  url,
+  className,
+  variant,
+  text,
+  icon,
+}) => {
   return (
     <Button
-      variant="outline"
-      onClick={() => window.open(cvUrl, "_blank")}
-      className={clasName}
+      variant={variant}
+      onClick={() => window.open(url, "_blank")}
+      className={className}
     >
-      <Download className="h-4 w-4 transition-transform group-hover:-translate-y-1" />
-      <span className="font-medium">Download CV</span>
+      {icon}
+      <span className="font-medium">{text}</span>
     </Button>
   );
 };

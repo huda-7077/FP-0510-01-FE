@@ -27,7 +27,7 @@ import { cn } from "@/lib/utils";
 import useGetRegencies from "@/hooks/api/location/useGetRegencies";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
-import { JobCategory } from "@/features/admin/job/create-job/consts";
+import { JobCategory } from "@/features/admin/job/consts";
 
 interface LocationFilterProps {
   setLocation: (value: string | null) => void;

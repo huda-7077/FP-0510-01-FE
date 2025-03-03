@@ -36,8 +36,6 @@ const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
 const CreateJobForm = () => {
   const router = useTransitionRouter();
   const { data: session, status } = useSession();
-  const user = session?.user;
-  const companyId = user?.companyId || 0;
 
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [isPublished, setIsPublished] = useState<boolean>(false);
@@ -58,7 +56,6 @@ const CreateJobForm = () => {
 
   const formik = useFormik({
     initialValues: {
-      companyId,
       title: "",
       description: "",
       bannerImage: null,
@@ -74,7 +71,6 @@ const CreateJobForm = () => {
     onSubmit: async (values) => {
       try {
         const payload: CreateJobPayload = {
-          companyId,
           title: values.title,
           description: values.description,
           bannerImage: values.bannerImage,
@@ -91,7 +87,6 @@ const CreateJobForm = () => {
         toast.success("Job Created Successfully");
       } catch (error) {
         console.log(error);
-        toast.error((error as Error).toString());
       }
     },
   });

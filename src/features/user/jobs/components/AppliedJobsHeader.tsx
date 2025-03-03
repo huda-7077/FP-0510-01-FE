@@ -1,4 +1,4 @@
-import React from "react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -8,11 +8,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { SearchIcon, Calendar, AlertCircle } from "lucide-react";
+import { JobCategory } from "@/features/admin/job/consts";
+import { Calendar, SearchIcon } from "lucide-react";
 import { useQueryState } from "nuqs";
-import { useState } from "react";
-import { Badge } from "@/components/ui/badge";
-import { JobCategory } from "@/features/admin/job/create-job/consts";
+import React, { useState } from "react";
 
 interface AppliedJobsHeaderProps {
   totalApplications: number;

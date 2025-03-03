@@ -61,7 +61,6 @@ export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
       toast.success("Job Deleted Successfully");
     } catch (error) {
       console.log(error);
-      toast.error("Failed Updating Job");
     } finally {
       document.body.style.pointerEvents = "";
       router.push("/dashboard/admin/jobs");
