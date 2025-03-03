@@ -2,19 +2,18 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import useResetPassword from "@/hooks/api/auth/useResetPassword";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import {
+  AlertCircle,
   ArrowRight,
   Eye,
   EyeOff,
   Loader2Icon,
-  AlertCircle,
 } from "lucide-react";
 import { useState } from "react";
-import Link from "next/link";
 import { ResetPasswordSchema } from "../schemas";
-import useResetPassword from "@/hooks/api/auth/useResetPassword";
 
 export function ResetPasswordForm({
   className,

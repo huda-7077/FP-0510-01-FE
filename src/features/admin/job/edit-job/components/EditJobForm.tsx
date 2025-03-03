@@ -11,7 +11,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
 import useGetCompanyJob from "@/hooks/api/job/useGetCompanyJob";
 import useUpdateJob, { UpdateJobPayload } from "@/hooks/api/job/useUpdateJob";
 import useFormatTitleCase from "@/hooks/useFormatTitleCase";
@@ -26,9 +25,9 @@ import {
   TriangleAlert,
   Upload,
 } from "lucide-react";
+import { useTransitionRouter } from "next-view-transitions";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { JobCategory } from "../../consts";
@@ -49,7 +48,7 @@ interface EditJobFormProps {
 }
 
 const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const [selectedImage, setSelectedImage] = useState("");
   const [isPublished, setIsPublished] = useState(false);

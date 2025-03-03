@@ -5,15 +5,15 @@ import { useVerifyEmail } from "@/hooks/api/auth/useVerifyEmail";
 import { setVerificationSuccess } from "@/redux/slices/verificationSlice";
 import { CheckCircle2, Loader2, XCircle } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const VerifyTokenPage = () => {
   const { data: session } = useSession();
-  const router = useRouter();
+  const router = useTransitionRouter();
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
   const token = searchParams.get("token");

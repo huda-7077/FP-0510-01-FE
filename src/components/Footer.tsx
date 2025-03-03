@@ -1,10 +1,10 @@
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import {
   FaFacebookF,
-  FaYoutube,
   FaInstagram,
   FaXTwitter,
+  FaYoutube,
 } from "react-icons/fa6";
 
 export default function Footer() {
@@ -16,7 +16,9 @@ export default function Footer() {
             <Image src="/logo-white.svg" alt="logo" width={112} height={26} />
             <p className="mt-2">
               Call now:{" "}
-              <span className="font-semibold text-white"><a href="tel:3195550115">(319) 555-0115</a></span>
+              <span className="font-semibold text-white">
+                <a href="tel:3195550115">(319) 555-0xxx</a>
+              </span>
             </p>
             <p className="mt-2 text-xs">
               Jl. Anggajaya 2, Sanggrahan, Condongcatur, Kec. Depok, Kabupaten
@@ -29,7 +31,7 @@ export default function Footer() {
               <h3 className="mb-2 font-semibold text-white">Quick Link</h3>
               <ul className="space-y-2 text-xs">
                 <li>
-                  <Link href="/about" className="hover:text-white">
+                  <Link href="/about-us" className="hover:text-white">
                     About
                   </Link>
                 </li>
@@ -55,7 +57,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/companies" className="hover:text-white">
                     Browse Employers
                   </Link>
                 </li>
@@ -65,7 +67,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/dashboard/user/saved-jobs" className="hover:text-white">
                     Saved Jobs
                   </Link>
                 </li>
@@ -78,11 +80,6 @@ export default function Footer() {
                 <li>
                   <Link href="#" className="hover:text-white">
                     Post a Job
-                  </Link>
-                </li>
-                <li>
-                  <Link href="#" className="hover:text-white">
-                    Browse Candidates
                   </Link>
                 </li>
                 <li>
@@ -102,7 +99,7 @@ export default function Footer() {
               <h3 className="mb-2 font-semibold text-white">Support</h3>
               <ul className="space-y-2 text-xs">
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link href="/contact" className="hover:text-white">
                     FAQs
                   </Link>
                 </li>
@@ -113,7 +110,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <Link href="/terms" className="hover:text-white">
-                    Terms & Conditions
+                    Terms of Service
                   </Link>
                 </li>
               </ul>
@@ -121,9 +118,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-8 flex flex-col items-center justify-between border-t border-gray-700 pt-6 md:flex-row">
-          <p className="text-sm">
-            © 2025 Supajob. All rights reserved.
-          </p>
+          <p className="text-sm">© 2025 Supajob. All rights reserved.</p>
           <div className="mt-4 flex space-x-4 md:mt-0">
             <Link
               href="https://www.facebook.com"

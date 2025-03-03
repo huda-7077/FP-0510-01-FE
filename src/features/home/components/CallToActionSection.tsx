@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 export default function CallToActionSection() {
   return (
-    <section className="container mx-auto mt-12 grid grid-cols-1 gap-6 px-4 md:grid-cols-2 md:px-6 pb-10 md:py-16">
+    <section className="container mx-auto mt-12 grid grid-cols-1 gap-6 px-4 pb-10 md:grid-cols-2 md:px-6 md:py-16">
       <Card className="space-y-5 rounded-lg bg-gray-100 p-6 duration-500 hover:shadow-xl md:p-10 lg:p-20">
         <h3 className="text-lg font-semibold md:text-xl">
           Take Your Career to the Next Level

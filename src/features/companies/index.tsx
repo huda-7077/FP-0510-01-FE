@@ -1,16 +1,18 @@
 "use client";
+import HomeBreadcrumb from "@/components/HomeBreadcrumb";
+import { LocationPermission } from "@/components/LocationPermission";
+import PaginationSection from "@/components/PaginationSection";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import useGetCompanies from "@/hooks/api/company/useGetCompanies";
 import { MapPin, Star } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { parseAsInteger, useQueryState } from "nuqs";
+import { useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import PaginationSection from "@/components/PaginationSection";
-import Link from "next/link";
-import { EmployerSearchSidebar } from "./components/EmployerSearchSidebar";
 import { EmployerCardSkeleton } from "./components/EmployerCardSkeleton";
-import HomeBreadcrumb from "@/components/HomeBreadcrumb";
+import { EmployerSearchSidebar } from "./components/EmployerSearchSidebar";
 
 const CompaniesPage = () => {
   const [search] = useQueryState("search", { defaultValue: "" });
@@ -28,6 +30,15 @@ const CompaniesPage = () => {
   const [sortOrder] = useQueryState("sortOrder", { defaultValue: "asc" });
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [debouncedValue] = useDebounceValue(search, 500);
+  const [userCoordinates, setUserCoordinates] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null);
+  const [userLat, setUserLat] = useQueryState("userLat");
+  const [userLng, setUserLng] = useQueryState("userLng");
+  const [isUsingLocation, setIsUsingLocation] = useState(
+    !!userLat && !!userLng,
+  );
 
   const { data: companies, isPending } = useGetCompanies({
     search: debouncedValue,
@@ -40,6 +51,8 @@ const CompaniesPage = () => {
     sortOrder,
     take: 10,
     page,
+    userLatitude: userLat ? parseFloat(userLat) : undefined,
+    userLongitude: userLng ? parseFloat(userLng) : undefined,
   });
 
   const onChangePage = (newPage: number) => {
@@ -49,17 +62,32 @@ const CompaniesPage = () => {
   return (
     <div className="min-h-screen">
       <div className="bg-[#f7f7f8]">
-        <div className="container mx-auto flex justify-between px-6 py-5 items-center">
+        <div className="container mx-auto flex items-center justify-between px-6 py-5">
           <h1 className="text-lg font-medium duration-150 hover:pl-3 hover:text-blue-600">
             Find Employers
           </h1>
-          <HomeBreadcrumb lastCrumb="Find Employers"/>
+          <HomeBreadcrumb lastCrumb="Find Employers" />
         </div>
       </div>
       <div className="container relative mx-auto flex flex-col bg-background p-4 md:flex-row md:gap-7">
         <EmployerSearchSidebar />
         <main className="flex-1">
           <div className="container mx-auto p-4">
+            <div className="mb-4 flex items-center justify-between">
+              <LocationPermission
+                onLocationUpdate={(coordinates) => {
+                  if (coordinates) {
+                    setUserLat(coordinates.lat.toString());
+                    setUserLng(coordinates.lng.toString());
+                  } else {
+                    setUserLat(null);
+                    setUserLng(null);
+                  }
+                  setIsUsingLocation(!!coordinates);
+                }}
+                isUsingLocation={isUsingLocation}
+              />
+            </div>
             {isPending ? (
               <div className="grid gap-4 md:grid-cols-2">
                 {[...Array(6)].map((_, index) => (

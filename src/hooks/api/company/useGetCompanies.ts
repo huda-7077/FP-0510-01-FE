@@ -10,6 +10,9 @@ interface GetCompaniesQuery extends PaginationQueries {
   establishedYearMin?: string;
   establishedYearMax?: string;
   hasActiveJobs?: string;
+  userLatitude?: number; 
+  userLongitude?: number; 
+  maxDistance?: number; 
 }
 
 interface CompanyResponse extends Omit<Company, "user"> {

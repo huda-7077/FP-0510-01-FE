@@ -3,15 +3,15 @@ import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import useGetAssessmentQuestions from "@/hooks/api/assessment-question/useGetAssessmentQuestions";
+import useAutoSubmitUserAnswers from "@/hooks/api/assessment-user-attempt/useAutoSubmitUserAnswer";
+import useSaveUserAnswer from "@/hooks/api/assessment-user-attempt/useSaveUserAnswer";
+import useSubmitUserAnswers from "@/hooks/api/assessment-user-attempt/useSubmitUserAnswers";
 import { AssessmentUserAttempt } from "@/types/assessment";
-import { CheckCircle, ChevronLeft, ChevronRight } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useTransitionRouter } from "next-view-transitions";
 import { useEffect, useRef, useState } from "react";
 import AssessmentQuestionHeader from "./AssessmentQuestionHeader";
-import useGetAssessmentQuestions from "@/hooks/api/assessment-question/useGetAssessmentQuestions";
-import useSaveUserAnswer from "@/hooks/api/assessment-user-attempt/useSaveUserAnswer";
-import useAutoSubmitUserAnswers from "@/hooks/api/assessment-user-attempt/useAutoSubmitUserAnswer";
-import useSubmitUserAnswers from "@/hooks/api/assessment-user-attempt/useSubmitUserAnswers";
 
 interface UserAnswer {
   questionId: number;
@@ -46,7 +46,7 @@ export default function AssessmentQuestionsComponent({
     sessionStorage.setItem("attemptId", String(attempt.id));
   }, [submitted]);
 
-  const router = useRouter();
+  const router = useTransitionRouter();
   const hasAutoSubmitted = useRef(false);
 
   const clearAndFinalizeAssessment = () => {

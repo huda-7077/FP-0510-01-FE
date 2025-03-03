@@ -3,17 +3,16 @@ import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import PaginationSection from "@/components/PaginationSection";
 import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 import useGetCompanyJobs from "@/hooks/api/job/useGetCompanyJobs";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
+import { JobCategory } from "../consts";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
-import { JobCategory } from "../consts";
 
 export const JobListComponent = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });

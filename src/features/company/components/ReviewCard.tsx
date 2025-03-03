@@ -104,7 +104,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({
               <RatingStars rating={Number(review.overallRating)} />
             </div>
             <span className="text-sm text-gray-500">
-              {format(new Date(review.createdAt), "dd/MM/yyyy")}
+              {format(new Date(review.createdAt), "MMM dd, yyyy")}
             </span>
           </div>
         </div>

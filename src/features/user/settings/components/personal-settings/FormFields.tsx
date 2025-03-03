@@ -1,13 +1,23 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
 import { FormikProps } from "formik";
+import {
+  User,
+  Briefcase,
+  Calendar,
+  UserCheck,
+  GraduationCap,
+  Phone,
+  Code,
+} from "lucide-react";
+import SkillsInput from "./SkillsInput";
 
 interface FormValues {
   fullName: string;
@@ -35,7 +45,14 @@ export const FormFields = ({ formik }: FormFieldsProps) => {
     <>
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="fullName">Full name</Label>
+          <Label
+            htmlFor="fullName"
+            className="flex items-center gap-2 font-semibold text-gray-700"
+          >
+            <User size={18} />
+            Full name
+            <span className="text-red-600">*</span>
+          </Label>
           <Input
             id="fullName"
             name="fullName"
@@ -55,7 +72,14 @@ export const FormFields = ({ formik }: FormFieldsProps) => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="headline">Professional Headline</Label>
+          <Label
+            htmlFor="headline"
+            className="flex items-center gap-2 font-semibold text-gray-700"
+          >
+            <Briefcase size={18} />
+            Professional Headline
+            <span className="text-red-600">*</span>
+          </Label>
           <Input
             id="headline"
             name="headline"
@@ -77,7 +101,14 @@ export const FormFields = ({ formik }: FormFieldsProps) => {
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="dateOfBirth">Date of Birth</Label>
+          <Label
+            htmlFor="dateOfBirth"
+            className="flex items-center gap-2 font-semibold text-gray-700"
+          >
+            <Calendar size={18} />
+            Date of Birth
+            <span className="text-red-600">*</span>
+          </Label>
           <Input
             id="dateOfBirth"
             name="dateOfBirth"
@@ -97,7 +128,14 @@ export const FormFields = ({ formik }: FormFieldsProps) => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="gender">Gender</Label>
+          <Label
+            htmlFor="gender"
+            className="flex items-center gap-2 font-semibold text-gray-700"
+          >
+            <UserCheck size={18} />
+            Gender
+            <span className="text-red-600">*</span>
+          </Label>
           <Select
             name="gender"
             value={formik.values.gender}
@@ -133,7 +171,14 @@ export const FormFields = ({ formik }: FormFieldsProps) => {
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="educationLevel">Education Level</Label>
+          <Label
+            htmlFor="educationLevel"
+            className="flex items-center gap-2 font-semibold text-gray-700"
+          >
+            <GraduationCap size={18} />
+            Education Level
+            <span className="text-red-600">*</span>
+          </Label>
           <Select
             name="educationLevel"
             value={formik.values.educationLevel}
@@ -170,7 +215,14 @@ export const FormFields = ({ formik }: FormFieldsProps) => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="phoneNumber">Phone Number</Label>
+          <Label
+            htmlFor="phoneNumber"
+            className="flex items-center gap-2 font-semibold text-gray-700"
+          >
+            <Phone size={18} />
+            Phone Number
+            <span className="text-red-600">*</span>
+          </Label>
           <Input
             id="phoneNumber"
             name="phoneNumber"
@@ -191,26 +243,13 @@ export const FormFields = ({ formik }: FormFieldsProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="skills">Skills</Label>
-        <Input
-          id="skills"
-          name="skills"
-          placeholder="e.g. JavaScript, React, Node.js (separate with commas)"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+        <SkillsInput
+          label="Skills"
+          placeholder="e.g. JavaScript, React, Node.js"
           value={formik.values.skills}
-          className={
-            formik.errors.skills && formik.touched.skills
-              ? "border-red-500"
-              : ""
-          }
+          formik={formik}
+          onChange={(skills) => formik.setFieldValue("skills", skills)}
         />
-        <p className="text-xs text-gray-500">
-          Please separate each skill with a comma.
-        </p>
-        {formik.errors.skills && formik.touched.skills && (
-          <p className="text-xs text-red-500">{formik.errors.skills}</p>
-        )}
       </div>
     </>
   );

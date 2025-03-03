@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import useGetSubscriptionCategories from "@/hooks/api/subscription-categories/useGetSubscriptionCategories";
 import { Check, Gem, Package } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 
 function Feature({ text }: { text: string }) {
   return (
@@ -187,7 +187,7 @@ const SubscriptionCard = () => {
           </div>
 
           <Link
-            href="/dashboard/user/subscriptions"
+            href="/subscriptions"
             className="flex items-center justify-center"
           >
             <Button className="group w-fit transform bg-blue-600 p-6 text-xl font-semibold text-white transition-all duration-300 hover:bg-blue-700">

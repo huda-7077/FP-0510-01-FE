@@ -1,17 +1,19 @@
+import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { CalendarDays, Hourglass } from "lucide-react";
-import { useState } from "react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { addDays, addMonths, endOfDay, format, startOfDay } from "date-fns";
+import { AlertCircle, CalendarDays, Hourglass } from "lucide-react";
+import { useState, useEffect } from "react";
 
 interface TimeRangeFilterProps {
   timeRange: string;
   setTimeRange: (value: string) => void;
-  startDate: string; // Add startDate as a prop
+  startDate: string;
   setStartDate: (value: string) => void;
-  endDate: string; // Add endDate as a prop
+  endDate: string;
   setEndDate: (value: string) => void;
+  onApplyFilter?: () => void;
 }
 
 export const TimeRangeFilter = ({
@@ -21,19 +23,61 @@ export const TimeRangeFilter = ({
   setStartDate,
   endDate,
   setEndDate,
+  onApplyFilter,
 }: TimeRangeFilterProps) => {
+  const [tempStartDate, setTempStartDate] = useState(startDate);
+  const [tempEndDate, setTempEndDate] = useState(endDate);
+  const [isDateRangeInvalid, setIsDateRangeInvalid] = useState(false);
+
+  // Initialize temp dates when parent dates change from non-custom sources
+  useEffect(() => {
+    if (timeRange !== "custom") {
+      setTempStartDate(startDate);
+      setTempEndDate(endDate);
+    }
+  }, [timeRange, startDate, endDate]);
+
+  // Validate date range
+  useEffect(() => {
+    if (tempStartDate && tempEndDate) {
+      setIsDateRangeInvalid(new Date(tempStartDate) > new Date(tempEndDate));
+    } else {
+      setIsDateRangeInvalid(false);
+    }
+  }, [tempStartDate, tempEndDate]);
+
   const handleTimeRangeChange = (value: string) => {
     setTimeRange(value);
     const today = new Date();
+    
     if (value === "week") {
-      setStartDate(format(startOfDay(addDays(today, -7)), "yyyy-MM-dd"));
-      setEndDate(format(endOfDay(today), "yyyy-MM-dd"));
+      const newStartDate = format(startOfDay(addDays(today, -7)), "yyyy-MM-dd");
+      const newEndDate = format(endOfDay(today), "yyyy-MM-dd");
+      setStartDate(newStartDate);
+      setEndDate(newEndDate);
+      setTempStartDate(newStartDate);
+      setTempEndDate(newEndDate);
     } else if (value === "month") {
-      setStartDate(format(startOfDay(addMonths(today, -1)), "yyyy-MM-dd"));
-      setEndDate(format(endOfDay(today), "yyyy-MM-dd"));
-    } else {
-      setStartDate("");
-      setEndDate("");
+      const newStartDate = format(startOfDay(addMonths(today, -1)), "yyyy-MM-dd");
+      const newEndDate = format(endOfDay(today), "yyyy-MM-dd");
+      setStartDate(newStartDate);
+      setEndDate(newEndDate);
+      setTempStartDate(newStartDate);
+      setTempEndDate(newEndDate);
+    } else if (value === "custom") {
+      // When switching to custom, initialize with current values but don't apply yet
+      setTempStartDate(startDate || "");
+      setTempEndDate(endDate || "");
+    }
+  };
+
+  const handleApplyCustomRange = () => {
+    if (!isDateRangeInvalid && tempStartDate && tempEndDate) {
+      setStartDate(tempStartDate);
+      setEndDate(tempEndDate);
+      if (onApplyFilter) {
+        onApplyFilter();
+      }
     }
   };
 
@@ -63,8 +107,6 @@ export const TimeRangeFilter = ({
           <Label htmlFor="custom">Custom range</Label>
         </div>
       </RadioGroup>
-
-      {/* Custom Date Range */}
       {timeRange === "custom" && (
         <div className="space-y-4 mt-4">
           <div>
@@ -77,8 +119,8 @@ export const TimeRangeFilter = ({
             <Input
               type="date"
               id="startDate"
-              value={startDate}
-              onChange={(e) => setStartDate(e.target.value)}
+              value={tempStartDate}
+              onChange={(e) => setTempStartDate(e.target.value)}
               className="mt-2"
             />
           </div>
@@ -92,11 +134,26 @@ export const TimeRangeFilter = ({
             <Input
               type="date"
               id="endDate"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+              value={tempEndDate}
+              onChange={(e) => setTempEndDate(e.target.value)}
               className="mt-2"
             />
           </div>
+          
+          {isDateRangeInvalid && (
+            <div className="flex items-center text-red-500 mt-2 text-sm">
+              <AlertCircle className="h-4 w-4 mr-2" />
+              Start date cannot be greater than end date
+            </div>
+          )}
+          
+          <Button 
+            onClick={handleApplyCustomRange}
+            disabled={isDateRangeInvalid || !tempStartDate || !tempEndDate}
+            className="w-full mt-2"
+          >
+            Apply Custom Range
+          </Button>
         </div>
       )}
     </div>

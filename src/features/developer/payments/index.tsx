@@ -8,6 +8,7 @@ import { PaymentCard } from "./components/PaymentCard";
 import { PaymentCardSkeleton } from "./components/PaymentCardSkeleton";
 import { PaymentHeader } from "./components/PaymentHeader";
 import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 
 export const PaymentListComponent = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
@@ -24,7 +25,11 @@ export const PaymentListComponent = () => {
     defaultValue: "",
   });
 
-  const { data: payments, isLoading } = useGetPayments({
+  const {
+    data: payments,
+    isLoading,
+    refetch,
+  } = useGetPayments({
     page,
     sortOrder: "desc",
     sortBy,
@@ -67,6 +72,10 @@ export const PaymentListComponent = () => {
     setSortBy(sort);
   };
 
+  const handleRefetch = () => {
+    refetch();
+  };
+
   return (
     <>
       <DashboardBreadcrumb route="developer" lastCrumb="Payments" />
@@ -90,9 +99,18 @@ export const PaymentListComponent = () => {
                   <PaymentCardSkeleton />
                 </>
               )}
-              {payments?.data.map((payment, index) => (
-                <PaymentCard payment={payment} key={index} />
-              ))}
+
+              {payments &&
+                payments.data.map((payment, index) => (
+                  <PaymentCard
+                    payment={payment}
+                    key={index}
+                    refetch={handleRefetch}
+                  />
+                ))}
+              {payments && payments.data.length === 0 && (
+                <DataNotFound title="No payments found" />
+              )}
             </div>
           </div>
           {payments &&

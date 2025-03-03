@@ -19,7 +19,7 @@ import {
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { createJobSchema } from "../schemas";
@@ -34,7 +34,7 @@ const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
 });
 
 const CreateJobForm = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const { data: session, status } = useSession();
 
   const [selectedImage, setSelectedImage] = useState<string>("");

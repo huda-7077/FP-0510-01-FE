@@ -24,8 +24,8 @@ import {
   Upload,
   X,
 } from "lucide-react";
+import { useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 import { UpdateSkillAssessmentSchema } from "../../schemas";
 
@@ -46,7 +46,7 @@ const SkillAssessmentDetailsCard: FC<SkillAssessmentDetailsCardProps> = ({
   const [generateSlug, setGenerateSlug] = useState(false);
   const { mutateAsync: updateSkillAssessment } = useUpdateSkillAssessment();
 
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const formik = useFormik({
     initialValues: {

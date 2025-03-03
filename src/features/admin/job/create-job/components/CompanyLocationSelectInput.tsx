@@ -9,7 +9,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
 import useGetCompanyProfile from "@/hooks/api/company/useGetCompanyProfile";
 import { MapPin } from "lucide-react";
 import React from "react";

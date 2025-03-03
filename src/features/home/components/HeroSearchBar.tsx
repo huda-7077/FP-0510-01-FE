@@ -27,9 +27,10 @@ import { cn } from "@/lib/utils";
 import useGetRegencies from "@/hooks/api/location/useGetRegencies";
 import { useQueryState } from "nuqs";
 import { useState } from "react";
+import { JobCategory } from "@/features/admin/job/consts";
 
 interface LocationFilterProps {
-  setLocation: (value: string | null) => void; 
+  setLocation: (value: string | null) => void;
 }
 
 function LocationFilter({ setLocation }: LocationFilterProps) {
@@ -62,8 +63,8 @@ function LocationFilter({ setLocation }: LocationFilterProps) {
                 <CommandItem
                   key={reg.id}
                   onSelect={() => {
-                    setLocation(reg.regency); 
-                    setOpen(false); 
+                    setLocation(reg.regency);
+                    setOpen(false);
                   }}
                 >
                   {reg.regency}
@@ -132,9 +133,11 @@ const HeroSearchBar = () => {
               />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="technology">Technology</SelectItem>
-              <SelectItem value="marketing">Marketing</SelectItem>
-              <SelectItem value="finance">Finance</SelectItem>
+              {JobCategory.map((category, idx) => (
+                <SelectItem key={idx} value={category}>
+                  {category}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>

@@ -22,10 +22,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { JobCategory } from "@/features/admin/job/consts";
 import useGetRegencies from "@/hooks/api/location/useGetRegencies";
 import { cn } from "@/lib/utils";
 import { addDays, addMonths, endOfDay, format, startOfDay } from "date-fns";
 import {
+  AlertCircle,
   ArrowUpDown,
   CalendarDays,
   Check,
@@ -37,7 +39,7 @@ import {
   Shapes,
 } from "lucide-react";
 import { useQueryState } from "nuqs";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 
 export function JobSearchSidebar() {
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
@@ -56,21 +58,66 @@ export function JobSearchSidebar() {
     defaultValue: "desc",
   });
 
+  // New state for temporary custom date range values and validation
+  const [tempStartDate, setTempStartDate] = useState(startDate || "");
+  const [tempEndDate, setTempEndDate] = useState(endDate || "");
+  const [isDateRangeInvalid, setIsDateRangeInvalid] = useState(false);
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+  // Initialize temp dates when parent dates change from non-custom sources
+  useEffect(() => {
+    if (timeRange !== "custom") {
+      setTempStartDate(startDate || "");
+      setTempEndDate(endDate || "");
+    }
+  }, [timeRange, startDate, endDate]);
+
+  // Validate date range
+  useEffect(() => {
+    if (tempStartDate && tempEndDate) {
+      setIsDateRangeInvalid(new Date(tempStartDate) > new Date(tempEndDate));
+    } else {
+      setIsDateRangeInvalid(false);
+    }
+  }, [tempStartDate, tempEndDate]);
 
   const handleTimeRangeChange = (value: string) => {
     setTimeRange(value || null);
     const today = new Date();
 
     if (value === "week") {
-      setStartDate(format(startOfDay(addDays(today, -7)), "yyyy-MM-dd"));
-      setEndDate(format(endOfDay(today), "yyyy-MM-dd"));
+      const newStartDate = format(startOfDay(addDays(today, -7)), "yyyy-MM-dd");
+      const newEndDate = format(endOfDay(today), "yyyy-MM-dd");
+      setStartDate(newStartDate);
+      setEndDate(newEndDate);
+      setTempStartDate(newStartDate);
+      setTempEndDate(newEndDate);
     } else if (value === "month") {
-      setStartDate(format(startOfDay(addMonths(today, -1)), "yyyy-MM-dd"));
-      setEndDate(format(endOfDay(today), "yyyy-MM-dd"));
+      const newStartDate = format(
+        startOfDay(addMonths(today, -1)),
+        "yyyy-MM-dd",
+      );
+      const newEndDate = format(endOfDay(today), "yyyy-MM-dd");
+      setStartDate(newStartDate);
+      setEndDate(newEndDate);
+      setTempStartDate(newStartDate);
+      setTempEndDate(newEndDate);
+    } else if (value === "custom") {
+      // When switching to custom, initialize with current values but don't apply yet
+      setTempStartDate(startDate || "");
+      setTempEndDate(endDate || "");
     } else {
       setStartDate(null);
       setEndDate(null);
+      setTempStartDate("");
+      setTempEndDate("");
+    }
+  };
+
+  const handleApplyCustomRange = () => {
+    if (!isDateRangeInvalid && tempStartDate && tempEndDate) {
+      setStartDate(tempStartDate);
+      setEndDate(tempEndDate);
     }
   };
 
@@ -82,6 +129,8 @@ export function JobSearchSidebar() {
     setStartDate(null);
     setEndDate(null);
     setSortOrder("desc");
+    setTempStartDate("");
+    setTempEndDate("");
   };
 
   return (
@@ -138,9 +187,11 @@ export function JobSearchSidebar() {
                 <SelectValue placeholder="Select category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="technology">Technology</SelectItem>
-                <SelectItem value="marketing">Marketing</SelectItem>
-                <SelectItem value="finance">Finance</SelectItem>
+                {JobCategory.map((category, idx) => (
+                  <SelectItem key={idx} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
           </div>
@@ -165,23 +216,49 @@ export function JobSearchSidebar() {
             </RadioGroup>
 
             {timeRange === "custom" && (
-              <div className="mt-2 flex flex-col gap-2 py-4 md:space-y-1 space-y-0">
-                <Label className="flex items-center gap-2">
-                  <CalendarDays className="h-4 w-4 text-blue-600" /> Start Date
-                </Label>
-                <Input
-                  type="date"
-                  value={startDate || ""}
-                  onChange={(e) => setStartDate(e.target.value || null)}
-                />
-                <Label className="flex items-center gap-2">
-                  <CalendarDays className="h-4 w-4 text-blue-600" /> End Date
-                </Label>
-                <Input
-                  type="date"
-                  value={endDate || ""}
-                  onChange={(e) => setEndDate(e.target.value || null)}
-                />
+              <div className="mt-5 space-y-3">
+                <div>
+                  <Label className="flex items-center gap-2">
+                    <CalendarDays className="h-4 w-4 text-blue-600" /> Start
+                    Date
+                  </Label>
+                  <Input
+                    type="date"
+                    value={tempStartDate}
+                    onChange={(e) => setTempStartDate(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+
+                <div>
+                  <Label className="flex items-center gap-2">
+                    <CalendarDays className="h-4 w-4 text-blue-600" /> End Date
+                  </Label>
+                  <Input
+                    type="date"
+                    value={tempEndDate}
+                    onChange={(e) => setTempEndDate(e.target.value)}
+                    className="mt-1"
+                  />
+                </div>
+
+                {isDateRangeInvalid && (
+                  <div className="flex items-center text-xs text-red-500">
+                    <AlertCircle className="mr-2 h-4 w-4" />
+                    Start date cannot be greater than end date
+                  </div>
+                )}
+
+                <Button
+                  onClick={handleApplyCustomRange}
+                  variant="ghost"
+                  disabled={
+                    isDateRangeInvalid || !tempStartDate || !tempEndDate
+                  }
+                  className="w-full bg-white text-blue-700 hover:bg-blue-100 hover:text-blue-700"
+                >
+                  Apply Custom Range
+                </Button>
               </div>
             )}
           </div>
@@ -225,7 +302,7 @@ function LocationFilter() {
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-      <Button variant="outline" className="w-full justify-between">
+        <Button variant="outline" className="w-full justify-between">
           {location
             ? regencies?.find((reg) => reg.regency === location)?.regency
             : "Select location"}

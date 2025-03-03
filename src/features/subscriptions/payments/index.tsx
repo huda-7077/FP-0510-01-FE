@@ -9,9 +9,9 @@ import { Label } from "@/components/ui/label";
 import useGetPayment from "@/hooks/api/payment/useGetPayment";
 import useUpdatePayment from "@/hooks/api/payment/useUpdatePayment";
 import { useFormik } from "formik";
-import { Clock, Receipt, Upload, X } from "lucide-react";
+import { Clock, MoveLeft, Receipt, Upload, X } from "lucide-react";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { ChangeEvent, FC, useEffect, useRef, useState } from "react";
 
 interface PaymentPageProps {
@@ -19,6 +19,7 @@ interface PaymentPageProps {
 }
 
 const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
+  const router = useTransitionRouter();
   const [countdown, setCountdown] = useState(0);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -132,7 +133,16 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50/50 to-white px-4 py-12">
       <Card className="mx-auto max-w-2xl shadow-lg">
-        <CardHeader className="text-center">
+        <CardHeader className="relative text-center">
+          <div className="absolute left-7 top-7">
+            <Button
+              variant="ghost"
+              className="border-2"
+              onClick={() => router.back()}
+            >
+              <MoveLeft />
+            </Button>
+          </div>
           <CardTitle className="text-3xl font-bold text-gray-900">
             Payment Details
           </CardTitle>

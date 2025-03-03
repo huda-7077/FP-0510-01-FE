@@ -29,8 +29,7 @@ import {
   SquarePen,
   Upload,
 } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
@@ -43,7 +42,7 @@ export const JobActionsMenu = ({
   job,
   notifyDatabaseChange,
 }: JobActionsMenuProps) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const { mutateAsync: updateJobStatus, isPending: isUpdateJobStatusPending } =
     useUpdateJobStatus();

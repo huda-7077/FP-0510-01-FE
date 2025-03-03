@@ -1,4 +1,4 @@
-import { Building2, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 interface LoadingScreenProps {
   message?: string;

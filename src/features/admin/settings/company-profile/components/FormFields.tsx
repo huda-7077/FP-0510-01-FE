@@ -4,6 +4,16 @@ import { Textarea } from "@/components/ui/textarea";
 import { FormikProps } from "formik";
 import dynamic from "next/dynamic";
 import { IndustrySelect } from "./IndustrySelect";
+import {
+  Binoculars,
+  Building2,
+  CalendarFold,
+  Globe,
+  NotebookPen,
+  Phone,
+  Users,
+} from "lucide-react";
+import LinksInput from "./LinksInput";
 
 interface FormValues {
   name: string;
@@ -31,7 +41,14 @@ export const CompanyFormFields = ({ formik }: CompanyFormFieldsProps) => {
     <>
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="name">Company Name</Label>
+          <Label
+            htmlFor="name"
+            className="flex items-center gap-2 font-semibold text-gray-700"
+          >
+            <Building2 size={18} />
+            Company Name
+            <span className="text-red-600">*</span>
+          </Label>
           <Input
             id="name"
             name="name"
@@ -53,7 +70,14 @@ export const CompanyFormFields = ({ formik }: CompanyFormFieldsProps) => {
 
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="employeeCount">Number of Employees</Label>
+          <Label
+            htmlFor="employeeCount"
+            className="flex items-center gap-2 font-semibold text-gray-700"
+          >
+            <Users size={18} />
+            Number of Employees
+            <span className="text-red-600">*</span>
+          </Label>
           <Input
             id="employeeCount"
             name="employeeCount"
@@ -76,7 +100,14 @@ export const CompanyFormFields = ({ formik }: CompanyFormFieldsProps) => {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="establishedYear">Established Year</Label>
+          <Label
+            htmlFor="establishedYear"
+            className="flex items-center gap-2 font-semibold text-gray-700"
+          >
+            <CalendarFold size={18} />
+            Established Year
+            <span className="text-red-600">*</span>
+          </Label>
           <Input
             id="establishedYear"
             name="establishedYear"
@@ -100,7 +131,14 @@ export const CompanyFormFields = ({ formik }: CompanyFormFieldsProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="description">Description</Label>
+        <Label
+          htmlFor="description"
+          className="flex items-center gap-2 font-semibold text-gray-700"
+        >
+          <NotebookPen size={18} />
+          Description
+          <span className="text-red-600">*</span>
+        </Label>
         <Textarea
           id="description"
           name="description"
@@ -120,6 +158,11 @@ export const CompanyFormFields = ({ formik }: CompanyFormFieldsProps) => {
       </div>
 
       <div className="space-y-2">
+        <Label htmlFor="about" className="flex items-center gap-2 font-semibold text-gray-700">
+          <Binoculars size={18} />
+          About Company
+          <span className="text-red-600">*</span>
+        </Label>
         <RichTextEditor
           label="About Company"
           value={formik.values.about}
@@ -131,25 +174,24 @@ export const CompanyFormFields = ({ formik }: CompanyFormFieldsProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="links">Company Links</Label>
-        <Input
-          id="links"
-          name="links"
-          placeholder="Enter company website, social media links"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+        <LinksInput
+          label="Company Links"
+          placeholder="e.g. https://example.com, https://social-media.com"
           value={formik.values.links}
-          className={
-            formik.errors.links && formik.touched.links ? "border-red-500" : ""
-          }
+          formik={formik}
+          onChange={(links) => formik.setFieldValue("links", links)}
         />
-        {formik.errors.links && formik.touched.links && (
-          <p className="text-xs text-red-500">{formik.errors.links}</p>
-        )}
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="phoneNumber">Phone Number</Label>
+        <Label
+          htmlFor="phoneNumber"
+          className="flex items-center gap-2 font-semibold text-gray-700"
+        >
+          <Phone size={18} />
+          Phone Number
+          <span className="text-red-600">*</span>
+        </Label>
         <Input
           id="phoneNumber"
           name="phoneNumber"

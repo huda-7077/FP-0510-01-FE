@@ -34,8 +34,7 @@ import {
   Plus,
   Trash2,
 } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { AssessmentStatusBadge } from "../../job-list/components/AssessmentStatusBadge";
@@ -46,7 +45,7 @@ interface JobDetailsHeaderProps {
 }
 
 export const JobDetailsHeader = ({ job }: JobDetailsHeaderProps) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const { mutateAsync: deleteJob, isPending: isDeleteJobPending } =

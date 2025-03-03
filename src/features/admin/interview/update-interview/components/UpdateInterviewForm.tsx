@@ -13,7 +13,7 @@ import useFormatDateForDateTimeLocal from "@/hooks/useFormatDateForDateTimeLocal
 import { formatISO } from "date-fns";
 import { useFormik } from "formik";
 import { Calendar, Clipboard, Link, MapPin, User2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { FC, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { updateInterviewSchema } from "../schemas";
@@ -25,7 +25,7 @@ interface UpdateInterviewFormProps {
 }
 
 const UpdateInterviewForm: FC<UpdateInterviewFormProps> = ({ id }) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const [isOnline, setIsOnline] = useState<boolean>(false);
   const [isInitialized, setIsInitialized] = useState<boolean>(false);
   const { formatDateForDateTimeLocal } = useFormatDateForDateTimeLocal();

@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { Bell } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Link } from "next-view-transitions";
+import Image from "next/image";
+import React, { useState } from "react";
 import SearchBar from "./NavbarSearchbar";
 
 interface AvatarMenuProps {
@@ -27,7 +26,7 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
     { href: "/jobs", label: "Find Job" },
     { href: "/companies", label: "Find Employers" },
     { href: "/job-alerts", label: "Job Alerts" },
-    { href: "/customer-supports", label: "Customer Supports" },
+    { href: "/about-us", label: "About Us" },
     { href: "/dashboard/user/settings", label: "Settings" },
   ];
 

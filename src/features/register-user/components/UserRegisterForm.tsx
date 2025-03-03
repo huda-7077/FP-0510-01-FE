@@ -8,16 +8,15 @@ import useRegister from "@/hooks/api/auth/useRegister";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import {
+  AlertCircle,
   ArrowRight,
   Eye,
   EyeOff,
   Loader2Icon,
-  AlertCircle,
 } from "lucide-react";
+import Image from "next/image";
 import { useState } from "react";
 import { userRegisterSchema } from "../schemas";
-import Link from "next/link";
-import Image from "next/image";
 
 export function UserRegisterForm({
   className,

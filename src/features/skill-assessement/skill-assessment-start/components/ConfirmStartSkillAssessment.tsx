@@ -13,8 +13,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { SkillAssessment } from "@/types/skillAssessments";
 import { AlertTriangle, Clock, ShieldCheck } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { FC, useEffect, useRef, useState } from "react";
 import InfoCard from "./InfoCard";
 

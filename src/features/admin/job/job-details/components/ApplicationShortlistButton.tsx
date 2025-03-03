@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { CheckCircle, Clock, LoaderCircle, XCircle } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { FC } from "react";
 import { toast } from "react-toastify";
 import ApplicationAcceptanceAlert from "./ApplicationAcceptanceAlert";
@@ -23,7 +23,7 @@ const ManageApplicationButton: FC<ApplicationShortlistButtonProps> = ({
   jobApplicationId,
   status,
 }) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const {
     mutateAsync: updateJobApplication,

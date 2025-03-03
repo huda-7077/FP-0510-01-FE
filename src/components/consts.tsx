@@ -8,8 +8,10 @@ import {
   Clock,
   CreditCard,
   FileStack,
+  HandCoins,
   Layers,
   Luggage,
+  PanelsTopLeft,
   PencilLine,
   Settings,
   UserPlus,
@@ -57,18 +59,13 @@ export const userSidebarLinks = [
   },
   {
     name: "Applied Jobs",
-    url: "/dashboard/user/apply-jobs",
+    url: "/dashboard/user/jobs",
     icon: BriefcaseBusiness,
   },
   {
     name: "Favorite Jobs",
-    url: "/dashboard/user/apply-jobs",
+    url: "/dashboard/user/saved-jobs",
     icon: Bookmark,
-  },
-  {
-    name: "Job Alerts",
-    url: "/dashboard/user/job-alerts",
-    icon: BellRing,
   },
   {
     name: "Badges",
@@ -81,6 +78,16 @@ export const userSidebarLinks = [
     icon: PencilLine,
   },
   {
+    name: "Subscriptions",
+    url: "/dashboard/user/subscriptions",
+    icon: CreditCard,
+  },
+  {
+    name: "Payments",
+    url: "/dashboard/user/payments",
+    icon: HandCoins,
+  },
+  {
     name: "Settings",
     url: "/dashboard/user/settings",
     icon: Settings,
@@ -88,6 +95,11 @@ export const userSidebarLinks = [
 ];
 
 export const developerSidebarLinks = [
+  {
+    name: "Overview",
+    url: "/dashboard/developer",
+    icon: PanelsTopLeft,
+  },
   {
     name: "Subscriptions",
     url: "/dashboard/developer/subscriptions",

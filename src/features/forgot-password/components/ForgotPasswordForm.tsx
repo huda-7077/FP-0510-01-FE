@@ -6,7 +6,7 @@ import useForgotPassword from "@/hooks/api/auth/useForgotPassword";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
 import { AlertCircle, ArrowRight, Loader2Icon } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { ForgotPasswordSchema } from "../schemas";
 
 export function ForgotPasswordForm({

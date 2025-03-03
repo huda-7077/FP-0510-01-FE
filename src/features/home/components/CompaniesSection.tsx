@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, ArrowRight } from "lucide-react";
-import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import useGetCompanies from "@/hooks/api/company/useGetCompanies";
-import Link from "next/link";
+import { ArrowRight, MapPin } from "lucide-react";
+import { Link } from "next-view-transitions";
+import Image from "next/image";
 
 const EmptyState = () => (
   <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12">
@@ -43,13 +43,15 @@ export default function CompaniesSection() {
         <h2 className="text-xl font-semibold sm:text-2xl">
           Discover Top Companies
         </h2>
-        <Button
-          variant="outline"
-          className="group self-start rounded-sm font-semibold text-[#0A65CC] shadow-none transition-colors hover:border-blue-50 hover:bg-blue-50 hover:text-blue-600 sm:self-auto"
-        >
-          View All
-          <ArrowRight className="ml-2 h-4 w-4 stroke-[3] transition-transform group-hover:translate-x-1" />
-        </Button>
+        <Link href="/companies">
+          <Button
+            variant="outline"
+            className="group self-start rounded-sm font-semibold text-[#0A65CC] shadow-none transition-colors hover:border-blue-50 hover:bg-blue-50 hover:text-blue-600 sm:self-auto"
+          >
+            View All
+            <ArrowRight className="ml-2 h-4 w-4 stroke-[3] transition-transform group-hover:translate-x-1" />
+          </Button>
+        </Link>
       </div>
 
       {isLoading ? (
@@ -80,7 +82,6 @@ export default function CompaniesSection() {
               className="group relative overflow-hidden rounded-md border border-gray-200 shadow-none transition-all hover:border-blue-500 hover:shadow-lg hover:ring-1 hover:ring-blue-500"
             >
               <CardContent className="flex h-full flex-col p-4">
-                {/* Company Header */}
                 <div className="mb-4 flex items-start gap-3">
                   <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
                     <Image
@@ -111,7 +112,6 @@ export default function CompaniesSection() {
                   </div>
                 </div>
 
-                {/* Company Details & Button */}
                 <div className="mt-auto space-y-3">
                   {company.averageRating > 0 && (
                     <div className="flex items-center text-sm text-gray-500">
@@ -121,12 +121,14 @@ export default function CompaniesSection() {
                       </span>
                     </div>
                   )}
-                  <Button
-                    className="w-full rounded-md bg-blue-50 text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
-                    variant="ghost"
-                  >
-                    View Company
-                  </Button>
+                  <Link href={`/companies/${company.id}`}>
+                    <Button
+                      className="w-full rounded-md bg-blue-50 text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
+                      variant="ghost"
+                    >
+                      View Company
+                    </Button>
+                  </Link>
                 </div>
               </CardContent>
             </Card>
