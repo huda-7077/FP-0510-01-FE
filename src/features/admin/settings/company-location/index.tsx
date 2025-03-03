@@ -1,7 +1,3 @@
-"use client";
-
-import type React from "react";
-
 import { Button } from "@/components/ui/button";
 import { useDeleteCompanyLocation } from "@/hooks/api/company-location/useDeleteCompanyLocation";
 import { Plus, X } from "lucide-react";

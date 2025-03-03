@@ -7,6 +7,7 @@ import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
 import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
 import { useAuth } from "@/hooks/useAuth";
 import { Bookmark, BookmarkCheck, MapPin } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

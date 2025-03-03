@@ -3,7 +3,7 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { toast } from "react-toastify";
 
 interface ChangePasswordPayload {
@@ -12,7 +12,7 @@ interface ChangePasswordPayload {
 }
 
 const useChangePassword = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const { axiosInstance } = useAxios();
   const queryClient = useQueryClient();
   return useMutation({

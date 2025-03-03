@@ -1,5 +1,5 @@
 import useAxios from "@/hooks/useAxios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "react-toastify";
 
@@ -10,6 +10,7 @@ interface CreatePaymentsPayload {
 }
 
 const useCreatePayments = () => {
+  const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
 
   return useMutation({
@@ -19,6 +20,7 @@ const useCreatePayments = () => {
     },
     onSuccess: () => {
       toast.success("create payment success");
+      queryClient.invalidateQueries({ queryKey: ["payment"] });
     },
     onError: (error: AxiosError<any>) => {
       toast.error(error.response?.data || error.response?.data.message);

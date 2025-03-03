@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import DiscoverySkeleton from "@/components/skeletons/DiscoverySkeleton";
 import { Button } from "@/components/ui/button";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
@@ -9,6 +8,7 @@ import {
   MapPin,
   Wallet,
 } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import Link from "next/link";
 import { useSession } from "next-auth/react";

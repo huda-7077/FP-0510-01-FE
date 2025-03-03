@@ -11,7 +11,7 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import useCreatePayments from "@/hooks/api/payment/useCreatePayment";
 import { CreditCard, Upload } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { useState } from "react";
 
 interface CheckoutDialogProps {
@@ -30,7 +30,7 @@ export function CheckoutDialog({
   const [paymentMethod, setPaymentMethod] = useState<
     "PAYMENT_GATEWAY" | "PAYMENT_MANUAL"
   >("PAYMENT_GATEWAY");
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const { mutateAsync: createPayment, isPending: createPaymentPending } =
     useCreatePayments();

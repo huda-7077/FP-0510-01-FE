@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/dialog";
 import { BadgeData } from "@/types/badge";
 import { format } from "date-fns";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { SlBadge } from "react-icons/sl";
 
 interface DetailsDialogProps {

@@ -3,9 +3,9 @@ import { Button } from "@/components/ui/button";
 import useGetProfile from "@/hooks/api/account/useGetProfile";
 import { LayoutPanelLeft, Mail, Menu, Plus } from "lucide-react";
 import { signOut, useSession } from "next-auth/react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import AvatarMenu from "./AvatarNavbar";
 import SearchBar from "./NavbarSearchbar";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
@@ -189,26 +189,7 @@ const Navbar = () => {
                   </Button>
                 </Link>
               )}
-              {isDeveloper && (
-                <>
-                  {/* <Link href="/dashboard/developer/subscription-categories/create">
-                    <Button
-                      variant="default"
-                      className="hidden bg-blue-600 hover:bg-blue-700 md:flex"
-                    >
-                      <Plus className="mr-2 h-4 w-4" /> Add Subscription
-                      Category
-                    </Button>
-                  </Link> */}
-                  {/* <Link href="/dashboard/developer">
-                    <Button variant="ghost" className="hidden md:flex">
-                      <LayoutPanelLeft className="mr-2 h-4 w-4" /> Developer
-                      Dashboard
-                    </Button>
-                  </Link> */}
-                </>
-              )}
-              {!profile?.isVerified && renderVerificationButton()}
+              {isDeveloper && <></>}
               <div className="hidden lg:block">{renderDesktopUserMenu()}</div>
               <div className="lg:hidden">{renderMobileUserMenu()}</div>
             </div>

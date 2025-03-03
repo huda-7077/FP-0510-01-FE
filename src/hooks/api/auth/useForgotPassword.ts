@@ -3,7 +3,7 @@
 import { axiosInstance } from "@/lib/axios";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { toast } from "react-toastify";
 
 interface ForgotPasswordPayload {
@@ -15,7 +15,7 @@ interface ForgotPasswordResponse {
 }
 
 const useForgotPassword = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   return useMutation<
     ForgotPasswordResponse,

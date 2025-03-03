@@ -1,13 +1,15 @@
 "use client";
+import HomeBreadcrumb from "@/components/HomeBreadcrumb";
+import PaginationSection from "@/components/PaginationSection";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import useGetCompanies from "@/hooks/api/company/useGetCompanies";
 import { MapPin, Star } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounceValue } from "usehooks-ts";
-import PaginationSection from "@/components/PaginationSection";
-import Link from "next/link";
+import { EmployerCardSkeleton } from "./components/EmployerCardSkeleton";
 import { EmployerSearchSidebar } from "./components/EmployerSearchSidebar";
 import { EmployerCardSkeleton } from "./components/EmployerCardSkeleton";
 import HomeBreadcrumb from "@/components/HomeBreadcrumb";

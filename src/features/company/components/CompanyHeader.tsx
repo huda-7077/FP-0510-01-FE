@@ -1,16 +1,13 @@
 import { Button } from "@/components/ui/button";
 import { Company } from "@/types/company";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 interface CompanyHeaderProps {
   company?: Company;
 }
 
 const CompanyHeader = ({ company }: CompanyHeaderProps) => {
-  const router = useRouter();
-
   const openJobsUrl = company?.id ? `/companies/${company.id}/open-jobs` : "#";
 
   return (

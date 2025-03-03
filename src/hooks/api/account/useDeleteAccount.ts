@@ -4,11 +4,11 @@ import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { signOut } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { toast } from "react-toastify";
 
 const useDeleteAccount = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const { axiosInstance } = useAxios();
   const queryClient = useQueryClient();
 

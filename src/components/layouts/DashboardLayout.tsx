@@ -1,12 +1,12 @@
 "use client";
 
 import { Plus } from "lucide-react";
-import Link from "next/link";
 import React, { useState } from "react";
 import { adminSidebarLinks } from "../consts";
 import Navbar from "../Navbar";
 import Sidebar from "../sidebar/Sidebar";
 import { Button } from "../ui/button";
+import { Link } from "next-view-transitions";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;

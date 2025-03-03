@@ -8,6 +8,7 @@ import {
   Clock,
   CreditCard,
   FileStack,
+  HandCoins,
   Layers,
   Luggage,
   PanelsTopLeft,
@@ -80,6 +81,11 @@ export const userSidebarLinks = [
     name: "Subscriptions",
     url: "/dashboard/user/subscriptions",
     icon: CreditCard,
+  },
+  {
+    name: "Payments",
+    url: "/dashboard/user/payments",
+    icon: HandCoins,
   },
   {
     name: "Settings",

@@ -2,12 +2,11 @@
 
 import { Button } from "@/components/ui/button";
 import { MailIcon } from "lucide-react";
+import { Link, useTransitionRouter } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 export default function VerificationPage() {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   return (
     <div>

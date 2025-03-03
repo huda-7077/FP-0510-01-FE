@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LogOut, LucideIcon, Menu, X } from "lucide-react";
 import UserSidebarLink from "./components/UserSidebarLink";
+import { Link } from "next-view-transitions";
 
 interface SidebarProps {
   links: { name: string; url: string; icon: LucideIcon }[];

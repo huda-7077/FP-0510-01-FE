@@ -1,10 +1,13 @@
 "use client";
+import PaginationSection from "@/components/PaginationSection";
 import { Badge } from "@/components/ui/badge";
+import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { Bookmark, BookmarkCheck, MapPin, SearchIcon } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { parseAsInteger, useQueryState } from "nuqs";
+import { useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import PaginationSection from "@/components/PaginationSection";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";

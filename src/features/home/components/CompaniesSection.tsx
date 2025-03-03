@@ -1,10 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { MapPin, ArrowRight } from "lucide-react";
-import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 import useGetCompanies from "@/hooks/api/company/useGetCompanies";
-import Link from "next/link";
+import { ArrowRight, MapPin } from "lucide-react";
+import { Link } from "next-view-transitions";
+import Image from "next/image";
 
 const EmptyState = () => (
   <div className="flex flex-col items-center justify-center rounded-lg border border-dashed py-12">

@@ -1,17 +1,15 @@
 "use client";
+import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
 import useGetUserAttempt from "@/hooks/api/assessment-user-attempt/useGetUserAttempt";
+import useStartAssessment from "@/hooks/api/assessment-user-attempt/useStartAssessment";
 import useGetAssessment from "@/hooks/api/assessment/useGetAssessment";
-import { useSession } from "next-auth/react";
+import useCheckJobApplication from "@/hooks/api/job-applications/useCheckJobApplication";
+import { useTransitionRouter } from "next-view-transitions";
 import { FC, useEffect } from "react";
+import { toast } from "react-toastify";
 import AssessmentQuestionsComponent from "./component/AssessmentQuestionsComponent";
 import ConfirmStartAssessment from "./component/ConfirmStartAssessment";
-import useGetJobApplications from "@/hooks/api/job-applications/useGetJobApplications";
-import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
-import { DataNotFound } from "@/components/data-not-found/DataNotFound";
-import useCheckJobApplication from "@/hooks/api/job-applications/useCheckJobApplication";
-import useStartAssessment from "@/hooks/api/assessment-user-attempt/useStartAssessment";
 
 interface PreTestAssessmentStartComponentProps {
   slug: string;
@@ -20,7 +18,7 @@ interface PreTestAssessmentStartComponentProps {
 const PreTestAssessmentStartComponent: FC<
   PreTestAssessmentStartComponentProps
 > = ({ slug }) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
 
   const { data: userAttempt } = useGetUserAttempt();
   const { data: assessments, isLoading: isAssessmentLoading } =

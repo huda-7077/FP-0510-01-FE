@@ -2,8 +2,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { SkillAssessment } from "@/types/skillAssessments";
 import { Eye } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 
 interface SkillAssessmentCardProps {
   skillAssessment?: SkillAssessment;

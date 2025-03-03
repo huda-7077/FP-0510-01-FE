@@ -1,10 +1,9 @@
 "use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { Bell } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { Link } from "next-view-transitions";
+import Image from "next/image";
+import React, { useState } from "react";
 import SearchBar from "./NavbarSearchbar";
 
 interface AvatarMenuProps {

@@ -4,11 +4,11 @@ import useAxios from "@/hooks/useAxios";
 import { RegisterPayload, RegisterResponse } from "@/types/user";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { toast } from "react-toastify";
 
 export const useRegister = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const { axiosInstance } = useAxios();
 
   return useMutation<
