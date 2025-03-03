@@ -17,5 +17,14 @@ export interface Company {
   users: User[];
   phoneNumber: string;
   email: string;
-  companyLocations: CompanyLocation[];
+  companyLocations: {
+    id: number;
+    address: string;
+    latitude: string;
+    longitude: string;
+    regency: {
+      regency: string;
+      province: { province: string };
+    };
+  }[];
 }

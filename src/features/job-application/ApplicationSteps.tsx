@@ -27,11 +27,11 @@ const steps = [
   },
 ];
 
-export const ApplicationSteps = ({ jobId }: { jobId: string }) => {
+export const ApplicationSteps = ({ slug }: { slug: string }) => {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const { data: job, isLoading: jobLoading } = useGetJob({
-    jobId: Number(jobId),
+    slug,
   });
   const { isLoading: guardLoading } = useApplicationGuard(currentStep);
 

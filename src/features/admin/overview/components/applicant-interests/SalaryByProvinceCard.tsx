@@ -27,7 +27,7 @@ const SalaryByProvinceCard: FC<SalaryByProvinceCardProps> = ({
 }) => {
   const formatRupiah = (amount: number): string => {
     if (amount === null || amount === undefined || isNaN(amount)) {
-      return "Rp0"; // Handle invalid or missing values
+      return "Rp0";
     }
 
     return `Rp${amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")}`;
@@ -43,7 +43,7 @@ const SalaryByProvinceCard: FC<SalaryByProvinceCardProps> = ({
       <CardHeader className="space-y-2">
         <div className="flex items-baseline justify-between gap-12">
           <CardTitle className="text-lg font-bold text-gray-800 transition-colors group-hover:text-blue-600">
-            Expected Salary Average By Province
+            Salary Average By Province
           </CardTitle>
           <Select onValueChange={onTimeRangeChange}>
             <SelectTrigger className="w-[180px] border-gray-200 bg-white shadow-sm hover:border-blue-200">
@@ -90,7 +90,7 @@ const SalaryByProvinceCard: FC<SalaryByProvinceCardProps> = ({
       </CardContent>
       <CardFooter className="mt-auto border-t border-gray-100 pt-4">
         <p className="text-xs italic text-gray-500">
-          *Data shows top 10 provinces with the highest average expected salary
+          * Data shows top 10 provinces with the highest average reported salary
           per month by user's location
         </p>
       </CardFooter>

@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -23,6 +24,8 @@ interface JobApplicationListHeaderProps {
   totalJobApplications: number;
   userEducationLevels: string[];
   onEducationLevelChange: (category: string) => void;
+  onMaxExpectedSalaryChange: (maxExpectedSalary: string) => void;
+  onMinExpectedSalaryChange: (minExpectedSalary: string) => void;
   onSortChange: (sort: string) => void;
   onSortOrderChange: (sortOrder: string) => void;
   onSearch: (searchQuery: string) => void;
@@ -32,6 +35,8 @@ export const JobApplicationListHeader = ({
   totalJobApplications,
   userEducationLevels,
   onEducationLevelChange,
+  onMaxExpectedSalaryChange,
+  onMinExpectedSalaryChange,
   onSortChange,
   onSortOrderChange,
   onSearch,
@@ -41,24 +46,46 @@ export const JobApplicationListHeader = ({
   const [selectedEducationLevel, setSelectedEducationLevel] =
     useState<string>("all");
   const [sortOrder, setSortOrder] = useState<string>("asc");
+  const [maxExpectedSalary, setMaxExpectedSalary] = useState<string>("");
+  const [minExpectedSalary, setMinExpectedSalary] = useState<string>("");
 
   const hasFiltersApplied =
     selectedSort !== "createdAt" ||
     selectedEducationLevel !== "all" ||
-    sortOrder !== "asc";
+    sortOrder !== "asc" ||
+    maxExpectedSalary !== "" ||
+    minExpectedSalary !== "";
 
   const handleSortChange = (sort: string) => {
     setSelectedSort(sort);
     onSortChange(sort);
   };
 
+  const handleSortOrderChange = (sortOrder: string) => {
+    setSortOrder(sortOrder);
+    onSortOrderChange(sortOrder);
+  };
+
+  const handleEducationLevelChange = (educationLevel: string) => {
+    setSelectedEducationLevel(educationLevel);
+    onEducationLevelChange(educationLevel);
+  };
+
+  const handleMaxExpectedSalaryChange = (maxExpectedSalary: string) => {
+    setMaxExpectedSalary(maxExpectedSalary);
+    onMaxExpectedSalaryChange(maxExpectedSalary);
+  };
+  const handleMinExpectedSalaryChange = (minExpectedSalary: string) => {
+    setMinExpectedSalary(minExpectedSalary);
+    onMinExpectedSalaryChange(minExpectedSalary);
+  };
+
   const handleResetAll = () => {
-    setSelectedSort("createdAt");
-    onSortChange("createdAt");
-    setSelectedEducationLevel("all");
-    onEducationLevelChange("all");
-    setSortOrder("asc");
-    onSortOrderChange("asc");
+    handleSortChange("createdAt");
+    handleEducationLevelChange("all");
+    handleSortOrderChange("asc");
+    handleMaxExpectedSalaryChange("");
+    handleMinExpectedSalaryChange("");
   };
 
   const handleSearchReset = () => {
@@ -137,10 +164,7 @@ export const JobApplicationListHeader = ({
                   </h3>
                   <Select
                     value={selectedEducationLevel}
-                    onValueChange={(value) => {
-                      setSelectedEducationLevel(value);
-                      onEducationLevelChange(value);
-                    }}
+                    onValueChange={(value) => handleEducationLevelChange(value)}
                   >
                     <SelectTrigger className="h-9 w-full border-gray-200 text-sm font-medium">
                       <SelectValue placeholder="All Education Levels" />
@@ -163,6 +187,31 @@ export const JobApplicationListHeader = ({
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+                <div className="grid gap-2">
+                  <h3 className="text-sm font-semibold sm:text-base">
+                    Expected Salary
+                  </h3>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div>
+                      <h3 className="text-sm sm:text-base">Min</h3>
+                      <Input
+                        placeholder="ex. 5000000"
+                        onChange={(e) =>
+                          handleMinExpectedSalaryChange(e.target.value)
+                        }
+                      />
+                    </div>
+                    <div>
+                      <h3 className="text-sm sm:text-base">Max</h3>
+                      <Input
+                        placeholder="ex. 5000000"
+                        onChange={(e) =>
+                          handleMaxExpectedSalaryChange(e.target.value)
+                        }
+                      />
+                    </div>
+                  </div>
                 </div>
                 <div className="grid gap-2">
                   <h3 className="text-sm font-semibold sm:text-base">
@@ -228,10 +277,7 @@ export const JobApplicationListHeader = ({
                           ? "bg-blue-600 text-white hover:bg-blue-700 focus:bg-blue-700"
                           : "border border-blue-600 text-blue-600 hover:bg-blue-50 focus:bg-blue-50"
                       }`}
-                      onClick={() => {
-                        setSortOrder("asc");
-                        onSortOrderChange("asc");
-                      }}
+                      onClick={() => handleSortOrderChange("asc")}
                     >
                       A - Z
                     </Button>
@@ -243,10 +289,7 @@ export const JobApplicationListHeader = ({
                           ? "bg-blue-600 text-white hover:bg-blue-700 focus:bg-blue-700"
                           : "border border-blue-600 text-blue-600 hover:bg-blue-50 focus:bg-blue-50"
                       }`}
-                      onClick={() => {
-                        setSortOrder("desc");
-                        onSortOrderChange("desc");
-                      }}
+                      onClick={() => handleSortOrderChange("desc")}
                     >
                       Z - A
                     </Button>

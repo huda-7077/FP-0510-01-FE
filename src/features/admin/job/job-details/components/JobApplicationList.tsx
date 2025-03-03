@@ -25,6 +25,20 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
   const [educationLevel, setEducationLevel] = useQueryState("educationLevel", {
     defaultValue: "",
   });
+  const [maxExpectedSalary, setMaxExpectedSalary] = useQueryState(
+    "maxExpectedSalary",
+    {
+      defaultValue: "",
+    },
+  );
+  const [minExpectedSalary, setMinExpectedSalary] = useQueryState(
+    "minExpectedSalary",
+    {
+      defaultValue: "",
+    },
+  );
+  const [debouncedMaxExpectedSalary] = useDebounce(maxExpectedSalary, 500);
+  const [debouncedMinExpectedSalary] = useDebounce(minExpectedSalary, 500);
 
   const { data: jobApplications, isPending: isJobApplicationsPending } =
     useGetJobApplications({
@@ -35,6 +49,8 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
       search: debouncedSearch,
       jobId,
       educationLevel,
+      maxExpectedSalary: parseInt(debouncedMaxExpectedSalary),
+      minExpectedSalary: parseInt(debouncedMinExpectedSalary),
     });
 
   const { data: educationLevels } = useGetEducationLevelsByJobId({
@@ -73,6 +89,26 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
     setPage(1);
   };
 
+  const onMaxExpectedSalaryChange = (maxExpectedSalary: string) => {
+    if (maxExpectedSalary === "0") {
+      setMaxExpectedSalary("0");
+      setPage(1);
+      return;
+    }
+    setMaxExpectedSalary(maxExpectedSalary);
+    setPage(1);
+  };
+
+  const onMinExpectedSalaryChange = (minExpectedSalary: string) => {
+    if (minExpectedSalary === "0") {
+      setMinExpectedSalary("0");
+      setPage(1);
+      return;
+    }
+    setMinExpectedSalary(minExpectedSalary);
+    setPage(1);
+  };
+
   const validEducationLevels = educationLevels?.data ?? [];
 
   return (
@@ -86,6 +122,8 @@ export const JobApplicationsList = ({ jobId }: JobApplicationsListProps) => {
               onSortChange={handleSortChange}
               onSortOrderChange={handleSortOrderChange}
               onEducationLevelChange={onEducationLevelChange}
+              onMaxExpectedSalaryChange={onMaxExpectedSalaryChange}
+              onMinExpectedSalaryChange={onMinExpectedSalaryChange}
               totalJobApplications={jobApplications?.meta.total || 0}
             />
           </div>

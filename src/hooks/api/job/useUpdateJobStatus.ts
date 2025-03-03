@@ -26,7 +26,9 @@ const useUpdateJobStatus = () => {
     },
 
     onError: (error: AxiosError<any>) => {
-      toast.error(error.response?.data.message || error.response?.data);
+      toast.error(
+        error.response?.data?.message || "Failed to update job status",
+      );
     },
   });
 };

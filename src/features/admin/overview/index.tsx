@@ -2,10 +2,10 @@
 
 import { DashboardLayout } from "@/components/layouts/DashboardLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { BriefcaseBusiness, DollarSign, Heart, Users } from "lucide-react";
+import { Heart, Users } from "lucide-react";
 import { useState } from "react";
-import UserDemographics from "./components/user-demographics/UserDemographics";
 import ApplicantInterests from "./components/applicant-interests/ApplicantInterests";
+import UserDemographics from "./components/user-demographics/UserDemographics";
 
 const OverviewComponent = () => {
   const [activeTab, setActiveTab] = useState("userDemographics");

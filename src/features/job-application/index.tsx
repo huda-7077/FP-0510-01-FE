@@ -3,12 +3,16 @@
 import { ApplicationSteps } from "./ApplicationSteps";
 import { ApplicationFormProvider } from "./context/ApplicationFormContext";
 
-export default function JobApplicationClient({ params }: { params: { id: string } }) {
-    return (
-      <ApplicationFormProvider initialJobId={params.id}>
-        <div>
-          <ApplicationSteps jobId={params.id} />
-        </div>
-      </ApplicationFormProvider>
-    );
-  }
+export default function JobApplicationClient({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  return (
+    <ApplicationFormProvider initialJobId={params.slug}>
+      <div>
+        <ApplicationSteps slug={params.slug} />
+      </div>
+    </ApplicationFormProvider>
+  );
+}

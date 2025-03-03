@@ -39,8 +39,10 @@ export function CreateAssessmentComponent({
     validationSchema: CreateAssessmentSchema,
     onSubmit: async (values) => {
       try {
-        await createAssessment(values);
-        router.push(`/dashboard/admin/jobs/${jobId}`);
+        const newAssessment = await createAssessment(values);
+        router.push(
+          `/dashboard/admin/pre-test-assessment/update/${newAssessment.slug}`,
+        );
         toast.success("Assessment Created Successfully");
       } catch (error) {
         console.error("Creation failed:", error);

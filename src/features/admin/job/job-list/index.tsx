@@ -3,19 +3,16 @@ import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 import PaginationSection from "@/components/PaginationSection";
 import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 import useGetCompanyJobs from "@/hooks/api/job/useGetCompanyJobs";
-import useGetJobCategories from "@/hooks/api/job/useGetJobCategories";
-import { useSession } from "next-auth/react";
 import { useTransitionRouter } from "next-view-transitions";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
+import { JobCategory } from "../consts";
 import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
 
 export const JobListComponent = () => {
   const router = useTransitionRouter();
-  const session = useSession();
-  const user = session.data && session.data.user;
 
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
@@ -37,9 +34,6 @@ export const JobListComponent = () => {
   });
 
   const [debouncedSearch] = useDebounce(search, 500);
-
-  const { data: jobCategories, isPending: isJobCategoriesPending } =
-    useGetJobCategories({ companyId: user?.companyId });
 
   const {
     data: jobs,
@@ -101,8 +95,7 @@ export const JobListComponent = () => {
     setEndDate(endDate);
   };
 
-  const validCategories = jobCategories?.data ?? [];
-  const isLoadingData = isJobsPending && isJobCategoriesPending;
+  const isLoadingData = isJobsPending;
 
   const notifyDatabaseChange = () => {
     setTriggerRefetch(true);
@@ -114,13 +107,13 @@ export const JobListComponent = () => {
         <div>
           <JobListHeader
             totalJobs={jobs?.meta.total || 0}
-            jobCategories={validCategories}
+            jobCategories={JobCategory}
             onCategoryChange={onCategoryChange}
             onSortChange={handleSortChange}
             onSortOrderChange={handleSortOrderChange}
             onStartEndDateChange={handleStartEndDate}
             onSearch={handleSearch}
-            isDisabled={isJobCategoriesPending}
+            isDisabled={isLoadingData}
           />
           <p className="my-6 text-start text-xs font-semibold italic text-gray-400 sm:text-end">
             <span className="text-red-600">*</span> You cannot edit a job or

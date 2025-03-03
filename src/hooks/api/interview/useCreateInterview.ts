@@ -1,6 +1,7 @@
 import useAxios from "@/hooks/useAxios";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { toast } from "react-toastify";
 
 export interface CreateInterviewPayload {
   jobApplicationId: number;
@@ -12,6 +13,7 @@ export interface CreateInterviewPayload {
 }
 
 const useCreateInterview = () => {
+  const queryClient = useQueryClient();
   const { axiosInstance } = useAxios();
 
   return useMutation({
@@ -20,10 +22,12 @@ const useCreateInterview = () => {
       return data;
     },
     onSuccess: () => {
-      console.log("Interview Created Successfullly");
+      queryClient.invalidateQueries({ queryKey: ["interviews"] });
     },
     onError: (error: AxiosError<any>) => {
-      console.log(error.response?.data);
+      toast.error(
+        error.response?.data?.message || "Failed to create interview",
+      );
     },
   });
 };
