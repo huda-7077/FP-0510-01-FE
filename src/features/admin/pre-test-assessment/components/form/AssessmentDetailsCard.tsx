@@ -15,10 +15,10 @@ import useUpdateAssessment from "@/hooks/api/assessment/useUpdateAssessment";
 import { Assessment, AssessmentStatus } from "@/types/assessment";
 import { useFormik } from "formik";
 import { ChevronsDown, ChevronsUp, TriangleAlert } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { FC, useEffect, useRef, useState } from "react";
-import { UpdateAssessmentSchema } from "../../schemas";
+import { useTransitionRouter } from "next-view-transitions";
+import { FC, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { UpdateAssessmentSchema } from "../../schemas";
 
 interface AssessmentDetailsCardProps {
   assessment: Assessment;
@@ -31,7 +31,7 @@ const AssessmentDetailsCard: FC<AssessmentDetailsCardProps> = ({
   slug,
   isProcessing,
 }) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const [isCollapsed, setIsCollapsed] = useState(true);
   const [generateSlug, setGenerateSlug] = useState(false);
   const { mutateAsync: updateAssessment, isPending: isUpdateJobStatusPending } =

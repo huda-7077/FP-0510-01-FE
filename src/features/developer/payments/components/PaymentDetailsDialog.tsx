@@ -11,8 +11,8 @@ import { Label } from "@/components/ui/label";
 import useCreateSubscription from "@/hooks/api/subscription/useCreateSubscription";
 import { PaymentData } from "@/types/payment";
 import { format } from "date-fns";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import SubscriptionAlertDialog from "./SubscriptionAlertDialog";
 

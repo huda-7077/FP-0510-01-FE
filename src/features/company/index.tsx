@@ -10,7 +10,8 @@ import {
   Building2,
   MessageSquareQuote,
 } from "lucide-react";
-import { usePathname, useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
+import { usePathname } from "next/navigation";
 import CompanyContent from "./components/CompanyContent";
 import CompanyHeader from "./components/CompanyHeader";
 import CompanyOverview from "./components/CompanyOverview";
@@ -105,7 +106,7 @@ const NoDataState = () => (
 );
 
 const CompanyPage = ({ companyId }: CompanyDetailsProps) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const pathname = usePathname();
   const segments = pathname.split("/");
   const lastSegment = segments.pop() || "";

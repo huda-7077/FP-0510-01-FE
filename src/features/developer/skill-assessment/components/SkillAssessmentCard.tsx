@@ -5,8 +5,8 @@ import {
   SkillAssessmentStatus,
 } from "@/types/skillAssessments";
 import { Eye } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { SkillAssessmentStatusBadge } from "./SkillAssessmentStatusBadge";
 
 interface SkillAssessmentCardProps {

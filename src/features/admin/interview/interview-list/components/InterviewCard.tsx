@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import useLongDateTimeFormatter from "@/hooks/useLongDateTimeFormatter";
 import { Interview } from "@/types/interviews";
 import { CalendarClock, MapPin, User, Users } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import InterviewActionsMenu from "./InterviewActionsMenu";
 
 interface InterviewCardProps {

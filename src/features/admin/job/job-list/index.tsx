@@ -5,7 +5,7 @@ import JobCardSkeleton from "@/components/skeletons/JobCardSkeleton";
 import useGetCompanyJobs from "@/hooks/api/job/useGetCompanyJobs";
 import useGetJobCategories from "@/hooks/api/job/useGetJobCategories";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useEffect, useState } from "react";
 import { useDebounce } from "use-debounce";
@@ -13,7 +13,7 @@ import { JobCard } from "./components/JobCard";
 import { JobListHeader } from "./components/JobListHeader";
 
 export const JobListComponent = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const session = useSession();
   const user = session.data && session.data.user;
 

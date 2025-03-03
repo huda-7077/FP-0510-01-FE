@@ -4,13 +4,13 @@ import PaginationSection from "@/components/PaginationSection";
 import useGetPayments from "@/hooks/api/payment/useGetPayments";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { useDebounce } from "use-debounce";
-import { PaymentCard } from "./components/PaymentCard";
 import { PaymentCardSkeleton } from "./components/PaymentCardSkeleton";
 import { PaymentHeader } from "./components/PaymentHeader";
 import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
+import { PaymentCard } from "./components/PaymentCard";
 import { DataNotFound } from "@/components/data-not-found/DataNotFound";
 
-export const PaymentListComponent = () => {
+export const UserPaymentsPage = () => {
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [sortBy, setSortBy] = useQueryState("sortBy", {
@@ -25,11 +25,7 @@ export const PaymentListComponent = () => {
     defaultValue: "",
   });
 
-  const {
-    data: payments,
-    isLoading,
-    refetch,
-  } = useGetPayments({
+  const { data: payments, isLoading } = useGetPayments({
     page,
     sortOrder: "desc",
     sortBy,
@@ -72,10 +68,6 @@ export const PaymentListComponent = () => {
     setSortBy(sort);
   };
 
-  const handleRefetch = () => {
-    refetch();
-  };
-
   return (
     <>
       <DashboardBreadcrumb route="developer" lastCrumb="Payments" />
@@ -99,14 +91,9 @@ export const PaymentListComponent = () => {
                   <PaymentCardSkeleton />
                 </>
               )}
-
               {payments &&
                 payments.data.map((payment, index) => (
-                  <PaymentCard
-                    payment={payment}
-                    key={index}
-                    refetch={handleRefetch}
-                  />
+                  <PaymentCard payment={payment} key={index} />
                 ))}
               {payments && payments.data.length === 0 && (
                 <DataNotFound title="No payments found" />

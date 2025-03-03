@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
 import DiscoverySkeleton from "@/components/skeletons/DiscoverySkeleton";
 import { Button } from "@/components/ui/button";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { ArrowRight, Bookmark, MapPin, Wallet } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const formatSalary = (amount: number | null | undefined): string | null => {
   if (!amount) return null;

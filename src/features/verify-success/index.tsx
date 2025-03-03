@@ -2,13 +2,12 @@
 
 import { Button } from "@/components/ui/button";
 import { CheckCircle2 } from "lucide-react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { useSession } from "next-auth/react";
+import { Link, useTransitionRouter } from "next-view-transitions";
 
 const VerifySuccessPage = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const { data: session } = useSession();
 
   const getRedirectPath = () => {

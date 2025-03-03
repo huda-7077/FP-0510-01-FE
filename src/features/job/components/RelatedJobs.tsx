@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { Bookmark, MapPin } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 
 interface RelatedJobsProps {
   categoryFilter?: string;

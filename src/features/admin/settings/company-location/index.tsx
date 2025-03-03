@@ -1,11 +1,10 @@
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
-import { Loader2, Plus } from "lucide-react";
-import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
 import { useDeleteCompanyLocation } from "@/hooks/api/company-location/useDeleteCompanyLocation";
-// Import table
-import { AddLocationModal } from "./components/AddLocationModal"; // Import modal
+import { useGetCompanyLocations } from "@/hooks/api/company-location/useGetCompanyLocations";
+import { Plus } from "lucide-react";
+import { useState } from "react";
+import { AddLocationModal } from "./components/AddLocationModal";
 import CompanyLocationsTable from "./components/CompanyLocationsTable";
 
 export default function CompanyLocationSettings() {
@@ -17,7 +16,6 @@ export default function CompanyLocationSettings() {
 
   return (
     <div className="container mx-auto space-y-4 p-6">
-      {/* Modal Trigger */}
       <div className="flex justify-end">
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
@@ -30,7 +28,6 @@ export default function CompanyLocationSettings() {
         </Dialog>
       </div>
 
-      {/* Company Locations Table */}
       <CompanyLocationsTable
         locations={locations}
         isLoading={isLoading}

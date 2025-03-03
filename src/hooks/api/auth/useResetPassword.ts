@@ -3,7 +3,8 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
+import { useSearchParams } from "next/navigation";
 import { toast } from "react-toastify";
 
 interface ResetPasswordPayload {
@@ -16,7 +17,7 @@ interface ResetPasswordResponse {
 }
 
 const useResetPassword = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const { axiosInstance } = useAxios();

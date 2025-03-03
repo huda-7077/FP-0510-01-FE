@@ -3,8 +3,7 @@
 import useAxios from "@/hooks/useAxios";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { toast } from "react-toastify";
 
 interface ChangeEmailPayload {
@@ -12,7 +11,7 @@ interface ChangeEmailPayload {
 }
 
 const useChangeEmail = () => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const { axiosInstance } = useAxios();
   const queryClient = useQueryClient();
   return useMutation({

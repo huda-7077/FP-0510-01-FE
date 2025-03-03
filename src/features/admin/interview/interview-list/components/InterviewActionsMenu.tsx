@@ -20,7 +20,7 @@ import {
 import useDeleteInterview from "@/hooks/api/interview/useDeleteInterview";
 import { JobApplication } from "@/types/jobApplication";
 import { Loader2, MoreVertical, Pen, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useTransitionRouter } from "next-view-transitions";
 import { FC, useState } from "react";
 import ApplicantDetails from "./ApplicantDetails";
 
@@ -33,7 +33,7 @@ const InterviewActionsMenu: FC<InterviewActionsMenuProps> = ({
   application,
   interviewId,
 }) => {
-  const router = useRouter();
+  const router = useTransitionRouter();
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const { mutateAsync: deleteInterview, isPending: isDeleteInterviewPending } =
     useDeleteInterview();

@@ -1,14 +1,14 @@
 "use client";
+import PaginationSection from "@/components/PaginationSection";
 import { Badge } from "@/components/ui/badge";
+import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
 import { Bookmark, MapPin, SearchIcon } from "lucide-react";
+import { Link } from "next-view-transitions";
 import Image from "next/image";
-import Link from "next/link";
 import { parseAsInteger, useQueryState } from "nuqs";
-import { useDebounceValue } from "usehooks-ts";
-import PaginationSection from "@/components/PaginationSection";
-import { JobCardSkeleton } from "@/features/jobs/components/JobCardSkeleton";
 import { useState } from "react";
+import { useDebounceValue } from "usehooks-ts";
 
 interface OpenJobsProps {
   companyId?: number;
@@ -59,17 +59,17 @@ const OpenJobs = ({ companyId }: OpenJobsProps) => {
     <div>
       <div className="container mx-auto mt-6 space-y-7 p-6">
         <h1 className="text-2xl md:text-3xl">Open Jobs</h1>
-        <div className="mb-4 relative">
+        <div className="relative mb-4">
           <input
             type="search"
             placeholder="Search jobs..."
             value={search}
             onChange={handleSearchChange}
-            className="md:w-1/2 w-full peer ps-9 pe-9 rounded-md border-[1px] border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:shadow-md"
+            className="peer w-full rounded-md border-[1px] border-gray-300 px-4 py-2 pe-9 ps-9 text-sm focus:border-blue-500 focus:shadow-md focus:outline-none md:w-1/2"
           />
-          <div className="text-muted-foreground/80 pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 peer-disabled:opacity-50">
-          <SearchIcon size={16} />
-        </div>
+          <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+            <SearchIcon size={16} />
+          </div>
         </div>
         {isPending ? (
           <div className="grid gap-4 md:grid-cols-3">

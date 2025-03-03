@@ -1,5 +1,9 @@
-import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
+import {
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -9,17 +13,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import dynamic from "next/dynamic";
 import useCreateCompanyLocation from "@/hooks/api/company-location/useCreateCompanyLocation";
 import useGetProvinces from "@/hooks/api/location/useGetProvinces";
 import useGetRegencies from "@/hooks/api/location/useGetRegencies";
+import { useFormik } from "formik";
+import dynamic from "next/dynamic";
+import React, { useState } from "react";
 import { companyLocationSchema } from "../schemas";
 
 const MapComponent = dynamic(() => import("@/components/Map"), {

@@ -1,10 +1,10 @@
+import { useTransitionRouter } from "next-view-transitions";
 import { useSearchParams } from "next/navigation";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 export default function VerifyEmailGuard(Component: any) {
   return function IsVerifying(props: any) {
-    const router = useRouter();
+    const router = useTransitionRouter();
     const searchParams = useSearchParams();
     const token = searchParams.get("token");
 

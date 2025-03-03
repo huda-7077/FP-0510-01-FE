@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { useGoogleAuth } from "@/hooks/api/auth/useGoogleAuth";
 import { useLogin } from "@/hooks/api/auth/useLogin";
 import { cn } from "@/lib/utils";
 import { useFormik } from "formik";
@@ -12,12 +13,10 @@ import {
   EyeOff,
   Loader2Icon,
 } from "lucide-react";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
+import Image from "next/image";
 import { useState } from "react";
 import { loginSchema } from "../schemas";
-import { useGoogleAuth } from "@/hooks/api/auth/useGoogleAuth";
-import Image from "next/image";
 
 export function LoginForm({
   className,

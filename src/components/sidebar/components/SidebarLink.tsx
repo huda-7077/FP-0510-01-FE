@@ -1,6 +1,6 @@
 import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
-import Link from "next/link";
+import { Link } from "next-view-transitions";
 import { usePathname } from "next/navigation";
 
 interface SidebarLinkProps {
@@ -11,7 +11,7 @@ interface SidebarLinkProps {
 
 const SidebarLink = ({ icon: Icon, url, label }: SidebarLinkProps) => {
   const pathname = usePathname();
-  const isActive = pathname.startsWith(url);
+  const isActive = pathname === url;
 
   return (
     <Link href={url} className="block">
