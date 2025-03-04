@@ -120,13 +120,18 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
 
         <div className="flex flex-row items-center gap-2 sm:gap-4">
           {application.status === "ACCEPTED" ||
-          application.status === "REJECTED" ? (
+          application.status === "REJECTED" ||
+          application.status === "CANCELLED" ? (
             <>
               {application.status === "ACCEPTED" ? (
                 <RegisterEmployeeButton application={application} />
-              ) : (
+              ) : application.status === "REJECTED" ? (
                 <p className="text-sm font-semibold italic text-red-500">
                   Applicant Rejected
+                </p>
+              ) : (
+                <p className="text-sm font-semibold italic text-red-500">
+                  Applicant Cancelled Their Application
                 </p>
               )}
             </>
