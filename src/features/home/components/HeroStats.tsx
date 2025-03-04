@@ -54,7 +54,7 @@ const JobStats = () => {
   ];
 
   return (
-    <div className="mx-auto w-full max-w-7xl">
+    <div className="container mx-auto w-full">
       <div className="grid grid-cols-2 gap-3 md:gap-4 lg:grid-cols-4">
         {stats.map((stat, index) => (
           <StatCard

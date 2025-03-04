@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LogOut, LucideIcon, Menu, X } from "lucide-react";
 import SidebarLink from "./components/SidebarLink";
+import { signOut } from "next-auth/react";
 
 interface SidebarProps {
   links: { name: string; url: string; icon: LucideIcon }[];
@@ -61,7 +62,14 @@ const Sidebar = ({
           </div>
 
           <div className="p-4">
-            <SidebarLink icon={LogOut} label="Log out" url="/logout" />
+            <Button
+              variant="ghost"
+              className="flex w-full items-center justify-start space-x-3 rounded-lg px-3 py-2 transition-colors hover:bg-blue-50"
+              onClick={() => signOut({ callbackUrl: "/login" })}
+            >
+              <LogOut className="h-5 w-5 text-gray-500" />
+              <span className="text-sm font-medium text-gray-700">Log Out</span>
+            </Button>
           </div>
         </div>
       </div>

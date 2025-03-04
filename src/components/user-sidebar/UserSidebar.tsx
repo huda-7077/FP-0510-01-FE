@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { LogOut, LucideIcon, Menu, X } from "lucide-react";
+import { signOut } from "next-auth/react";
 import UserSidebarLink from "./components/UserSidebarLink";
-import { Link } from "next-view-transitions";
 
 interface SidebarProps {
   links: { name: string; url: string; icon: LucideIcon }[];
@@ -26,14 +26,14 @@ const UserSidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
 
       <div
         className={cn(
-          "fixed left-0 top-[65px] z-30 h-[calc(100vh-65px)] w-64 transform border-r border-gray-200 bg-white ps-4 transition-transform duration-200 ease-in-out lg:sticky lg:top-32 lg:h-[calc(100vh-128px)] lg:translate-x-0",
+          "fixed left-0 top-16 z-30 h-[calc(100vh-64px)] w-64 transform border-r border-gray-200 bg-white ps-4 transition-transform duration-200 ease-in-out lg:sticky lg:top-32 lg:h-[calc(100vh-112px)] lg:translate-x-0",
           !isOpen && "-translate-x-full",
         )}
       >
-        <div className="flex h-full flex-col justify-between">
-          <div className="space-y-2 p-4">
-            <div className="mb-4">
-              <p className="px-3 text-xs font-medium uppercase text-gray-500 pt-7 md:pt-0">
+        <div className="flex h-full flex-col">
+          <div className="flex-1 space-y-2 overflow-y-auto p-4">
+            <div className="my-4">
+              <p className="px-3 text-xs font-medium uppercase text-gray-500">
                 CANDIDATE DASHBOARD
               </p>
             </div>
@@ -50,8 +50,15 @@ const UserSidebar = ({ links, isOpen, onToggle }: SidebarProps) => {
             </div>
           </div>
 
-          <div className="border-t p-4">
-            <UserSidebarLink icon={LogOut} label="Log out" url="/logout" />
+          <div className="p-4">
+            <Button
+              variant="ghost"
+              className="flex w-full items-center justify-start space-x-3 rounded-lg px-3 py-2 transition-colors hover:bg-blue-50"
+              onClick={() => signOut({ callbackUrl: "/login" })}
+            >
+              <LogOut className="h-5 w-5 text-gray-500" />
+              <span className="text-sm font-medium text-gray-700">Log Out</span>
+            </Button>
           </div>
         </div>
       </div>

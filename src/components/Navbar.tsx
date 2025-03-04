@@ -95,10 +95,18 @@ const Navbar = () => {
               <LayoutPanelLeft className="mr-2 h-4 w-4" /> Dashboard
             </Link>
           </DropdownMenuItem>
+        ) : isAdmin ? (
+          <Link href="/dashboard/admin/settings">
+            <DropdownMenuItem className="cursor-pointer">
+              Profile Settings
+            </DropdownMenuItem>
+          </Link>
         ) : (
-          <DropdownMenuItem className="cursor-pointer">
-            Profile Settings
-          </DropdownMenuItem>
+          <Link href="/dashboard/user/settings">
+            <DropdownMenuItem className="cursor-pointer">
+              Profile Settings
+            </DropdownMenuItem>
+          </Link>
         )}
 
         <DropdownMenuItem
