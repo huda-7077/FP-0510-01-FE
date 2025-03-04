@@ -30,6 +30,7 @@ export interface JobApplication {
     gender: string;
     phoneNumber: string;
     profilePicture: string;
+    headline: string;
     regency: {
       regency: string;
     };
