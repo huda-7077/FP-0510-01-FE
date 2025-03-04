@@ -35,7 +35,6 @@ const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
 
 const CreateJobForm = () => {
   const router = useTransitionRouter();
-  const { data: session, status } = useSession();
 
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [isPublished, setIsPublished] = useState<boolean>(false);
