@@ -153,13 +153,13 @@ const JobsPage = () => {
             ) : (
               <>
                 <h1 className="mb-4 text-2xl font-bold">
-                  {jobs.data.length} Results
+                  {jobs.meta.total} Results
                 </h1>
                 <div className="grid gap-4 md:grid-cols-2">
                   {jobs.data.map((job) => (
                     <Link
                       key={job.id}
-                      href={`/jobs/${job.id}`}
+                      href={`/jobs/${job.slug}`}
                       className="block rounded-md border-[1px] bg-card p-4 shadow-sm duration-150 hover:border-blue-500 hover:shadow-lg"
                     >
                       <div className="flex flex-col gap-4">
@@ -167,7 +167,7 @@ const JobsPage = () => {
                         <div className="flex items-center gap-3">
                           <Badge
                             variant="secondary"
-                            className="rounded-sm bg-green-100 text-green-600 hover:bg-green-600 hover:text-green-100"
+                            className="rounded-sm bg-green-100 text-center text-green-600 hover:bg-green-600 hover:text-green-100"
                           >
                             {job.category}
                           </Badge>

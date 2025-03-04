@@ -13,6 +13,7 @@ export interface SavedJob {
       name: string,
       logo: string,
     },
+    slug: string,
     companyLocation: {
       regency: {
         regency: string,

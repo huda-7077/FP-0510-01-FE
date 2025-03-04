@@ -24,7 +24,6 @@ const useUpdateJobApplication = () => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["job-applications"] });
-      console.log("Job Application Updated Successfullly");
     },
 
     onError: (error: AxiosError<any>) => {

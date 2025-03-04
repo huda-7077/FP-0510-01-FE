@@ -1,9 +1,7 @@
 import {
   Award,
-  BellRing,
   Bookmark,
   BriefcaseBusiness,
-  Building,
   CircleDollarSign,
   Clock,
   CreditCard,
@@ -23,11 +21,6 @@ export const adminSidebarLinks = [
     name: "Overview",
     url: "/dashboard/admin/overview",
     icon: FileStack,
-  },
-  {
-    name: "Company Details",
-    url: "/dashboard/admin/company-details",
-    icon: Building,
   },
   {
     name: "My Jobs",

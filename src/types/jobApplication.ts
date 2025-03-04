@@ -8,7 +8,8 @@ export type JobApplicationStatus =
   | "IN_REVIEW"
   | "INTERVIEW_SCHEDULED"
   | "ACCEPTED"
-  | "REJECTED";
+  | "REJECTED"
+  | "CANCELLED";
 
 export interface JobApplication {
   id: number;

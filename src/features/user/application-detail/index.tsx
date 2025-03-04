@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-
 import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
 import MarkDown from "@/components/Markdown";
 import {
@@ -32,16 +31,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import useGetAssessmentSlug from "@/hooks/api/assessment/useGetAssessmentSlug";
 import useGetJobApplication from "@/hooks/api/job-applications/useGetJobApplication";
+import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateJobApplication";
 import { AlertDialog, AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
 import ApplicationDetailSkeleton from "./components/ApplicationDetailSkeleton";
 import { ApplicationStatusBadge } from "./components/ApplicationStatusBagde";
 import { ApplicationTimeline } from "./components/ApplicationTimeline";
 import { InterviewDetails } from "./components/InterviewDetails";
 import { RejectionFeedback } from "./components/RejectionFeedback";
-import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateJobApplication";
-import useGetAssessment from "@/hooks/api/assessment/useGetAssessment";
-import useGetAssessmentSlug from "@/hooks/api/assessment/useGetAssessmentSlug";
 
 interface JobApplicationDetailProps {
   jobApplicationId: number;
@@ -97,7 +95,7 @@ const ApplicationDetailPage = ({
             {showAssessmentButton && (
               <Card className="mb-6 border-2 border-yellow-400">
                 <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
                     <div>
                       <h2 className="flex items-center text-lg font-semibold text-yellow-700">
                         <AlertTriangle className="mr-2 h-5 w-5" />
@@ -265,47 +263,61 @@ const ApplicationDetailPage = ({
                 <CardTitle className="text-red-600">
                   Cancellation Zone
                 </CardTitle>
-                <CardDescription>
-                  Withdraw your job application. This action cannot be undone.
-                </CardDescription>
               </CardHeader>
-              <CardFooter>
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive">Cancel Application</Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you absolutely sure?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription className="space-y-4">
-                        <p>
-                          This action cannot be undone. Withdrawing your
-                          application means you will no longer be considered for
-                          this position.
-                        </p>
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={handleCancelApplication}
-                        className="bg-red-600 hover:bg-red-700"
-                        disabled={updateJobApplication.isPending}
-                      >
-                        {updateJobApplication.isPending ? (
-                          <span className="animate-spin">
-                            <Loader2 />
-                          </span>
-                        ) : (
-                          "Cancel Application"
-                        )}
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </CardFooter>
+              <CardContent className="space-y-5">
+                {application.status === "CANCELLED" ? (
+                  <>
+                    <CardDescription>
+                      You have withdrawn this application. This action cannot be
+                      undone.
+                    </CardDescription>
+                  </>
+                ) : (
+                  <>
+                    <CardDescription>
+                      Withdraw your job application. This action cannot be
+                      undone.
+                    </CardDescription>
+                    <AlertDialog>
+                      <AlertDialogTrigger asChild>
+                        <Button variant="destructive">
+                          Cancel Application
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>
+                            Are you absolutely sure?
+                          </AlertDialogTitle>
+                          <AlertDialogDescription className="space-y-4">
+                            <p>
+                              This action cannot be undone. Withdrawing your
+                              application means you will no longer be considered
+                              for this position.
+                            </p>
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogAction
+                            onClick={handleCancelApplication}
+                            className="bg-red-600 hover:bg-red-700"
+                            disabled={updateJobApplication.isPending}
+                          >
+                            {updateJobApplication.isPending ? (
+                              <span className="animate-spin">
+                                <Loader2 />
+                              </span>
+                            ) : (
+                              "Cancel Application"
+                            )}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
+                  </>
+                )}
+              </CardContent>
             </Card>
           </>
         ) : (

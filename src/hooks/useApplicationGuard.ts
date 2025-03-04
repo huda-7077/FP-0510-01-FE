@@ -1,8 +1,8 @@
 "use client";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import useGetProfile from "./api/account/useGetProfile";
 import { useApplicationForm } from "@/features/job-application/context/ApplicationFormContext";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import useGetProfile from "./api/account/useGetProfile";
 
 export const useApplicationGuard = (currentStep: number) => {
   const router = useRouter();
@@ -12,30 +12,24 @@ export const useApplicationGuard = (currentStep: number) => {
   useEffect(() => {
     if (isLoading || !profile) return;
 
-    // Get stored progress for this specific job
     const storedProgress = localStorage.getItem(`jobProgress_${formData.jobId}`);
     
     if (!storedProgress) {
-      // If no progress exists for this job, start from step 1
       router.push(`/jobs/${formData.jobId}/apply`);
       return;
     }
 
-    // Guard: Steps must be followed in order
     if (currentStep > 1) {
-      // Check if profile review is complete
       if (currentStep === 2 && !isProfileComplete(profile)) {
         router.push(`/jobs/${formData.jobId}/apply`);
         return;
       }
 
-      // Check if documents are uploaded
       if (currentStep === 3 && !isDocumentsComplete(formData)) {
         router.push(`/jobs/${formData.jobId}/apply`);
         return;
       }
 
-      // Store progress for this job
       localStorage.setItem(`jobProgress_${formData.jobId}`, currentStep.toString());
     }
   }, [currentStep, profile, isLoading, router, formData]);

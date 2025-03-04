@@ -13,7 +13,7 @@ interface JobDetailsProps {
 }
 
 const ErrorState = () => (
-  <div className="container mx-auto px-6 py-12">
+  <div className="container mx-auto min-h-screen px-6 py-12">
     <div className="mx-auto max-w-2xl rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm">
       <div className="mb-4 flex justify-center">
         <div className="rounded-full bg-red-100 p-3">
@@ -51,7 +51,7 @@ const ErrorState = () => (
 );
 
 const NoDataState = () => (
-  <div className="container mx-auto px-6 py-12">
+  <div className="container mx-auto min-h-screen px-6 py-12">
     <div className="mx-auto max-w-2xl rounded-lg border border-gray-200 bg-white p-6 text-center shadow-sm">
       <div className="mb-4 flex justify-center">
         <div className="rounded-full bg-blue-100 p-3">
@@ -84,7 +84,11 @@ const NoDataState = () => (
 );
 
 const JobPage = ({ slug }: JobDetailsProps) => {
-  const { data: job, isLoading, error } = useGetJob({ slug });
+  const {
+    data: job,
+    isLoading,
+    error,
+  } = useGetJob({ slug, isPublished: true, isExpired: false });
 
   if (isLoading) {
     return <LoadingScreen />;

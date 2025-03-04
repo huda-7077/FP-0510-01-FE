@@ -1,17 +1,17 @@
-import React from "react";
+import { Button } from "@/components/ui/button";
 import {
   ArrowRight,
-  PenTool,
+  BookCopy,
+  BusFront,
   Code,
-  Megaphone,
-  Video,
-  Music,
-  LineChart,
-  Heart,
   Database,
+  Heart,
+  Landmark,
+  PencilRuler,
+  Tv,
 } from "lucide-react";
 import { Link } from "next-view-transitions";
-import { Button } from "@/components/ui/button";
+import React from "react";
 
 type CategoryItem = {
   id: string;
@@ -25,55 +25,55 @@ const PopularCategorySection = () => {
     {
       id: "graphics-design",
       title: "Information Technology (IT) & Software Development",
-      icon: <PenTool size={24} />,
-      categoryValue: "Information Technology (IT) & Software Development",
+      icon: <Code size={24} />,
+      categoryValue: "Information Technology & Software Development",
     },
     {
       id: "business-management",
       title: "Business & Management",
-      icon: <Code size={24} />,
+      icon: <Database size={24} />,
       categoryValue: "Business & Management",
     },
     {
       id: "engineering",
       title: "Engineering",
-      icon: <Megaphone size={24} />,
+      icon: <PencilRuler size={24} />,
       categoryValue: "Engineering",
     },
     {
       id: "healthcare-medical",
       title: "Healthcare & Medical",
-      icon: <Video size={24} />,
+      icon: <Heart size={24} />,
       categoryValue: "Healthcare & Medical",
     },
     {
       id: "education-training",
       title: "Education & Training",
-      icon: <Music size={24} />,
+      icon: <BookCopy size={24} />,
       categoryValue: "Education & Training",
     },
     {
       id: "government-public",
       title: "Government & Public Administration",
-      icon: <LineChart size={24} />,
+      icon: <Landmark size={24} />,
       categoryValue: "Government & Public Administration",
     },
     {
       id: "transportation-warehousing",
       title: "Transportation & Warehousing",
-      icon: <Heart size={24} />,
+      icon: <BusFront size={24} />,
       categoryValue: "Transportation & Warehousing",
     },
     {
       id: "media-communications",
       title: "Media & Communications",
-      icon: <Database size={24} />,
+      icon: <Tv size={24} />,
       categoryValue: "Media & Communications",
     },
   ];
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-12 md:px-6">
+    <section className="container mx-auto px-4 py-12 md:px-6">
       <div className="mb-8 flex items-center justify-between">
         <h2 className="text-xl font-semibold sm:text-2xl">Popular category</h2>
         <Link href="/jobs">

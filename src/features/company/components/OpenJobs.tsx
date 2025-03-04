@@ -148,7 +148,7 @@ const OpenJobs = ({ companyId }: OpenJobsProps) => {
               {jobs.data.map((job) => (
                 <Link
                   key={job.id}
-                  href={`/jobs/${job.id}`}
+                  href={`/jobs/${job.slug}`}
                   className="block rounded-md border-[1px] bg-card p-4 shadow-sm duration-150 hover:border-blue-500 hover:shadow-lg"
                 >
                   <div className="flex flex-col gap-4">
@@ -156,7 +156,7 @@ const OpenJobs = ({ companyId }: OpenJobsProps) => {
                     <div className="flex items-center gap-3">
                       <Badge
                         variant="secondary"
-                        className="rounded-sm bg-green-100 text-green-600 hover:bg-green-600 hover:text-green-100"
+                        className="rounded-sm bg-green-100 text-center text-green-600 hover:bg-green-600 hover:text-green-100"
                       >
                         {job.category}
                       </Badge>

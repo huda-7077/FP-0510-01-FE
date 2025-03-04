@@ -29,7 +29,7 @@ const StepIndicator = ({ steps, currentStep }: StepIndicatorProps) => {
         <div 
           role="navigation" 
           aria-label="Progress" 
-          className="group/stepper flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
+          className="group/stepper flex sm:flex-row sm:items-center justify-between gap-2"
           data-orientation="horizontal"
         >
           {steps.map((step, index) => {
@@ -81,12 +81,6 @@ const StepIndicator = ({ steps, currentStep }: StepIndicatorProps) => {
                   <>
                     <span 
                       className={`absolute hidden sm:block h-0.5 inset-x-0 left-[calc(50%+0.75rem)] top-5 w-[calc(100%-1.5rem-0.5rem)] -translate-y-1/2 ${
-                        isCompleted ? "bg-blue-500" : "bg-gray-200"
-                      }`}
-                    />
-                    
-                    <span 
-                      className={`absolute sm:hidden w-0.5 h-full left-5 top-10 ${
                         isCompleted ? "bg-blue-500" : "bg-gray-200"
                       }`}
                     />
