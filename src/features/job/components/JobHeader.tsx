@@ -22,6 +22,7 @@ interface Job {
   companyId?: string;
   title?: string;
   category?: string;
+  slug: string;
 }
 
 const JobHeader: FC<{ job: Job }> = ({ job }) => {
@@ -79,7 +80,7 @@ const JobHeader: FC<{ job: Job }> = ({ job }) => {
   const handleApply = () => {
     if (!isAuthenticated) {
       toast.error("Please login to apply for this job");
-      router.push(`/login?redirect=/jobs/${job.id}`);
+      router.push(`/login?redirect=/jobs/${job.slug}`);
       return;
     }
 
@@ -89,7 +90,7 @@ const JobHeader: FC<{ job: Job }> = ({ job }) => {
       return;
     }
 
-    router.push(`/jobs/${job.id}/apply`);
+    router.push(`/jobs/${job.slug}/apply`);
   };
 
   if (!job) return <JobHeaderSkeleton />;

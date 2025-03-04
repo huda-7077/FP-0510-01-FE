@@ -45,21 +45,19 @@ const FinalReview = ({ onBack, job }: FinalReviewProps) => {
   };
 
   const handleConfirmSubmit = () => {
+    setShowConfirmDialog(false);
 
-    const applicationData: CreateJobApplicationRequest = {
-      jobId: job.id,
-      expectedSalary: Number(formData.expectedSalary),
-      useExistingCV: formData.useExistingCV,
-      cvFile: formData.cvFile,
-      attachment: formData.attachment,
-    };
+    setTimeout(() => {
+      const applicationData: CreateJobApplicationRequest = {
+        jobId: job.id,
+        expectedSalary: Number(formData.expectedSalary),
+        useExistingCV: formData.useExistingCV,
+        cvFile: formData.cvFile,
+        attachment: formData.attachment,
+      };
 
-    submitApplication(applicationData, {
-      onSuccess: () => {
-        resetForm();
-        router.push("/dashboard/user/jobs");
-      },
-    });
+      submitApplication(applicationData);
+    }, 50);
   };
 
   return (
@@ -76,7 +74,6 @@ const FinalReview = ({ onBack, job }: FinalReviewProps) => {
         </div>
 
         <div className="space-y-6">
-          {/* Job Details Section */}
           <div className="rounded-lg border border-blue-100 bg-blue-50 p-4 transition-all hover:shadow-md">
             <div className="mb-3 flex items-center gap-2">
               <Briefcase className="h-5 w-5 text-blue-600" />
@@ -84,9 +81,7 @@ const FinalReview = ({ onBack, job }: FinalReviewProps) => {
             </div>
             <div className="grid gap-3">
               <div className="rounded bg-white p-2">
-                <span className="text-sm font-medium text-gray-700">
-                  Position:{" "}
-                </span>
+                <span className="text-sm font-medium text-gray-700">Job: </span>
                 <span className="text-sm font-medium text-blue-900">
                   {job.title}
                 </span>

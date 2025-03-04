@@ -9,7 +9,7 @@ interface GetJobQuery {
 const useGetJobApplication = ({ jobApplicationId }: GetJobQuery) => {
   const { axiosInstance } = useAxios();
   return useQuery({
-    queryKey: ["jobs", jobApplicationId],
+    queryKey: ["job-applications"],
     queryFn: async () => {
       const { data } = await axiosInstance.get<JobApplication>(
         `/job-applications/${jobApplicationId}`,

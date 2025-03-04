@@ -168,12 +168,12 @@ const SavedJobsList = ({
                             ? "cursor-not-allowed text-gray-400"
                             : "text-blue-500 hover:bg-blue-50 hover:text-blue-700"
                         }
-                        disabled={
-                          isJobExpired(savedJob.job.applicationDeadline)
-                        }
+                        disabled={isJobExpired(
+                          savedJob.job.applicationDeadline,
+                        )}
                         onClick={() =>
                           !isJobExpired(savedJob.job.applicationDeadline) &&
-                          (window.location.href = `/jobs/${savedJob.job.id}`)
+                          (window.location.href = `/jobs/${savedJob.job.slug}`)
                         }
                       >
                         View Details
@@ -260,21 +260,21 @@ const SavedJobsList = ({
                     )}
                   </div>
                 </div>
-                  <Button
-                    variant="outline"
-                    className={
-                      isJobExpired(savedJob.job.applicationDeadline)
-                        ? "w-full cursor-not-allowed text-gray-400"
-                        : "w-full text-blue-500 hover:bg-blue-50 hover:text-blue-700"
-                    }
-                    disabled={isJobExpired(savedJob.job.applicationDeadline)}
-                    onClick={() =>
-                      !isJobExpired(savedJob.job.applicationDeadline) &&
-                      (window.location.href = `/jobs/${savedJob.job.id}`)
-                    }
-                  >
-                    View Details
-                  </Button>
+                <Button
+                  variant="outline"
+                  className={
+                    isJobExpired(savedJob.job.applicationDeadline)
+                      ? "w-full cursor-not-allowed text-gray-400"
+                      : "w-full text-blue-500 hover:bg-blue-50 hover:text-blue-700"
+                  }
+                  disabled={isJobExpired(savedJob.job.applicationDeadline)}
+                  onClick={() =>
+                    !isJobExpired(savedJob.job.applicationDeadline) &&
+                    (window.location.href = `/jobs/${savedJob.job.slug}`)
+                  }
+                >
+                  View Details
+                </Button>
               </div>
             </div>
           ))

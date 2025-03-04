@@ -1,16 +1,15 @@
 "use client";
 
-import { useState } from "react";
+import HomeBreadcrumb from "@/components/HomeBreadcrumb";
 import useGetJob from "@/hooks/api/job/useGetJob";
-import ProfileReview from "./steps/ProfileReview";
+import { useApplicationGuard } from "@/hooks/useApplicationGuard";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { LoadingState } from "./components/ApplicationLoadingState";
+import StepIndicator from "./components/StepIndicator";
 import DocumentUpload from "./steps/DocumentUpload";
 import FinalReview from "./steps/FinalReview";
-import StepIndicator from "./components/StepIndicator";
-import { LoadingState } from "./components/ApplicationLoadingState";
-import { useApplicationGuard } from "@/hooks/useApplicationGuard";
-import { useApplicationForm } from "./context/ApplicationFormContext";
-import { usePathname, useRouter } from "next/navigation";
-import HomeBreadcrumb from "@/components/HomeBreadcrumb";
+import ProfileReview from "./steps/ProfileReview";
 
 const steps = [
   {
@@ -72,7 +71,7 @@ export const ApplicationSteps = ({ slug }: { slug: string }) => {
           </h1>
           <HomeBreadcrumb
             crumb1={{ href: "jobs", label: "Find Jobs" }}
-            crumb2={{ href: `${job.id}`, label: `${job.title}` }}
+            crumb2={{ href: `${job.slug}`, label: `${job.title}` }}
             lastCrumb="Apply Job"
           />
         </div>

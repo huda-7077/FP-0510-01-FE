@@ -28,7 +28,11 @@ export function ApplicationStatusBadge({
       case "REJECTED":
         return { label: "Rejected", variant: "destructive" as const };
       case "CANCELLED":
-        return { label: "Cancelled", variant: "outline" as const };
+        return {
+          label: "Cancelled",
+          variant: "outline" as const,
+          className: "bg-red-500 text-white",
+        };
       default:
         return { label: status, variant: "outline" as const };
     }
