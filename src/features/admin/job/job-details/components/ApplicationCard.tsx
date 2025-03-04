@@ -84,7 +84,7 @@ export const ApplicationCard = ({ application }: ApplicationCardProps) => {
               <span className="h-0.5 w-0.5 rounded-full bg-gray-300 sm:block sm:h-1 sm:w-1" />
               <div className="flex items-center gap-2">
                 <span className="text-xs group-hover:text-blue-600">
-                  {application.user.educationLevel}
+                  {application.user.headline}
                 </span>
               </div>
             </div>
