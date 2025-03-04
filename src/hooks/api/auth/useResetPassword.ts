@@ -1,6 +1,6 @@
 "use client";
 
-import useAxios from "@/hooks/useAxios";
+import { axiosInstance } from "@/lib/axios";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { useTransitionRouter } from "next-view-transitions";
@@ -20,7 +20,6 @@ const useResetPassword = () => {
   const router = useTransitionRouter();
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
-  const { axiosInstance } = useAxios();
 
   return useMutation<
     ResetPasswordResponse,
@@ -32,9 +31,17 @@ const useResetPassword = () => {
         throw new Error("Reset token is missing");
       }
 
-      const { data } = await axiosInstance.patch("/auth/reset-password", {
-        password: payload.password,
-      });
+      const { data } = await axiosInstance.patch(
+        "/auth/reset-password",
+        {
+          password: payload.password,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
       return data;
     },
     onSuccess: (data) => {
@@ -46,7 +53,6 @@ const useResetPassword = () => {
         error.response?.data?.message || "Failed to reset password";
       toast.error(errorMessage);
 
-      // If token is invalid or expired, redirect to forgot password page
       if (error.response?.status === 401) {
         router.push("/forgot-password");
       }
