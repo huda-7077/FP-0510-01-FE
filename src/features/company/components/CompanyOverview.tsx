@@ -139,7 +139,7 @@ const CompanyOverview = ({ company }: CompanyOverviewProps) => {
               title={shareTitle}
               hashtags={[
                 "CompanyProfile",
-                (company?.industry?.replace(/\s+/g, "") || ""),
+                company?.industry?.replace(/\s+/g, "") || "",
               ]}
             >
               <XIcon size={37} round />
@@ -175,28 +175,41 @@ const CompanyOverview = ({ company }: CompanyOverviewProps) => {
             </div>
           </div>
 
-          <div className="flex items-center gap-5 border-b-[1px] p-3 pb-5">
-            <MapPinHouse className="h-7 w-7 text-blue-600" />
-            <div className="space-y-1">
-              <p className="text-[11px] font-extralight text-gray-400">
-                PRIMARY LOCATION
-              </p>
-              <a
-                className="text-sm hover:text-blue-600"
-                href={
-                  company?.companyLocations?.[0]?.latitude &&
-                  company?.companyLocations?.[0]?.longitude
-                    ? `https://www.google.com/maps?q=${company.companyLocations[0].latitude},${company.companyLocations[0].longitude}`
-                    : "#"
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {company?.companyLocations?.[0]
-                  ? `${company.companyLocations[0].address}, ${company.companyLocations[0].regency.regency}, ${company.companyLocations[0].regency.province.province}`
-                  : "N/A"}
-              </a>
+          <div className="flex flex-col gap-3 border-b-[1px] p-3 pb-5">
+            <div className="flex items-center gap-5">
+              <MapPinHouse className="h-7 w-7 text-blue-600" />
+              <div className="space-y-1">
+                <p className="text-[11px] font-extralight text-gray-400">
+                  LOCATIONS
+                </p>
+              </div>
             </div>
+
+            {company?.companyLocations?.slice(0, 3).map((location, index) => (
+              <div key={index} className="ml-12 flex items-center gap-2">
+                <a
+                  className="text-sm hover:text-blue-600"
+                  href={
+                    location?.latitude && location?.longitude
+                      ? `https://www.google.com/maps?q=${location.latitude},${location.longitude}`
+                      : "#"
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {location
+                    ? `${location.address}, ${location.regency.regency}, ${location.regency.province.province}`
+                    : "N/A"}
+                </a>
+              </div>
+            ))}
+
+            {company && company?.companyLocations.length > 3 && (
+              <div className="ml-12 flex items-center gap-2 text-sm text-gray-500">
+                {company.companyLocations.length - 3} more location
+                {company.companyLocations.length - 3 > 1 ? "s" : ""}
+              </div>
+            )}
           </div>
 
           <div className="flex items-center gap-5 border-b-[1px] p-3 pb-5">

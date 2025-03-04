@@ -42,7 +42,6 @@ const SupajobWorkflow = () => {
       title: "Upload CV/Resume",
       description:
         "Upload your CV or create one using our CV generator. We'll match your skills with the right opportunities.",
-      isActive: true,
     },
     {
       icon: Search,
@@ -73,7 +72,6 @@ const SupajobWorkflow = () => {
                 icon={step.icon}
                 title={step.title}
                 description={step.description}
-                isActive={step.isActive}
               />
             ))}
           </div>
