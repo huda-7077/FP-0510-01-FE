@@ -12,31 +12,38 @@ export const useApplicationGuard = (currentStep: number) => {
   useEffect(() => {
     if (isLoading || !profile) return;
 
-    const storedProgress = localStorage.getItem(`jobProgress_${formData.jobId}`);
+    const storedProgress = localStorage.getItem(`jobProgress_${formData.slug}`);
     
     if (!storedProgress) {
-      router.push(`/jobs/${formData.jobId}/apply`);
+      localStorage.setItem(`jobProgress_${formData.slug}`, "1");
       return;
     }
 
     if (currentStep > 1) {
       if (currentStep === 2 && !isProfileComplete(profile)) {
-        router.push(`/jobs/${formData.jobId}/apply`);
+        router.push(`/jobs/${formData.slug}/apply`);
+        localStorage.setItem(`jobProgress_${formData.slug}`, "1");
         return;
       }
 
-      if (currentStep === 3 && !isDocumentsComplete(formData)) {
-        router.push(`/jobs/${formData.jobId}/apply`);
+      if (currentStep === 3) {
+        router.push(`/jobs/${formData.slug}/apply`);
+        localStorage.setItem(`jobProgress_${formData.slug}`, "2");
         return;
       }
 
-      localStorage.setItem(`jobProgress_${formData.jobId}`, currentStep.toString());
+      localStorage.setItem(`jobProgress_${formData.slug}`, currentStep.toString());
     }
   }, [currentStep, profile, isLoading, router, formData]);
 
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem(`jobProgress_${formData.slug}`);
+    };
+  }, [formData.slug]);
+
   return { isLoading, profile };
 };
-
 
 const isProfileComplete = (profile: any) => {
   const requiredFields = [
