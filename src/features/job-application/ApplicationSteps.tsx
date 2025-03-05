@@ -4,7 +4,7 @@ import HomeBreadcrumb from "@/components/HomeBreadcrumb";
 import useGetJob from "@/hooks/api/job/useGetJob";
 import { useApplicationGuard } from "@/hooks/useApplicationGuard";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { LoadingState } from "./components/ApplicationLoadingState";
 import StepIndicator from "./components/StepIndicator";
 import DocumentUpload from "./steps/DocumentUpload";
@@ -34,12 +34,26 @@ export const ApplicationSteps = ({ slug }: { slug: string }) => {
   });
   const { isLoading: guardLoading } = useApplicationGuard(currentStep);
 
+  useEffect(() => {
+    const storedProgress = localStorage.getItem(`jobProgress_${slug}`);
+    if (storedProgress) {
+      const parsedStep = parseInt(storedProgress, 10);
+      if (parsedStep > 1 && parsedStep <= steps.length) {
+        setCurrentStep(parsedStep);
+      }
+    }
+  }, [slug]);
+
   const handleNext = () => {
-    setCurrentStep((prev) => prev + 1);
+    const nextStep = currentStep + 1;
+    setCurrentStep(nextStep);
+    localStorage.setItem(`jobProgress_${slug}`, nextStep.toString());
   };
 
   const handleBack = () => {
-    setCurrentStep((prev) => prev - 1);
+    const prevStep = currentStep - 1;
+    setCurrentStep(prevStep);
+    localStorage.setItem(`jobProgress_${slug}`, prevStep.toString());
   };
 
   if (jobLoading || guardLoading) {
