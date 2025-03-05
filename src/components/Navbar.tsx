@@ -24,18 +24,17 @@ import {
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const { data: session, status } = useSession();
-  const { data: profile } = useGetProfile({ enabled: !!session?.user });
+  const session = useSession();
+  const user = session.data?.user;
+  const { data: profile } = useGetProfile({ enabled: !!user });
+  const userRole = user?.role;
 
-  const userRole = session?.user?.role || "USER";
+  const isUser = userRole === "USER";
   const isAdmin = userRole === "ADMIN";
   const isDeveloper = userRole === "DEVELOPER";
   const avatarSrc = isAdmin
     ? profile?.company?.logo || "/anonymous.svg"
-    : profile?.profilePicture ||
-      session?.user?.profilePicture ||
-      "/anonymous.svg";
+    : profile?.profilePicture || user?.profilePicture || "/anonymous.svg";
 
   const getLogo = () => {
     if (isDeveloper) return "/logo-developer.png";
@@ -48,23 +47,43 @@ const Navbar = () => {
     return "/dashboard/user/settings";
   };
 
-  const navLinks = [
+  let navLinks;
+  const noUserMenuLinks = [
+    { href: "/", label: "Home" },
+    { href: "/jobs", label: "Find Job" },
+    { href: "/companies", label: "Find Employers" },
+    { href: "/skill-assessments", label: "Skill Assessments" },
+    { href: "/about-us", label: "About Us" },
+  ];
+  const userMenuLinks = [
     { href: "/", label: "Home" },
     { href: "/jobs", label: "Find Job" },
     { href: "/companies", label: "Find Employers" },
     { href: "/skill-assessments", label: "Skill Assessments" },
     { href: "/subscriptions", label: "Subscriptions" },
-    {
-      href:
-        profile?.role === "ADMIN"
-          ? "/dashboard/admin"
-          : profile?.role === "USER"
-            ? "/dashboard/user"
-            : "/dashboard/developer",
-      label: "Dashboard",
-    },
+    { href: "/dashboard/user", label: "Dashboard" },
     { href: "/about-us", label: "About Us" },
   ];
+  const adminMenuLinks = [
+    { href: "/", label: "Home" },
+    { href: "/jobs", label: "Find Job" },
+    { href: "/companies", label: "Find Employers" },
+    { href: "/dashboard/admin", label: "Dashboard" },
+    { href: "/about-us", label: "About Us" },
+  ];
+  const developerMenuLinks = [
+    { href: "/", label: "Home" },
+    { href: "/jobs", label: "Find Job" },
+    { href: "/companies", label: "Find Employers" },
+    { href: "/skill-assessments", label: "Skill Assessments" },
+    { href: "/dashboard/developer", label: "Dashboard" },
+    { href: "/about-us", label: "About Us" },
+  ];
+
+  if (isUser) navLinks = userMenuLinks;
+  else if (isAdmin) navLinks = adminMenuLinks;
+  else if (isDeveloper) navLinks = developerMenuLinks;
+  else navLinks = noUserMenuLinks;
 
   const renderDesktopUserMenu = () => (
     <DropdownMenu>
@@ -73,7 +92,7 @@ const Navbar = () => {
           <Avatar className="h-12 w-12">
             <AvatarImage
               src={avatarSrc}
-              alt={session?.user?.fullName || "User"}
+              alt={user?.fullName || "User"}
               className="object-cover"
             />
             <AvatarFallback>
@@ -90,31 +109,39 @@ const Navbar = () => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end">
         {isDeveloper ? (
-          <DropdownMenuItem className="cursor-pointer">
-            <Link href="/dashboard/developer" className="flex items-center">
+          <Link href="/dashboard/developer" className="flex items-center">
+            <DropdownMenuItem className="cursor-pointer">
               <LayoutPanelLeft className="mr-2 h-4 w-4" /> Dashboard
-            </Link>
-          </DropdownMenuItem>
+            </DropdownMenuItem>
+          </Link>
         ) : isAdmin ? (
           <Link href="/dashboard/admin/settings">
             <DropdownMenuItem className="cursor-pointer">
               Profile Settings
             </DropdownMenuItem>
           </Link>
-        ) : (
+        ) : isUser ? (
           <Link href="/dashboard/user/settings">
             <DropdownMenuItem className="cursor-pointer">
               Profile Settings
             </DropdownMenuItem>
           </Link>
-        )}
+        ) : null}
 
-        <DropdownMenuItem
-          className="cursor-pointer text-red-600"
-          onClick={() => signOut({ callbackUrl: "/login" })}
-        >
-          Logout
-        </DropdownMenuItem>
+        {userRole ? (
+          <DropdownMenuItem
+            className="cursor-pointer text-red-600"
+            onClick={() => signOut({ callbackUrl: "/login" })}
+          >
+            Logout
+          </DropdownMenuItem>
+        ) : (
+          <Link href="/login">
+            <DropdownMenuItem className="cursor-pointer text-blue-500">
+              Login
+            </DropdownMenuItem>
+          </Link>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );
@@ -122,7 +149,7 @@ const Navbar = () => {
   const renderMobileUserMenu = () => (
     <div className="lg:hidden">
       <AvatarMenu
-        session={session}
+        session={session.data}
         avatarSrc={avatarSrc}
         onSignOut={() => signOut({ callbackUrl: "/login" })}
       />
@@ -130,8 +157,6 @@ const Navbar = () => {
   );
 
   const renderVerificationButton = () => {
-    if (profile?.isVerified) return null;
-
     return (
       <TooltipProvider>
         <Tooltip>
@@ -225,9 +250,11 @@ const Navbar = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
-            {session ? (
+            {userRole ? (
               <>
-                {!profile?.isVerified && renderVerificationButton()}
+                {profile && profile.isVerified === false
+                  ? renderVerificationButton()
+                  : null}
                 <div className="hidden lg:block">{renderDesktopUserMenu()}</div>
                 <div className="lg:hidden">{renderMobileUserMenu()}</div>
               </>
@@ -258,7 +285,7 @@ const Navbar = () => {
     <header className="sticky left-0 top-0 z-50 bg-white shadow-sm">
       {renderTopBar()}
       {renderMainContent()}
-      {!session && isMenuOpen && (
+      {!userRole && isMenuOpen && (
         <div className="border-t lg:hidden">
           <div className="container mx-auto px-4 py-4">
             <div className="flex flex-col space-y-4">
