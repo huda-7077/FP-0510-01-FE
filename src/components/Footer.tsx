@@ -67,7 +67,10 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/dashboard/user/saved-jobs" className="hover:text-white">
+                  <Link
+                    href="/dashboard/user/saved-jobs"
+                    className="hover:text-white"
+                  >
                     Saved Jobs
                   </Link>
                 </li>
@@ -78,7 +81,10 @@ export default function Footer() {
               <h3 className="mb-2 font-semibold text-white">Employers</h3>
               <ul className="space-y-2 text-xs">
                 <li>
-                  <Link href="#" className="hover:text-white">
+                  <Link
+                    href="/dashboard/admin/jobs/create"
+                    className="hover:text-white"
+                  >
                     Post a Job
                   </Link>
                 </li>
@@ -88,8 +94,11 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li>
-                  <Link href="#" className="hover:text-white">
-                    Applications
+                  <Link
+                    href="/dashboard/admin/jobs"
+                    className="hover:text-white"
+                  >
+                    Manage Jobs
                   </Link>
                 </li>
               </ul>
