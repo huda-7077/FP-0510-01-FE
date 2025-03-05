@@ -35,11 +35,11 @@ export function DetailsDialog({ isOpen, onClose, badge }: DetailsDialogProps) {
             />
           </div>
         </div>
-        <DialogTitle className="line-clamp-2 flex h-10 w-full items-center justify-center break-all text-2xl font-semibold text-gray-950">
+        <DialogTitle className="!line-clamp-2 flex h-[4.5rem] w-full items-center justify-center break-all text-center text-2xl font-semibold leading-normal text-gray-950">
           {badge.badgeName}
         </DialogTitle>
         <div className="border-t-4"></div>
-        <DialogDescription className="line-clamp-2 flex h-10 w-full items-center justify-center break-all text-sm font-semibold text-gray-700">
+        <DialogDescription className="!line-clamp-2 flex h-10 w-full items-center justify-center break-all text-sm font-semibold text-gray-700">
           {badge.description}
         </DialogDescription>
         <div className="text-xs font-semibold text-gray-700">
