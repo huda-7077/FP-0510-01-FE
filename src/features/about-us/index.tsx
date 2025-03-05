@@ -50,7 +50,7 @@ const teamMembers: TeamMember[] = [
     featureNumber: 2,
     description:
       "Ega's technical expertise powers the sophisticated systems behind our platform. His innovative approach to company dashboards and applicant management tools has transformed how businesses find their perfect candidates.",
-    image: "/testi-guy.jpg", // Replace with actual image path
+    image: "https://res.cloudinary.com/dwptrdpk0/image/upload/v1741181614/photo_6078148945076402397_y_edited_wks9wr.jpg",
   },
   {
     name: "Huda",
@@ -106,14 +106,7 @@ export default function AboutUsPage() {
               />
             </Link>
           </div>
-          <Image
-            src="/team-working.jpg" // Replace with actual image path
-            alt="Our team working together"
-            fill
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-blue-900 opacity-50"></div>
+          <div className="absolute inset-0 bg-blue-900"></div>
         </div>
         <div className="container z-10 mx-auto px-4 text-center sm:px-6 lg:px-8">
           <motion.div
@@ -160,7 +153,7 @@ export default function AboutUsPage() {
           <div className="mb-20 items-center gap-10 md:flex">
             <div className="mb-8 md:mb-0 md:w-1/2">
               <Image
-                src="/team-working.jpg" // Replace with actual image path
+                src="/jcwd0510.jpg"
                 alt="Our journey"
                 width={600}
                 height={400}
@@ -308,7 +301,6 @@ export default function AboutUsPage() {
         </div>
       </section>
 
-      {/* Call to Action */}
       <section className="bg-blue-600 py-20 text-white">
         <div className="container mx-auto px-4 text-center sm:px-6 lg:px-8">
           <FadeInWhenVisible>

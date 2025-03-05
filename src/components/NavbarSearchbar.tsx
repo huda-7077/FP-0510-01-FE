@@ -21,10 +21,10 @@ export default function SearchBar() {
     setIsDropdownOpen(true);
   };
 
-  const handleSelect = (type: "job" | "company", id: number) => {
+  const handleSelect = (type: "job" | "company", id: number, slug?: string) => {
     setIsDropdownOpen(false);
     if (type === "job") {
-      router.push(`/jobs/${id}`);
+      router.push(`/jobs/${slug}`);
     } else if (type === "company") {
       router.push(`/companies/${id}`);
     }
@@ -62,7 +62,7 @@ export default function SearchBar() {
                   {jobs.map((job) => (
                     <div
                       key={job.id}
-                      onClick={() => handleSelect("job", job.id)}
+                      onClick={() => handleSelect("job", job.id, job.slug)}
                       className="cursor-pointer px-4 py-2 hover:bg-gray-100"
                     >
                       {job.title}

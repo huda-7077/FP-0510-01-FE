@@ -16,27 +16,27 @@ const testimonials = [
   },
   {
     id: 2,
-    name: "Bessie Cooper",
+    name: "Lalisa Manoban",
     role: "Creative Director",
-    avatar: "/testi-guy.jpg",
+    avatar: "/testi2.jpg",
     content:
       "We hired an incredible designer through this job board. The quality of candidates and the easy hiring process saved us so much time!",
     rating: 5,
   },
   {
     id: 3,
-    name: "Jane Cooper",
+    name: "Jennie Kim",
     role: "Photographer",
-    avatar: "/testi-guy.jpg",
+    avatar: "/testi3.webp",
     content:
       "As a freelancer, I found amazing job opportunities here. The platform connects me with clients who truly value my skills.",
     rating: 5,
   },
   {
     id: 4,
-    name: "Wade Warren",
+    name: "Jaehyun Jeong",
     role: "Marketing Director",
-    avatar: "/testi-guy.jpg",
+    avatar: "/testi4.jpg",
     content:
       "The job board helped us find top talent quickly. The filtering options and candidate profiles made recruitment a breeze!",
     rating: 5,

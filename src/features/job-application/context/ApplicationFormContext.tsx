@@ -5,7 +5,7 @@ import Navbar from "@/components/Navbar";
 import { createContext, useContext, useState, ReactNode } from "react";
 
 interface ApplicationFormData {
-  jobId: string;
+  slug: string;
   useExistingCV: boolean;
   cvFile: File | null;
   expectedSalary: string;
@@ -20,7 +20,7 @@ interface ApplicationFormContextType {
 }
 
 const initialFormData: ApplicationFormData = {
-  jobId: "",
+  slug: "",
   useExistingCV: false,
   cvFile: null,
   expectedSalary: "",
@@ -34,14 +34,14 @@ const ApplicationFormContext = createContext<
 
 export function ApplicationFormProvider({
   children,
-  initialJobId,
+  initialJobSlug,
 }: {
   children: ReactNode;
-  initialJobId: string;
+  initialJobSlug: string;
 }) {
   const [formData, setFormData] = useState<ApplicationFormData>(() => ({
     ...initialFormData,
-    jobId: initialJobId,
+    slug: initialJobSlug,
   }));
 
   const updateFormData = (newData: Partial<ApplicationFormData>) => {
@@ -52,7 +52,7 @@ export function ApplicationFormProvider({
   };
 
   const resetForm = () => {
-    setFormData({ ...initialFormData, jobId: initialJobId });
+    setFormData({ ...initialFormData, slug: initialJobSlug });
   };
 
   return (

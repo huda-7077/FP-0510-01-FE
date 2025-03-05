@@ -1,14 +1,20 @@
 import { axiosInstance } from "@/lib/axios";
 import { useQuery } from "@tanstack/react-query";
 
-interface Suggestion {
+interface JobSuggestion {
+  id: number;
+  title: string;
+  slug: string;
+}
+
+interface CompanySuggestion {
   id: number;
   title: string;
 }
 
 interface Suggestions {
-  jobs: Suggestion[];
-  companies: Suggestion[];
+  jobs: JobSuggestion[];
+  companies: CompanySuggestion[];
 }
 
 export const useGetSearchSuggestions = (query: string) => {
