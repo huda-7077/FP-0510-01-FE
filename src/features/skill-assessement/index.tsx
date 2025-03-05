@@ -8,8 +8,13 @@ import { SkillAssessmentCard } from "./components/SkillAssessmentCard";
 import SkillAssessmentCardSkeleton from "./components/SkillAssessmentCardSkeleton";
 import { SkillAssessmentHeader } from "./components/SkillAssessmentHeader";
 import HomeBreadcrumb from "@/components/HomeBreadcrumb";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 export const SkillAssessmentListPage = () => {
+  const session = useSession();
+  const user = session.data?.user;
+  const [isUser, setIsUser] = useState(false);
   const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [search, setSearch] = useQueryState("search", { defaultValue: "" });
   const [sortBy, setSortBy] = useQueryState("sortBy", {
@@ -27,6 +32,12 @@ export const SkillAssessmentListPage = () => {
     take: 12,
     search: debouncedSearch,
   });
+
+  useEffect(() => {
+    if (user?.role === "USER") {
+      setIsUser(true);
+    }
+  }, [user]);
 
   const onChangePage = (page: number) => {
     setPage(page);
@@ -74,6 +85,7 @@ export const SkillAssessmentListPage = () => {
                 <SkillAssessmentCard
                   skillAssessment={skillAssessment}
                   key={index}
+                  isUser={isUser}
                 />
               ))}
             </div>

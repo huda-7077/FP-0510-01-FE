@@ -7,10 +7,12 @@ import Image from "next/image";
 
 interface SkillAssessmentCardProps {
   skillAssessment?: SkillAssessment;
+  isUser?: boolean;
 }
 
 export const SkillAssessmentCard = ({
   skillAssessment,
+  isUser,
 }: SkillAssessmentCardProps) => {
   return (
     <div>
@@ -42,18 +44,29 @@ export const SkillAssessmentCard = ({
           </div>
         </div>
         <div className="flex w-full items-center justify-between gap-2 sm:gap-4 md:gap-5">
-          <Link
-            className="w-full"
-            href={`/skill-assessments/${skillAssessment?.slug}`}
-          >
+          {isUser ? (
+            <Link
+              className="w-full"
+              href={`/skill-assessments/${skillAssessment?.slug}`}
+            >
+              <Button
+                variant="outline"
+                className="mt-2 h-8 w-full flex-1 bg-blue-600 text-xs text-white hover:bg-blue-800 hover:text-white"
+              >
+                <Eye />
+                Enter
+              </Button>
+            </Link>
+          ) : (
             <Button
               variant="outline"
-              className="mt-2 h-8 w-full flex-1 bg-blue-600 text-xs text-white hover:bg-blue-800 hover:text-white"
+              disabled
+              className="mt-2 h-8 w-full flex-1 bg-blue-600 text-xs text-white opacity-50"
             >
               <Eye />
               Enter
             </Button>
-          </Link>
+          )}
         </div>
       </Card>
     </div>

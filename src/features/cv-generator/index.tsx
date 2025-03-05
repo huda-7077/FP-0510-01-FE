@@ -10,7 +10,9 @@ const CVGenerator = dynamic(() => import("./components/CVGenerator"), {
 });
 
 const CVGeneratorPage = () => {
-  const { data: subscription, isLoading } = useGetSubscription();
+  const { data: subscription, isLoading } = useGetSubscription({
+    enabled: true,
+  });
 
   if (isLoading) {
     return (
