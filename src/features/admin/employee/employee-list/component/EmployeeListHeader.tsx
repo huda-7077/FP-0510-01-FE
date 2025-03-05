@@ -57,7 +57,7 @@ export const EmployeeListHeader = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <h2 className="text-lg font-semibold text-gray-900 sm:text-2xl">
-            Applicants
+            Employees
           </h2>
           <Badge
             variant="secondary"

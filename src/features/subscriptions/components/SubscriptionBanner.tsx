@@ -2,7 +2,17 @@ import { FC } from "react";
 import SubscriptionCard from "./SubscriptionCard";
 import { Link } from "next-view-transitions";
 
-const SubscriptionBanner: FC<{ isActive: boolean }> = ({ isActive }) => {
+interface SubscriptionBannerProps {
+  isActive: boolean;
+  isGuest?: boolean;
+  isNotUser?: boolean;
+}
+
+const SubscriptionBanner: FC<SubscriptionBannerProps> = ({
+  isActive,
+  isGuest,
+  isNotUser,
+}) => {
   return (
     <div>
       <div>
@@ -17,7 +27,7 @@ const SubscriptionBanner: FC<{ isActive: boolean }> = ({ isActive }) => {
           </p>
         </div>
 
-        <SubscriptionCard isActive={isActive} />
+        <SubscriptionCard isActive={isActive} isGuest={isGuest} />
       </div>
       {isActive && (
         <div className="mt-8 flex flex-col items-center justify-center space-y-4 sm:space-x-4">
@@ -33,6 +43,22 @@ const SubscriptionBanner: FC<{ isActive: boolean }> = ({ isActive }) => {
           </Link>
         </div>
       )}
+
+      {isGuest ? (
+        isNotUser ? (
+          <div className="mt-8 flex flex-col items-center justify-center space-y-4 sm:space-x-4">
+            <p className="text-lg font-medium text-gray-500">
+              This feature not avaliable for admin or company account
+            </p>
+          </div>
+        ) : (
+          <div className="mt-8 flex flex-col items-center justify-center space-y-4 sm:space-x-4">
+            <p className="text-lg font-medium text-gray-500">
+              To access this feature, please log in to your account.
+            </p>
+          </div>
+        )
+      ) : null}
     </div>
   );
 };

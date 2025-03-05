@@ -24,7 +24,10 @@ function Feature({ text }: { text: string }) {
   );
 }
 
-const SubscriptionCard: FC<{ isActive: boolean }> = ({ isActive }) => {
+const SubscriptionCard: FC<{ isActive: boolean; isGuest?: boolean }> = ({
+  isActive,
+  isGuest,
+}) => {
   const [checkoutOpen, setCheckoutOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState<SubscriptionCategory | null>(
     null,
@@ -88,7 +91,7 @@ const SubscriptionCard: FC<{ isActive: boolean }> = ({ isActive }) => {
                     ? "bg-blue-600 text-white hover:bg-blue-700"
                     : "border-2 border-blue-600 bg-white text-blue-600 hover:bg-blue-50"
                 }`}
-                disabled={isActive}
+                disabled={isActive || isGuest}
                 onClick={() => handlePlanSelection(category)}
               >
                 Choose Plan

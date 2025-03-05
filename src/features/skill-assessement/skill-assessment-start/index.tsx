@@ -20,7 +20,7 @@ const SkillAssessmentStartPage: FC<SkillAssessmentStartProps> = ({ slug }) => {
 
   const { data: userAttempt } = useGetUserAttempt(slug);
   const { data: subscription, isLoading: isSubscriptionLoading } =
-    useGetSubscription();
+    useGetSubscription({ enabled: true });
   const { data: skillAssessments, isLoading: isSkillAssessmentLoading } =
     useGetSkillAssessment(slug);
 

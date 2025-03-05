@@ -5,6 +5,8 @@ import useGetInvoice from "@/hooks/api/invoice/useGetInvoice";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Receipt, Calendar, Clock, CreditCard, Check } from "lucide-react";
 import LoadingScreen from "@/components/loading-screen/LoadingScreen";
+import { Link } from "next-view-transitions";
+import Image from "next/image";
 
 interface InvoicePageProps {
   uuid: string;
@@ -33,7 +35,19 @@ const InvoicePage: FC<InvoicePageProps> = ({ uuid }) => {
       {data?.status === "PAID" ? (
         <div className="min-h-screen bg-gradient-to-b from-blue-50/50 to-white px-4 py-12">
           <Card className="mx-auto max-w-2xl shadow-lg">
-            <CardHeader className="text-center">
+            <CardHeader className="relative text-center">
+              <div className="absolute left-8 top-8">
+                <Link href="/">
+                  <Image
+                    src="/logo.svg"
+                    alt="logo"
+                    width={125}
+                    height={50}
+                    className="object-contain"
+                    priority
+                  />
+                </Link>
+              </div>
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-blue-100">
                 <Receipt className="h-8 w-8 text-blue-600" />
               </div>
@@ -44,7 +58,6 @@ const InvoicePage: FC<InvoicePageProps> = ({ uuid }) => {
             </CardHeader>
 
             <CardContent className="space-y-8">
-              {/* Status Banner */}
               <div className="rounded-lg bg-green-50 p-4 text-center">
                 <div className="flex items-center justify-between gap-2 px-4">
                   <span className="text-3xl font-bold text-green-600">
@@ -54,10 +67,8 @@ const InvoicePage: FC<InvoicePageProps> = ({ uuid }) => {
                 </div>
               </div>
 
-              {/* Invoice Information */}
               <div className="rounded-xl bg-gray-50 p-6">
                 <div className="space-y-4">
-                  {/* Payment Time */}
                   <div className="flex items-center justify-between text-base">
                     <div className="flex items-center gap-2 text-gray-600">
                       <Calendar className="h-5 w-5 text-blue-600" />
@@ -68,7 +79,6 @@ const InvoicePage: FC<InvoicePageProps> = ({ uuid }) => {
                     </span>
                   </div>
 
-                  {/* Payment Method */}
                   <div className="flex items-center justify-between text-base">
                     <div className="flex items-center gap-2 text-gray-600">
                       <CreditCard className="h-5 w-5 text-blue-600" />
@@ -79,7 +89,6 @@ const InvoicePage: FC<InvoicePageProps> = ({ uuid }) => {
                     </span>
                   </div>
 
-                  {/* Plan Details */}
                   <div className="space-y-3 border-t pt-4">
                     <div className="flex justify-between text-base">
                       <span className="text-gray-600">Plan</span>
@@ -96,7 +105,6 @@ const InvoicePage: FC<InvoicePageProps> = ({ uuid }) => {
                     </div>
                   </div>
 
-                  {/* Total Amount */}
                   <div className="border-t pt-4">
                     <div className="flex justify-between text-lg">
                       <span className="font-semibold text-gray-900">
@@ -110,7 +118,6 @@ const InvoicePage: FC<InvoicePageProps> = ({ uuid }) => {
                 </div>
               </div>
 
-              {/* Validity Notice */}
               <div className="text-center text-sm text-gray-500">
                 This invoice serves as proof of payment for your subscription
               </div>

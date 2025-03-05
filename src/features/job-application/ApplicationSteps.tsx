@@ -3,7 +3,6 @@
 import HomeBreadcrumb from "@/components/HomeBreadcrumb";
 import useGetJob from "@/hooks/api/job/useGetJob";
 import { useApplicationGuard } from "@/hooks/useApplicationGuard";
-import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { LoadingState } from "./components/ApplicationLoadingState";
 import StepIndicator from "./components/StepIndicator";
@@ -27,7 +26,6 @@ const steps = [
 ];
 
 export const ApplicationSteps = ({ slug }: { slug: string }) => {
-  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const { data: job, isLoading: jobLoading } = useGetJob({
     slug,

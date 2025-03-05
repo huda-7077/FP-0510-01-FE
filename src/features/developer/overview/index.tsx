@@ -24,7 +24,7 @@ const DeveloperOverviewPage = () => {
       </Breadcrumb>
       <h1 className="mb-6 mt-2 text-2xl font-bold">Dashboard Overview</h1>
       {isLoading && (
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3">
           <OverviewCardSkeleton bgColor="bg-blue-500" />
           <OverviewCardSkeleton bgColor="bg-green-500" />
           <OverviewCardSkeleton bgColor="bg-yellow-500" />

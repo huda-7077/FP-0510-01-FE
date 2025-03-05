@@ -11,7 +11,11 @@ import SubscriptionSkeleton from "./components/SubscriptionSkeleton";
 const UserSubscriptionsPage = () => {
   const router = useTransitionRouter();
 
-  const { data: subscription, isLoading, refetch } = useGetSubscription();
+  const {
+    data: subscription,
+    isLoading,
+    refetch,
+  } = useGetSubscription({ enabled: true });
 
   const { mutateAsync: deleteSubscription, isPending } =
     useDeleteSubscription();

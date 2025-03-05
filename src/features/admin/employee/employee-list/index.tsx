@@ -65,7 +65,7 @@ export const EmployeeListComponent = () => {
 
           {notFound ? (
             <div className="flex min-h-[400px] items-center justify-center rounded-lg border-2 border-dashed border-gray-200 bg-gray-50/50">
-              <DataNotFound title="No Applications Found" />
+              <DataNotFound title="No Employee Found" />
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-2 md:gap-4">

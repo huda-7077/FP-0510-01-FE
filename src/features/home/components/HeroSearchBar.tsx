@@ -194,7 +194,7 @@ const HeroSearchBar = () => {
           className="h-11 whitespace-nowrap rounded-sm bg-[#0062FF] px-3 font-medium text-white hover:bg-[#0056E0] sm:px-5"
         >
           <Search className="mr-2 h-5" />
-          <span className="hidden md:inline">Search</span>
+          <span className="inline md:hidden">Search</span>
         </Button>
       </form>
     </div>

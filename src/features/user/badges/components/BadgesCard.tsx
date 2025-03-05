@@ -35,7 +35,7 @@ export const BadgesCard = ({ badge }: BadgesCardProps) => {
           </div>
         </CardContent>
         <div className="mx-auto bg-blue-100 px-4 py-3 transition-colors group-hover:bg-blue-200">
-          <h3 className="line-clamp-2 flex h-10 w-full items-center justify-center break-all text-sm font-semibold text-gray-700 group-hover:text-gray-950">
+          <h3 className="!line-clamp-2 flex h-10 w-full items-center justify-center break-all text-center text-sm font-semibold text-gray-700 group-hover:text-gray-950">
             {badge.badgeName}
           </h3>
         </div>

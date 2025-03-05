@@ -6,7 +6,8 @@ export interface GetSubscriptionResponse extends Subscription {
   duration: number;
   category: SubscriptionCategory;
 }
-const useGetSubscription = () => {
+const useGetSubscription = (options: { enabled?: boolean }) => {
+  const { enabled = true } = options;
   const { axiosInstance } = useAxios();
   return useQuery({
     queryKey: ["subscription"],
@@ -16,6 +17,8 @@ const useGetSubscription = () => {
       );
       return data;
     },
+    enabled,
+    ...options,
   });
 };
 export default useGetSubscription;
