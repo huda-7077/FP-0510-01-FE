@@ -9,7 +9,7 @@ export default function JobApplicationClient({
   params: { slug: string };
 }) {
   return (
-    <ApplicationFormProvider initialJobId={params.slug}>
+    <ApplicationFormProvider initialJobSlug={params.slug}>
       <div>
         <ApplicationSteps slug={params.slug} />
       </div>

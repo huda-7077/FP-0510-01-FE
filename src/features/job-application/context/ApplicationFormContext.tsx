@@ -34,14 +34,14 @@ const ApplicationFormContext = createContext<
 
 export function ApplicationFormProvider({
   children,
-  initialJobId,
+  initialJobSlug,
 }: {
   children: ReactNode;
-  initialJobId: string;
+  initialJobSlug: string;
 }) {
   const [formData, setFormData] = useState<ApplicationFormData>(() => ({
     ...initialFormData,
-    slug: initialJobId,
+    slug: initialJobSlug,
   }));
 
   const updateFormData = (newData: Partial<ApplicationFormData>) => {
@@ -52,7 +52,7 @@ export function ApplicationFormProvider({
   };
 
   const resetForm = () => {
-    setFormData({ ...initialFormData, slug: initialJobId });
+    setFormData({ ...initialFormData, slug: initialJobSlug });
   };
 
   return (
