@@ -53,6 +53,7 @@ const Navbar = () => {
     { href: "/jobs", label: "Find Job" },
     { href: "/companies", label: "Find Employers" },
     { href: "/skill-assessments", label: "Skill Assessments" },
+    { href: "/subscriptions", label: "Subscriptions" },
     { href: "/about-us", label: "About Us" },
   ];
   const userMenuLinks = [

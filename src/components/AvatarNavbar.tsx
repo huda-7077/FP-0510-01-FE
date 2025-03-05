@@ -32,10 +32,10 @@ const AvatarMenu: React.FC<AvatarMenuProps> = ({
   ];
 
   const adminNavLinks = [
+    { href: "/", label: "Home" },
     { href: "/dashboard/admin/overview", label: "Dashboard" },
     { href: "/dashboard/admin/jobs", label: "Manage Jobs" },
     { href: "/dashboard/admin/jobs/create", label: "Post a Job" },
-    { href: "/analytics", label: "Analytics" },
     { href: "/dashboard/admin/settings", label: "Settings" },
   ];
 
