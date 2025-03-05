@@ -1,16 +1,5 @@
 "use client";
 
-import {
-  AlertTriangle,
-  ArrowLeft,
-  Calendar,
-  Clock,
-  Download,
-  Loader2,
-  MapPin,
-} from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
 import DashboardBreadcrumb from "@/components/DashboardBreadcrumb";
 import MarkDown from "@/components/Markdown";
 import {
@@ -27,7 +16,6 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -35,6 +23,17 @@ import useGetAssessmentSlug from "@/hooks/api/assessment/useGetAssessmentSlug";
 import useGetJobApplication from "@/hooks/api/job-applications/useGetJobApplication";
 import useUpdateJobApplication from "@/hooks/api/job-applications/useUpdateJobApplication";
 import { AlertDialog, AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Calendar,
+  Clock,
+  Download,
+  Loader2,
+  MapPin,
+} from "lucide-react";
+import { Link } from "next-view-transitions";
+import Image from "next/image";
 import ApplicationDetailSkeleton from "./components/ApplicationDetailSkeleton";
 import { ApplicationStatusBadge } from "./components/ApplicationStatusBagde";
 import { ApplicationTimeline } from "./components/ApplicationTimeline";
