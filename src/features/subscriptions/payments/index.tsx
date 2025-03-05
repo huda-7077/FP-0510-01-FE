@@ -323,7 +323,7 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
 
           {data?.status === "PAID" && (
             <div className="flex justify-center">
-              <Link href={data?.invoiceUrl}>
+              <Link href={data?.invoiceUrl} target="_blank">
                 <Button
                   variant="outline"
                   className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50"
