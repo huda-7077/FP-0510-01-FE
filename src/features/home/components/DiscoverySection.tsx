@@ -1,6 +1,9 @@
 import DiscoverySkeleton from "@/components/skeletons/DiscoverySkeleton";
 import { Button } from "@/components/ui/button";
 import useGetJobs from "@/hooks/api/job/useGetJobs";
+import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
+import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
+import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
 import {
   ArrowRight,
   Bookmark,
@@ -8,14 +11,12 @@ import {
   MapPin,
   Wallet,
 } from "lucide-react";
+import { useSession } from "next-auth/react";
 import { Link } from "next-view-transitions";
 import Image from "next/image";
-import { useSession } from "next-auth/react";
+import { useState } from "react";
 import { toast } from "react-toastify";
-import useGetSavedJobs from "@/hooks/api/saved-job/useGetSavedJobs";
-import useCreateSavedJob from "@/hooks/api/saved-job/useCreateSavedJob";
-import useDeleteSavedJob from "@/hooks/api/saved-job/useDeleteSavedJob";
-import { useEffect, useState } from "react";
+import { LocationPermission } from "./LocationPermission";
 
 const formatSalary = (amount: number | null | undefined): string | null => {
   if (!amount) return null;
@@ -55,30 +56,12 @@ export default function DiscoverySection() {
   } | null>(null);
   const [isLocationDenied, setIsLocationDenied] = useState(false);
 
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setUserLocation({
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          });
-        },
-        (error) => {
-          setIsLocationDenied(true);
-        },
-      );
-    } else {
-      setIsLocationDenied(true);
-    }
-  }, []);
-
   const { data: jobsData, isLoading } = useGetJobs({
     page: 1,
     take: 5,
     userLatitude: userLocation?.latitude,
     userLongitude: userLocation?.longitude,
-    maxDistance: 50,
+    maxDistance: isLocationDenied ? undefined : 50,
   });
 
   const { data: savedJobsData } = useGetSavedJobs(
@@ -126,17 +109,28 @@ export default function DiscoverySection() {
     }
   };
 
-  if (isLoading) {
+  const handleLocationUpdate = (coordinates?: { lat: number; lng: number }) => {
+    if (coordinates) {
+      setUserLocation({
+        latitude: coordinates.lat,
+        longitude: coordinates.lng,
+      });
+      setIsLocationDenied(false);
+    } else {
+      setUserLocation(null);
+      setIsLocationDenied(true);
+    }
+  };
+
+  if (isLoading && userLocation) {
     return (
       <section className="container mx-auto space-y-4 px-4 py-20 md:px-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <h2 className="text-xl font-semibold sm:text-2xl">
-            {isLocationDenied ? "Discover Jobs" : "Jobs Near You"}
-          </h2>
-          <div className="flex items-center gap-2 text-[#0A65CC]">
-            <MapPin className="h-5 sm:h-6" />
-            {isLocationDenied ? "Indonesia" : "Your Location"}
-          </div>
+          <h2 className="text-xl font-semibold sm:text-2xl">Jobs Near You</h2>
+          <LocationPermission
+            onLocationUpdate={handleLocationUpdate}
+            isUsingLocation={!!userLocation}
+          />
         </div>
         <div className="space-y-4">
           {[...Array(5)].map((_, index) => (
@@ -152,12 +146,12 @@ export default function DiscoverySection() {
       <section className="container mx-auto space-y-4 px-4 py-20 md:px-6">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <h2 className="text-xl font-semibold sm:text-2xl">
-            {isLocationDenied ? "Discover Jobs" : "Jobs Near You"}
+            {isLocationDenied ? "Latest Jobs" : "Jobs Near You"}
           </h2>
-          <div className="flex items-center gap-2 text-[#0A65CC]">
-            <MapPin className="h-5 sm:h-6" />
-            {isLocationDenied ? "Indonesia" : "Your Location"}
-          </div>
+          <LocationPermission
+            onLocationUpdate={handleLocationUpdate}
+            isUsingLocation={!!userLocation}
+          />
         </div>
         <EmptyState />
       </section>
@@ -169,12 +163,12 @@ export default function DiscoverySection() {
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
           <h2 className="text-xl font-semibold sm:text-2xl">
-            {isLocationDenied ? "Discover Jobs" : "Jobs Near You"}
+            {isLocationDenied ? "Latest Jobs" : "Jobs Near You"}
           </h2>
-          <div className="flex items-center gap-2 text-[#0A65CC]">
-            <MapPin className="h-5 sm:h-6" />
-            {isLocationDenied ? "Indonesia" : "Your Location"}
-          </div>
+          <LocationPermission
+            onLocationUpdate={handleLocationUpdate}
+            isUsingLocation={!!userLocation}
+          />
         </div>
         <Link href="/jobs">
           <Button
