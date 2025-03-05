@@ -138,7 +138,7 @@ const PaymentPage: FC<PaymentPageProps> = ({ uuid }) => {
             <Button
               variant="ghost"
               className="border-2"
-              onClick={() => router.back()}
+              onClick={() => router.replace(`/dashboard/user/payments`)}
             >
               <MoveLeft />
             </Button>
