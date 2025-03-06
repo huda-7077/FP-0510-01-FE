@@ -50,7 +50,8 @@ const teamMembers: TeamMember[] = [
     featureNumber: 2,
     description:
       "Ega's technical expertise powers the sophisticated systems behind our platform. His innovative approach to company dashboards and applicant management tools has transformed how businesses find their perfect candidates.",
-    image: "https://res.cloudinary.com/dwptrdpk0/image/upload/v1741181614/photo_6078148945076402397_y_edited_wks9wr.jpg",
+    image:
+      "https://res.cloudinary.com/dwptrdpk0/image/upload/v1741181614/photo_6078148945076402397_y_edited_wks9wr.jpg",
   },
   {
     name: "Huda",
