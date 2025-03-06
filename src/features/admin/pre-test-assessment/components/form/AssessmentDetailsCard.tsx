@@ -93,7 +93,7 @@ const AssessmentDetailsCard: FC<AssessmentDetailsCardProps> = ({
         <Card className="overflow-hidden border border-gray-200 bg-white shadow-md">
           <CardHeader className="flex flex-row items-center justify-between border-b border-gray-200 bg-blue-600 px-6 py-3">
             <CardTitle className="flex text-xl font-semibold text-white">
-              Skill Assessment Details
+              Assessment Details
             </CardTitle>
             <Button
               variant="ghost"
