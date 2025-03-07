@@ -25,12 +25,9 @@ const CVSchema = Yup.object().shape({
         year: Yup.string()
           .required("Year is required")
           .min(4, "Year must be at least 4 characters"),
-        gpa: Yup.string()
-          .matches(
-            /^([0-3]\.\d{2}|4\.[0-4][0-9]|5\.00)\/5\.00$|^(\d{1,2}|100)\/100$/,
-            "Invalid GPA format (e.g., 3.45/4.00 or 90/100)",
-          )
-          .required("GPA is required"),
+        gpa: Yup.string().required(
+          "GPA is required (e.g., 3.45/4.00 or 90/100)",
+        ),
         experiences: Yup.array().of(
           Yup.object().shape({
             details: Yup.string()
