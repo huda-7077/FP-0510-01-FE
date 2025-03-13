@@ -158,7 +158,10 @@ export const CompanyFormFields = ({ formik }: CompanyFormFieldsProps) => {
       </div>
 
       <div className="space-y-2">
-        <Label htmlFor="about" className="flex items-center gap-2 font-semibold text-gray-700">
+        <Label
+          htmlFor="about"
+          className="flex items-center gap-2 font-semibold text-gray-700"
+        >
           <Binoculars size={18} />
           About Company
           <span className="text-red-600">*</span>

@@ -28,6 +28,7 @@ import CompanyLocationSelectInput from "./CompanyLocationSelectInput";
 import CreateJobFormHeader from "./CreateJobFormHeader";
 import CreateJobFormInput from "./CreateJobFormInput";
 import TagsInput from "./CreateJobFormTagInput";
+import CreateJobFormSalaryInput from "./CreateJobFormSalaryInput";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -89,10 +90,6 @@ const CreateJobForm = () => {
       }
     },
   });
-
-  if (status === "loading") {
-    return <LoadingScreen />;
-  }
 
   const onChangeThumbnail = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -196,12 +193,11 @@ const CreateJobForm = () => {
               formik={formik}
               isDisabled={isCreateJobPending}
             />
-            <CreateJobFormInput
+            <CreateJobFormSalaryInput
               name="salary"
-              label="Salary"
-              placeholder="10000000"
+              label="Salary (IDR/month)"
+              placeholder="1.000.0000"
               formik={formik}
-              type="number"
               icon={<DollarSign size={18} />}
               isNotEmpty={false}
               isDisabled={isCreateJobPending}
