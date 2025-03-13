@@ -11,6 +11,7 @@ import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useApplicationForm } from "../context/ApplicationFormContext";
 import { applicationSchema } from "../schemas";
+import FormattedSalaryInput from "../components/FormattedSalaryInput";
 
 interface DocumentUploadProps {
   onNext: () => void;
@@ -195,23 +196,16 @@ const DocumentUpload = ({ onNext, onBack }: DocumentUploadProps) => {
         </div>
       )}
 
-      <div className="space-y-2 rounded-lg bg-gray-50 p-4">
-        <Label htmlFor="expectedSalary" className="font-medium text-gray-800">
-          Expected Salary (IDR)
-        </Label>
-        <Input
-          id="expectedSalary"
-          type="number"
-          placeholder="Enter expected salary"
-          className="focus:border-blue-400 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
-          {...formik.getFieldProps("expectedSalary")}
-        />
-        {formik.touched.expectedSalary && formik.errors.expectedSalary && (
-          <div className="mt-1 text-sm text-red-500">
-            {formik.errors.expectedSalary}
-          </div>
-        )}
-      </div>
+      <FormattedSalaryInput
+        id="expectedSalary"
+        label="Expected Salary (IDR)"
+        placeholder="1.000.000"
+        value={formik.values.expectedSalary}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.errors.expectedSalary}
+        touched={formik.touched.expectedSalary}
+      />
 
       <div className="space-y-2 border-t border-gray-100 pt-4">
         <Label className="font-medium text-gray-800">

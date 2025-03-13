@@ -12,7 +12,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 const AppliedJobsListSkeleton = () => {
   return (
     <div className="w-full">
-      {/* Desktop view skeleton */}
       <div className="hidden md:block">
         <Table>
           <TableHeader className="bg-gray-50">
@@ -57,7 +56,6 @@ const AppliedJobsListSkeleton = () => {
         </Table>
       </div>
 
-      {/* Mobile view skeleton */}
       <div className="grid gap-4 md:hidden">
         {[...Array(5)].map((_, index) => (
           <Card key={index} className="p-4">

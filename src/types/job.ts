@@ -26,5 +26,5 @@ export interface Job {
     Assessment,
     "id" | "slug" | "passingScore" | "status"
   >[];
-  company: Pick<Company, "name" | "logo" | "industry">;
+  company: Pick<Company, "name" | "logo" | "industry" | "slug">;
 }

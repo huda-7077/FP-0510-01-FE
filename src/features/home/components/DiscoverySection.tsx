@@ -187,13 +187,15 @@ export default function DiscoverySection() {
             className="flex flex-col gap-4 rounded-lg border p-4 transition-all hover:border-blue-400 hover:shadow-lg sm:flex-row sm:items-center sm:justify-between"
           >
             <div className="flex items-center gap-4">
-              <Image
-                src={job.company.logo || "/anonymous.svg"}
-                alt={job.company.name}
-                width={40}
-                height={40}
-                className="rounded object-cover"
-              />
+              <div className="min-w-[40px] flex-shrink-0">
+                <div className="h-12 w-12 overflow-hidden rounded">
+                  <img
+                    src={job.company.logo || "/anonymous.svg"}
+                    alt={job.company.name}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+              </div>
               <div>
                 <h3 className="text-lg font-medium text-blue-600">
                   {job.title}

@@ -8,7 +8,7 @@ interface CompanyHeaderProps {
 }
 
 const CompanyHeader = ({ company }: CompanyHeaderProps) => {
-  const openJobsUrl = company?.id ? `/companies/${company.id}/open-jobs` : "#";
+  const openJobsUrl = company?.id ? `/companies/${company.slug}/open-jobs` : "#";
 
   return (
     <div className="container mx-auto p-0 md:p-6">

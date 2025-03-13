@@ -10,6 +10,7 @@ interface JobSuggestion {
 interface CompanySuggestion {
   id: number;
   title: string;
+  slug: string;
 }
 
 interface Suggestions {
