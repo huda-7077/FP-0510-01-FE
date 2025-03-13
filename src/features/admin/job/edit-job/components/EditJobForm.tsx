@@ -38,6 +38,7 @@ import EditJobFormInput from "./EditJobFormInput";
 import EditJobFormSelectInput from "./EditJobFormSelectInput";
 import TagsInput from "./EditJobFormTagInput";
 import useGetCompanyProfile from "@/hooks/api/company/useGetCompanyProfile";
+import EditJobFormSalaryInput from "./EditJobFormSalaryInput";
 
 const RichTextEditor = dynamic(() => import("@/components/RichTextEditor"), {
   ssr: false,
@@ -305,12 +306,11 @@ const EditJobForm: FC<EditJobFormProps> = ({ id }) => {
               formik={formik}
               isDisabled={isUpdateJobPending}
             />
-            <EditJobFormInput
+            <EditJobFormSalaryInput
               name="salary"
-              label="Salary"
-              placeholder="10000000"
+              label="Salary (IDR/month)"
+              placeholder="1.000.0000"
               formik={formik}
-              type="number"
               icon={<DollarSign size={18} />}
               isNotEmpty={false}
               isDisabled={isUpdateJobPending}
