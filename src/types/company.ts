@@ -1,9 +1,9 @@
-import { CompanyLocation } from "./companyLocation";
 import { User } from "./user";
 
 export interface Company {
   id: number;
   name: string;
+  slug: string;
   description: string;
   about: string;
   industry: string;

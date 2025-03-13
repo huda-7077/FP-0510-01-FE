@@ -117,22 +117,24 @@ const RecentJobs = ({
           <TableBody>
             {applications.map((application) => (
               <TableRow key={application.id}>
-                <TableCell className="flex items-start gap-3 py-4 text-xs">
-                  <CompanyLogo company={application.job.company} />
-                  <div>
-                    <h3 className="text-base font-medium">
+                <TableCell className="flex items-start gap-3 py-4">
+                  <div className="min-w-[40px] flex-shrink-0">
+                    <CompanyLogo company={application.job.company} />
+                  </div>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="truncate text-base font-medium">
                       {application.job.title}
                     </h3>
+                    <p className="text-sm text-gray-500">
+                      {application.job.company.name}
+                    </p>
                     <div className="mt-2 flex items-center gap-4">
-                      <div className="flex items-center text-gray-500">
-                        <MapPin size={16} className="mr-1" />
-                        {application.job.companyLocation?.regency?.regency ||
-                          "N/A"}
-                      </div>
-                      <div className="flex items-center text-gray-500">
-                        <Wallet size={16} className="mr-1" />
-                        {formatSalary(application.job.salary) ||
-                          "Not specified"}
+                      <div className="flex items-center text-xs text-gray-500">
+                        <MapPin size={14} className="mr-1 flex-shrink-0" />
+                        <span className="truncate">
+                          {application.job.companyLocation?.regency?.regency ||
+                            "N/A"}
+                        </span>
                       </div>
                     </div>
                     <div className="mt-2">

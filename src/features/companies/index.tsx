@@ -111,13 +111,13 @@ const CompaniesPage = () => {
             ) : (
               <>
                 <h1 className="mb-4 text-2xl font-bold">
-                  {companies.data.length} Results
+                  {companies.meta.total} Results
                 </h1>
                 <div className="grid gap-4 md:grid-cols-2">
                   {companies.data.map((company) => (
                     <Link
                       key={company.id}
-                      href={`/companies/${company.id}`}
+                      href={`/companies/${company.slug}`}
                       className="group block"
                     >
                       <Card

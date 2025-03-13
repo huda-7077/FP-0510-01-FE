@@ -2,14 +2,14 @@ import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import CompanyPage from "@/features/company";
 
-const Company = ({ params }: { params: { id: string } }) => {
+const ReviewsPage = ({ params }: { params: { slug: string } }) => {
   return (
     <>
       <Navbar />
-      <CompanyPage companyId={parseInt(params.id)}/>
+      <CompanyPage slug={params.slug}/>
       <Footer />
     </>
   );
 };
 
-export default Company;
+export default ReviewsPage;

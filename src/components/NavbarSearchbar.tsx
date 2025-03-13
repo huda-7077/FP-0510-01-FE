@@ -26,7 +26,7 @@ export default function SearchBar() {
     if (type === "job") {
       router.push(`/jobs/${slug}`);
     } else if (type === "company") {
-      router.push(`/companies/${id}`);
+      router.push(`/companies/${slug}`);
     }
   };
 
@@ -78,7 +78,7 @@ export default function SearchBar() {
                   {companies.map((company) => (
                     <div
                       key={company.id}
-                      onClick={() => handleSelect("company", company.id)}
+                      onClick={() => handleSelect("company", company.id, company.slug)}
                       className="cursor-pointer px-4 py-2 hover:bg-gray-100"
                     >
                       {company.title}

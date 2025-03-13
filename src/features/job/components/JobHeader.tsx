@@ -18,6 +18,7 @@ interface Job {
   company?: {
     logo?: string;
     name?: string;
+    slug: string;
   };
   companyId?: string;
   title?: string;
@@ -124,7 +125,7 @@ const JobHeader: FC<{ job: Job }> = ({ job }) => {
                 {" "}
                 at{" "}
                 <a
-                  href={`/companies/${job.companyId}`}
+                  href={`/companies/${job.company?.slug}`}
                   className="hover:text-blue-500"
                 >
                   {job.company?.name}

@@ -152,36 +152,46 @@ const OpenJobs = ({ companyId }: OpenJobsProps) => {
                   className="block rounded-md border-[1px] bg-card p-4 shadow-sm duration-150 hover:border-blue-500 hover:shadow-lg"
                 >
                   <div className="flex flex-col gap-4">
-                    <h2 className="text-base font-semibold">{job.title}</h2>
-                    <div className="flex items-center gap-3">
+                    <h2 className="line-clamp-1 text-base font-semibold">
+                      {job.title}
+                    </h2>
+
+                    <div className="flex flex-wrap items-center gap-3">
                       <Badge
                         variant="secondary"
-                        className="rounded-sm bg-green-100 text-center text-green-600 hover:bg-green-600 hover:text-green-100"
+                        className="rounded-sm bg-green-100 text-center text-xs text-green-600 hover:bg-green-600 hover:text-green-100"
                       >
                         {job.category}
                       </Badge>
                       <p className="text-xs text-gray-500">
-                        Salary: Rp
+                        Salary: Rp{" "}
                         {job.salary ? job.salary.toLocaleString() : "N/A"}
                       </p>
                     </div>
+
                     <div className="flex items-center justify-between">
-                      <div className="flex gap-2">
-                        <Image
-                          src={job.company?.logo || "/logos/default.png"}
-                          alt={job.company?.name}
-                          width={40}
-                          height={40}
-                          className="rounded object-cover"
-                        />
-                        <div className="space-y-1">
-                          <h3 className="text-sm">{job.company?.name}</h3>
-                          <p className="flex items-center gap-1 text-xs text-gray-500">
-                            <MapPin className="h-4" />
-                            {job.companyLocation?.regency?.regency},{" "}
-                            {job.companyLocation?.regency?.province?.province ||
-                              ""}
-                          </p>
+                      <div className="flex max-w-[85%] items-start gap-2">
+                        <div className="min-w-[40px] flex-shrink-0">
+                          <div className="h-12 w-12 overflow-hidden rounded">
+                            <img
+                              src={job.company.logo || "/anonymous.svg"}
+                              alt={job.company.name}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                        </div>
+                        <div className="min-w-0 space-y-1">
+                          <h3 className="line-clamp-1 text-sm font-medium">
+                            {job.company.name}
+                          </h3>
+                          <div className="flex items-center gap-1 text-xs text-gray-500">
+                            <MapPin className="h-4 w-4 flex-shrink-0" />
+                            <span className="line-clamp-1">
+                              {job.companyLocation.regency.regency},{" "}
+                              {job.companyLocation.regency.province.province ||
+                                ""}
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div
@@ -190,11 +200,12 @@ const OpenJobs = ({ companyId }: OpenJobsProps) => {
                           e.stopPropagation();
                           handleBookmarkToggle(job.id);
                         }}
+                        className="flex-shrink-0 self-start"
                       >
                         {isJobBookmarked(job.id) ? (
-                          <BookmarkCheck className="h-6 cursor-pointer text-blue-600" />
+                          <BookmarkCheck className="h-6 w-6 cursor-pointer text-blue-600" />
                         ) : (
-                          <Bookmark className="h-6 cursor-pointer text-gray-400 hover:text-blue-600" />
+                          <Bookmark className="h-6 w-6 cursor-pointer text-gray-400 hover:text-blue-600" />
                         )}
                       </div>
                     </div>

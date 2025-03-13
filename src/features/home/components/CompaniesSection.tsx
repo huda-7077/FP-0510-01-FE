@@ -121,7 +121,7 @@ export default function CompaniesSection() {
                       </span>
                     </div>
                   )}
-                  <Link href={`/companies/${company.id}`}>
+                  <Link href={`/companies/${company.slug}`}>
                     <Button
                       className="w-full rounded-md bg-blue-50 text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
                       variant="ghost"

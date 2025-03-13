@@ -125,38 +125,49 @@ const ApplicationDetailPage = ({
               <div className="md:w-2/3">
                 <Card className="group hover:border-blue-600">
                   <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex items-center gap-4">
-                        <div className="relative h-16 w-16 overflow-hidden rounded-md border">
-                          <Image
-                            src={
-                              application.job.company.logo || "/anonymous.svg"
-                            }
-                            alt={application.job.company.name}
-                            fill
-                            className="object-cover"
-                          />
-                        </div>
-                        <div>
-                          <h1 className="text-2xl font-bold group-hover:text-blue-600">
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between sm:gap-0">
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        <Link
+                          href={`/companies/${application.job.company.slug}`}
+                          className="flex-shrink-0"
+                        >
+                          <div className="relative h-12 w-12 overflow-hidden rounded-md border sm:h-16 sm:w-16">
+                            <Image
+                              src={
+                                application.job.company.logo || "/anonymous.svg"
+                              }
+                              alt={application.job.company.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                        </Link>
+                        <div className="min-w-0">
+                          <h1 className="line-clamp-2 text-lg font-bold group-hover:text-blue-600 sm:text-2xl">
                             {application.job.title}
                           </h1>
-                          <p className="text-gray-600">
-                            {application.job.company.name}
-                          </p>
+                          <Link
+                            href={`/companies/${application.job.company.slug}`}
+                          >
+                            <p className="truncate text-sm text-gray-600 hover:text-blue-500 sm:text-base">
+                              {application.job.company.name}
+                            </p>
+                          </Link>
                           <div className="mt-1 flex items-center text-gray-500">
-                            <MapPin className="mr-1 h-4 w-4" />
-                            <span className="text-sm">
+                            <MapPin className="mr-1 h-3 w-3 flex-shrink-0 sm:h-4 sm:w-4" />
+                            <span className="truncate text-xs sm:text-sm">
                               {application.job.companyLocation?.regency
                                 ?.regency || "N/A"}
                             </span>
                           </div>
                         </div>
                       </div>
-                      <ApplicationStatusBadge status={application.status} />
+                      <div className="self-start">
+                        <ApplicationStatusBadge status={application.status} />
+                      </div>
                     </div>
 
-                    <div className="mt-6 grid grid-cols-2 gap-4">
+                    <div className="mt-6 grid gap-4 md:grid-cols-2">
                       <div>
                         <p className="text-sm text-gray-500">Applied On</p>
                         <p className="flex items-center font-medium">
@@ -191,22 +202,26 @@ const ApplicationDetailPage = ({
                     </div>
 
                     <div className="mt-6">
-                      <h2 className="mb-2 text-lg font-semibold">Documents</h2>
+                      <h2 className="mb-2 text-base font-semibold sm:text-lg">
+                        Documents
+                      </h2>
                       <div className="space-y-2">
                         <Button
                           variant="outline"
-                          className="w-full justify-start"
+                          className="w-full justify-start text-xs sm:text-sm"
                           asChild
                         >
                           <a href={application.cvFile} target="_blank" download>
-                            <Download className="mr-2 h-4 w-4" />
-                            {application.user.fullName} CV / Resume
+                            <Download className="mr-2 h-3 w-3 flex-shrink-0 sm:h-4 sm:w-4" />
+                            <span className="truncate">
+                              {application.user.fullName} CV / Resume
+                            </span>
                           </a>
                         </Button>
                         {application.attachment && (
                           <Button
                             variant="outline"
-                            className="w-full justify-start"
+                            className="w-full justify-start text-xs sm:text-sm"
                             asChild
                           >
                             <a
@@ -214,8 +229,10 @@ const ApplicationDetailPage = ({
                               target="_blank"
                               download
                             >
-                              <Download className="mr-2 h-4 w-4" />
-                              {application.user.fullName} Attachment
+                              <Download className="mr-2 h-3 w-3 flex-shrink-0 sm:h-4 sm:w-4" />
+                              <span className="truncate">
+                                {application.user.fullName} Attachment
+                              </span>
                             </a>
                           </Button>
                         )}

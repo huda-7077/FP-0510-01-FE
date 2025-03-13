@@ -98,7 +98,7 @@ const RelatedJobs = ({ categoryFilter }: RelatedJobsProps) => {
               {jobs.data.map((job) => (
                 <Link
                   key={job.id}
-                  href={`/jobs/${job.id}`}
+                  href={`/jobs/${job.slug}`}
                   className="block rounded-md border-[1px] bg-card p-4 shadow-sm duration-150 hover:border-blue-500 hover:shadow-lg"
                 >
                   <div className="flex flex-col gap-4">

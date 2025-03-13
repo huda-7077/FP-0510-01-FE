@@ -19,7 +19,7 @@ import CompanyReviews from "./components/CompanyReviews";
 import OpenJobs from "./components/OpenJobs";
 
 interface CompanyDetailsProps {
-  companyId: number;
+  slug: string;
 }
 
 const TABS = [
@@ -105,25 +105,25 @@ const NoDataState = () => (
   </div>
 );
 
-const CompanyPage = ({ companyId }: CompanyDetailsProps) => {
+const CompanyPage = ({ slug }: CompanyDetailsProps) => {
   const router = useTransitionRouter();
   const pathname = usePathname();
   const segments = pathname.split("/");
   const lastSegment = segments.pop() || "";
   const currentTab =
-    lastSegment === "" || lastSegment === String(companyId)
+    lastSegment === "" || lastSegment === slug
       ? "details"
       : lastSegment;
 
   const handleTabClick = (tabPath: string) => {
     if (tabPath === "") {
-      router.push(`/companies/${companyId}`);
+      router.push(`/companies/${slug}`);
     } else {
-      router.push(`/companies/${companyId}/${tabPath}`);
+      router.push(`/companies/${slug}/${tabPath}`);
     }
   };
 
-  const { data: company, isLoading, isError } = useGetCompany({ companyId });
+  const { data: company, isLoading, isError } = useGetCompany({ slug });
 
   if (isLoading) {
     return <LoadingScreen />;
